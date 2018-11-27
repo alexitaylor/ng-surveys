@@ -10,10 +10,13 @@ import {QuestionBuilderComponent} from './question-builder/question-builder.comp
 import { SelectComponent } from './question-type/select/select.component';
 import { DateComponent } from './question-type/date/date.component';
 import { RangeComponent } from './question-type/range/range.component';
+import {FormsModule} from '@angular/forms';
+import { RadioOptionTemplateComponent } from './question-type/radio/radio-option-template.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [
     QuestionBuilderService
@@ -28,6 +31,7 @@ import { RangeComponent } from './question-type/range/range.component';
     RangeComponent,
     QuestionBuilderDirective,
     QuestionBuilderComponent,
+    RadioOptionTemplateComponent,
   ],
   entryComponents: [
     CheckboxComponent,
@@ -47,7 +51,8 @@ import { RangeComponent } from './question-type/range/range.component';
     QuestionBuilderComponent,
     SelectComponent,
     DateComponent,
-    RangeComponent
+    RangeComponent,
+    RadioOptionTemplateComponent
   ]
 })
 export class BuilderModule { }

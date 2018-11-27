@@ -1,4 +1,30 @@
-<h4>{{data.title}}</h4>
-<p>
-  radio works!
-</p>
+<div class="card">
+  <div class="card-body">
+    <h4>{{data.title}}</h4>
+
+    <div class="row">
+      <div class="col-9 offset-2">
+        <form>
+          <div class="form-group form-check">
+            <input
+              id="pageNavCheckbox"
+              type="checkbox"
+              name="isPageNavChecked"
+              class="form-check-input"
+              [(ngModel)]="isPageNavChecked"
+              (change)="togglePageNavChecked($event)"
+            >
+            <label class="form-check-label" for="pageNavCheckbox">Go to page based on answer</label>
+          </div>
+
+          <div *ngFor="let i of radioOptions">
+            <sb-radio-option-template
+              [position]="i"
+              [isPageNavChecked]="isPageNavChecked"
+            ></sb-radio-option-template>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

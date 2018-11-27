@@ -14,6 +14,7 @@ export class QuestionBuilderContainerComponent implements OnInit {
   constructor(private questionBuilder$: QuestionBuilderService) { }
 
   ngOnInit() {
+    this.question = this.questionBuilder$.getRadio();
   }
 
   onQuestionTypeSelect(questionType: string) {
