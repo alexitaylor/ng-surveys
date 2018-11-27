@@ -1,0 +1,28 @@
+#content {
+  width: 100%;
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s;
+  position: absolute;
+}
+
+.nav-pills {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  padding: 5% 10%;
+}
+
+.text-2x {
+  font-size: 1.25em !important;
+}
+
+.text-3x {
+  font-size: 1.5em !important;
+}
+
+.text-4x {
+  font-size: 1.75em !important;
+}
+
+.text-5x {
+  font-size: 2em !important;
+}
