@@ -1,4 +1,5 @@
 <div id="question-builder-container" class="z-depth-1">
+  <!-- Header -->
   <div class="d-flex justify-content-end">
     <div class="btn-group" role="group">
       <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
@@ -7,23 +8,40 @@
       <button type="button" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
     </div>
   </div>
-  <form>
+  <!-- #/Header -->
+
+  <!-- Question Form Builder -->
+  <form name="questionForm" #questionForm="ngForm">
     <div class="form-group">
       <label for="questionText">Question Text</label>
       <input type="text" class="form-control" id="questionText" placeholder="Question Text" required>
     </div>
     <div class="form-group">
       <label for="questionType">Question Type</label>
-      <select class="form-control" id="questionType">
-        <option>Short Text</option>
-        <option>Long Text</option>
-        <option>Radio</option>
-        <option>Checkboxes</option>
-        <option>Select</option>
-        <option>Date</option>
-        <option>Range</option>
+      <select
+        id="questionType"
+        class="form-control"
+        name="questionType"
+        [(ngModel)]="questionType"
+        (ngModelChange)="onQuestionTypeSelect($event)">
+        <option selected></option>
+        <option value="shortText">Short Text</option>
+        <option value="longText">Long Text</option>
+        <option value="radio">Radio</option>
+        <option value="checkboxes">Checkboxes</option>
+        <option value="select">Select</option>
+        <option value="date">Date</option>
+        <option value="range">Range</option>
       </select>
     </div>
   </form>
+  <!-- #/Question Form Builder -->
+
+  <!-- Question Builder Element -->
+    <sb-question-builder-component
+      [question]="question"
+    ></sb-question-builder-component>
+  <!-- #/Question Builder Element -->
+
   <button type="button" class="btn btn-outline-primary">Save Question</button>
 </div>

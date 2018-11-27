@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'sb-long-text',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./long-text.component.scss']
 })
 export class LongTextComponent implements OnInit {
+  @Input() data: any;
 
   constructor() { }
 
