@@ -1,0 +1,87 @@
+<div class="card">
+  <div class="card-header">
+    Survey Template Info
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="form-group">
+        <label for="surveyTemplateName">Survey Template Name</label>
+        <input type="text" class="form-control" id="surveyTemplateName" placeholder="Name" required>
+      </div>
+      <div class="form-group">
+        <label for="surveyTemplateDescription">Survey Template Description</label>
+        <textarea class="form-control" id="surveyTemplateDescription" rows="3" placeholder="Description"></textarea>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card mt-5">
+  <div class="card-header d-flex w-100">
+    <div class="mr-auto">
+      Page 1 of 1
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-trash-alt"></i></button>
+    </div>
+  </div>
+  <div class="card-body">
+    <sb-question-builder-container></sb-question-builder-container>
+  </div>
+
+  <div class="card-footer">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <button type="button" class="btn btn-outline-primary">Add Element</button>
+        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">
+            <i class="fas fa-question"></i>
+            <span class="ml-2">Question</span>
+          </a>
+          <a class="dropdown-item" href="#">
+            <i class="fas fa-paragraph"></i>
+            <span class="ml-2">Paragraph</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-5">
+  <div class="d-flex flex-row justify-content-between align-items-end">
+
+      <nav aria-label="Page navigation example">
+        <ul class="pagination mb-0">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <select class="custom-select custom-select-lg mb-0 w-auto">
+        <option value="1" selected>10</option>
+        <option value="2">25</option>
+        <option value="3">50</option>
+      </select>
+
+    <button type="button" class="btn btn-outline-primary">Add Page</button>
+  </div>
+</div>

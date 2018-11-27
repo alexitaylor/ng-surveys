@@ -1,30 +1,3 @@
-<app-navbar></app-navbar>
+<sb-navbar></sb-navbar>
 
-<div id="content" class="container-fluid">
-  <div class="row">
-    <div class="col-3">
-      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <a class="nav-link active" id="builder-tab" data-toggle="pill" href="#builder" role="tab" aria-controls="builder" aria-selected="true">Builder</a>
-        <a class="nav-link" id="viewer-tab" data-toggle="pill" href="#viewer" role="tab" aria-controls="viewer" aria-selected="false">Viewer</a>
-        <a class="nav-link" id="model-tab" data-toggle="pill" href="#model" role="tab" aria-controls="model" aria-selected="false">Model</a>
-      </div>
-    </div>
-    <div class="col-9">
-      <div class="card">
-        <div class="card-body">
-          <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="builder" role="tabpanel" aria-labelledby="builder-tab">
-              <app-builder></app-builder>
-            </div>
-            <div class="tab-pane fade" id="viewer" role="tabpanel" aria-labelledby="viewer-tab">
-              <app-viewer></app-viewer>
-            </div>
-            <div class="tab-pane fade" id="model" role="tabpanel" aria-labelledby="model-tab">
-              <app-model-viewer></app-model-viewer>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<sb-content></sb-content>

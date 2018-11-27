@@ -1,0 +1,29 @@
+<div id="question-builder-container" class="z-depth-1">
+  <div class="d-flex justify-content-end">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-clone"></i></button>
+      <button type="button" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+    </div>
+  </div>
+  <form>
+    <div class="form-group">
+      <label for="questionText">Question Text</label>
+      <input type="text" class="form-control" id="questionText" placeholder="Question Text" required>
+    </div>
+    <div class="form-group">
+      <label for="questionType">Question Type</label>
+      <select class="form-control" id="questionType">
+        <option>Short Text</option>
+        <option>Long Text</option>
+        <option>Radio</option>
+        <option>Checkboxes</option>
+        <option>Select</option>
+        <option>Date</option>
+        <option>Range</option>
+      </select>
+    </div>
+  </form>
+  <button type="button" class="btn btn-outline-primary">Save Question</button>
+</div>

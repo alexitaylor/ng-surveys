@@ -1,3 +1,7 @@
+// Components
+@import "components/shadow";
+@import "components/text";
+
 #content {
   width: 100%;
   padding: 20px;
@@ -11,18 +15,6 @@
   padding: 5% 10%;
 }
 
-.text-2x {
-  font-size: 1.25em !important;
-}
-
-.text-3x {
-  font-size: 1.5em !important;
-}
-
-.text-4x {
-  font-size: 1.75em !important;
-}
-
-.text-5x {
-  font-size: 2em !important;
+.bg-grey {
+  background-color: #f1f1f1 !important;
 }

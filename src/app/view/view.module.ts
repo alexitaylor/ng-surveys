@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BuilderComponent } from './builder/builder.component';
+import { BuilderViewerComponent } from './builder-viewer/builder-viewer.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { ModelViewerComponent } from './model-viewer/model-viewer.component';
+import { QuestionBuilderContainerComponent } from './templates/question-builder-container/question-builder-container.component';
 
 @NgModule({
-  declarations: [BuilderComponent, ViewerComponent, ModelViewerComponent],
   imports: [
-    CommonModule
+    CommonModule,
   ],
-  exports: [BuilderComponent, ViewerComponent, ModelViewerComponent]
+  declarations: [BuilderViewerComponent, ViewerComponent, ModelViewerComponent, QuestionBuilderContainerComponent],
+  exports: [BuilderViewerComponent, ViewerComponent, ModelViewerComponent]
 })
 export class ViewModule { }
