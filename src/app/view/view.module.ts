@@ -6,6 +6,8 @@ import { ModelViewerComponent } from './model-viewer/model-viewer.component';
 import { QuestionBuilderContainerComponent } from './templates/question-builder-container/question-builder-container.component';
 import {BuilderModule} from '../builder/builder.module';
 import {FormsModule} from '@angular/forms';
+import {PageBuilderContainerComponent} from './templates/page-builder-container/page-builder-container.component';
+import {MapValuesPipe} from '../map-values.pipe';
 
 @NgModule({
   imports: [
@@ -13,7 +15,18 @@ import {FormsModule} from '@angular/forms';
     BuilderModule,
     FormsModule,
   ],
-  declarations: [BuilderViewerComponent, ViewerComponent, ModelViewerComponent, QuestionBuilderContainerComponent],
-  exports: [BuilderViewerComponent, ViewerComponent, ModelViewerComponent]
+  declarations: [
+    BuilderViewerComponent,
+    ViewerComponent,
+    ModelViewerComponent,
+    QuestionBuilderContainerComponent,
+    PageBuilderContainerComponent,
+    MapValuesPipe,
+  ],
+  exports: [
+    BuilderViewerComponent,
+    ViewerComponent,
+    ModelViewerComponent,
+  ]
 })
 export class ViewModule { }

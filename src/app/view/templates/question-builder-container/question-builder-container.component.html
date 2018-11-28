@@ -1,11 +1,12 @@
-<div id="question-builder-container" class="z-depth-1">
+<div id="question-builder-container" [ngClass]="!isSaved ? 'z-depth-1' : ''">
   <!-- Header -->
   <div class="d-flex justify-content-end">
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-clone"></i></button>
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+      <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
+      <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
+      <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary" (click)="removeElement()"><i class="fas fa-trash-alt"></i></button>
+      <button *ngIf="isSaved" type="button" class="btn btn-outline-primary"><i class="fas fa-clone"></i></button>
+      <button *ngIf="isSaved" type="button" class="btn btn-outline-primary" (click)="isSaved = false"><i class="fas fa-edit"></i></button>
     </div>
   </div>
   <!-- #/Header -->
@@ -13,16 +14,23 @@
   <!-- Question Form Builder -->
   <form name="questionForm" #questionForm="ngForm">
     <div class="form-group">
-      <label for="questionText">Question Text</label>
-      <input type="text" class="form-control" id="questionText" placeholder="Question Text" required>
+      <label [for]="'questionText-' + element.id">Question Text</label>
+      <input
+        [id]="'questionText-' + element.id"
+        name="questionText"
+        type="text"
+        class="form-control"
+        [ngModel]="element.question.text"
+        placeholder="Question Text"
+        required>
     </div>
     <div class="form-group">
       <label for="questionType">Question Type</label>
       <select
         id="questionType"
-        class="form-control"
         name="questionType"
-        [(ngModel)]="questionType"
+        class="form-control"
+        [(ngModel)]="element.question.type"
         (ngModelChange)="onQuestionTypeSelect($event)">
         <option selected></option>
         <option value="shortText">Short Text</option>
@@ -39,9 +47,9 @@
 
   <!-- Question Builder Element -->
     <sb-question-builder-component
-      [question]="question"
+      [questionType]="element.question.type"
     ></sb-question-builder-component>
   <!-- #/Question Builder Element -->
 
-  <button type="button" class="btn btn-outline-primary mt-4">Save Question</button>
+  <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion()" [disabled]="!questionType">Save Question</button>
 </div>

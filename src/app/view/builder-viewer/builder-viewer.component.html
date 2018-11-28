@@ -5,52 +5,37 @@
   <div class="card-body">
     <form>
       <div class="form-group">
-        <label for="surveyTemplateName">Survey Template Name</label>
-        <input type="text" class="form-control" id="surveyTemplateName" placeholder="Name" required>
+        <label for="surveyName">Survey Name</label>
+        <input
+          id="surveyName"
+          name="surveyName"
+          type="text"
+          class="form-control"
+          placeholder="Name"
+          [ngModel]="surveyName$ | async"
+          required
+        >
       </div>
       <div class="form-group">
-        <label for="surveyTemplateDescription">Survey Template Description</label>
-        <textarea class="form-control" id="surveyTemplateDescription" rows="3" placeholder="Description"></textarea>
+        <label for="surveyDescription">Survey Description</label>
+        <textarea
+          id="surveyDescription"
+          class="form-control"
+          name="surveyDescription"
+          rows="3"
+          placeholder="Description"
+          [ngModel]="surveyDescription$ | async"
+        ></textarea>
       </div>
     </form>
   </div>
 </div>
 
-<div class="card mt-5">
-  <div class="card-header d-flex w-100">
-    <div class="mr-auto">
-      Page 1 of 1
-    </div>
-    <div class="btn-group" role="group">
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-trash-alt"></i></button>
-    </div>
-  </div>
-  <div class="card-body">
-    <sb-question-builder-container></sb-question-builder-container>
-  </div>
-
-  <div class="card-footer">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <button type="button" class="btn btn-outline-primary">Add Element</button>
-        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">
-            <i class="fas fa-question"></i>
-            <span class="ml-2">Question</span>
-          </a>
-          <a class="dropdown-item" href="#">
-            <i class="fas fa-paragraph"></i>
-            <span class="ml-2">Paragraph</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+<div *ngFor="let item of pages$ | async | mapValues">
+  <sb-page-builder-container
+    [page]="item.value"
+    [pages]="pages$ | async"
+  ></sb-page-builder-container>
 </div>
 
 <div class="mt-5">
@@ -82,6 +67,6 @@
         <option value="3">50</option>
       </select>
 
-    <button type="button" class="btn btn-outline-primary">Add Page</button>
+    <button type="button" class="btn btn-outline-primary" (click)="addPage()">Add Page</button>
   </div>
 </div>

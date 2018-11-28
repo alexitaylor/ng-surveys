@@ -1,38 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {IQuestionItem} from '../../../builder/question-builder/question-item.component';
-import {QuestionBuilderService} from '../../../builder/question-builder/question-builder.service';
+import {AppState} from '../../../store/app.state';
+import {Store} from '@ngrx/store';
+import {SurveyAddQuestionTextAction, SurveyAddQuestionTypeAction, SurveyRemoveElementAction} from '../../../store/survey/survey.actions';
+import {IElements} from '../../../models/elements.model';
+import {IPage} from '../../../models/page.model';
+import {fromEvent} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'sb-question-builder-container',
   templateUrl: './question-builder-container.component.html',
   styleUrls: ['./question-builder-container.component.scss']
 })
-export class QuestionBuilderContainerComponent implements OnInit {
-  question: IQuestionItem;
-  questionType: string;
+export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
+  @Input() element: IElements;
+  @Input() page: IPage;
 
-  constructor(private questionBuilder$: QuestionBuilderService) { }
+  questionType: string;
+  isSaved = false;
+
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.question = this.questionBuilder$.getRadio();
+    // this.question = this.questionBuilder$.getRadio();
+    console.log('QUESTION COINTAINER INIT');
   }
 
-  onQuestionTypeSelect(questionType: string) {
-    if (questionType === 'shortText') {
-      this.question = this.questionBuilder$.getShortText();
-    } else if (questionType === 'longText') {
-      this.question = this.questionBuilder$.getLongText();
-    } else if (questionType === 'radio') {
-      this.question = this.questionBuilder$.getRadio();
-    } else if (questionType === 'checkboxes') {
-      this.question = this.questionBuilder$.getCheckbox();
-    } else if (questionType === 'select') {
-      this.question = this.questionBuilder$.getSelect();
-    } else if (questionType === 'date') {
-      this.question = this.questionBuilder$.getDate();
-    } else if (questionType === 'range') {
-      this.question = this.questionBuilder$.getRange();
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('changes: ', changes);
+    if (!!changes.element.currentValue) {
+      setTimeout(() => {
+        this.handleQuestionNameChange();
+      }, 300);
     }
   }
 
+  onQuestionTypeSelect(type: string) {
+    this.questionType = type;
+    console.log('this.questionType: ', this.questionType);
+    this.store.dispatch(new SurveyAddQuestionTypeAction({
+      pageId: this.page.id,
+      elementId: this.element.id,
+      type,
+    }));
+    setTimeout(() => {
+    }, 1000);
+  }
+
+  handleQuestionNameChange() {
+    const $questionText = document.getElementById(`questionText-${this.element.id}`);
+
+    const questionText$ = fromEvent($questionText, 'input').pipe(
+      map((event: any) => event.target.value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    );
+
+    questionText$.subscribe(text => this.store.dispatch(new SurveyAddQuestionTextAction({
+      pageId: this.page.id,
+      elementId: this.element.id,
+      text,
+    })));
+  }
+
+  saveQuestion() {
+    this.isSaved = true;
+    // TODO add another question template to parent
+  }
+
+  removeElement() {
+    this.store.dispatch(new SurveyRemoveElementAction({pageId: this.page.id, elementId: this.element.id}));
+  }
 }
+
+

@@ -3,6 +3,7 @@ import {IQuestionItem} from './question-item.component';
 import {QuestionBuilderDirective} from './question-builder.directive';
 import {IQuestionBuilder} from './question-builder.model';
 import {BehaviorSubject} from 'rxjs';
+import {QuestionBuilderService} from './question-builder.service';
 
 @Component({
   selector: 'sb-question-builder-component',
@@ -15,26 +16,32 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class QuestionBuilderComponent implements OnInit {
   hasQuestion = false;
-  private _question = new BehaviorSubject<IQuestionItem>(null);
+  question: IQuestionItem;
+
+  private _questionType = new BehaviorSubject<string>(null);
 
   @Input()
-  set question(value) {
-    this._question.next(value);
+  set questionType(value) {
+    this._questionType.next(value);
   }
 
-  get question() {
-    return this._question.getValue();
+  get questionType() {
+    return this._questionType.getValue();
   }
 
   @ViewChild(QuestionBuilderDirective) questionBuilderHost: QuestionBuilderDirective;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private questionBuilder$: QuestionBuilderService) { }
 
   ngOnInit() {
-    this._question.subscribe(payload => {
+    console.log('QUSTION BUILDER INIT');
+    this._questionType.subscribe(payload => {
       if (!!payload) {
         this.hasQuestion = true;
         setTimeout(() => {
+          console.log('payload: ', payload);
+          this.question = this.getQuestionType(payload);
+          console.log('this.question: ', this.question);
           this.loadComponent();
         }, 300);
       } else {
@@ -57,6 +64,24 @@ export class QuestionBuilderComponent implements OnInit {
 
     if (!!questionItem.data) {
       (<IQuestionBuilder>componentRef.instance).data = questionItem.data;
+    }
+  }
+
+  private getQuestionType(type: string): IQuestionItem {
+    if (type === 'shortText') {
+      return this.questionBuilder$.getShortText();
+    } else if (type === 'longText') {
+      return this.questionBuilder$.getLongText();
+    } else if (type === 'radio') {
+      return this.questionBuilder$.getRadio();
+    } else if (type === 'checkboxes') {
+      return this.questionBuilder$.getCheckbox();
+    } else if (type === 'select') {
+      return this.questionBuilder$.getSelect();
+    } else if (type === 'date') {
+      return this.questionBuilder$.getDate();
+    } else if (type === 'range') {
+      return this.questionBuilder$.getRange();
     }
   }
 

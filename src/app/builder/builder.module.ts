@@ -52,7 +52,7 @@ import { RadioOptionTemplateComponent } from './question-type/radio/radio-option
     SelectComponent,
     DateComponent,
     RangeComponent,
-    RadioOptionTemplateComponent
+    RadioOptionTemplateComponent,
   ]
 })
 export class BuilderModule { }
