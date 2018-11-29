@@ -6,6 +6,7 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
 import {AppState} from '../../store/app.state';
 import {SurveyAddPageAction, SurveyDescriptionChangedAction, SurveyNameChangedAction} from '../../store/survey/survey.actions';
 import {IPageMap} from '../../models/page.model';
+import * as fromRoot from '../../store/app.reducer';
 
 @Component({
   selector: 'sb-builder-viewer',
@@ -20,9 +21,9 @@ export class BuilderViewerComponent implements OnInit {
   constructor(
     private store: Store<AppState>
   ) {
-    this.surveyName$ = store.pipe(select(state => state.survey.name));
-    this.surveyDescription$ = store.pipe(select(state => state.survey.description));
-    this.pages$ = store.pipe(select(state => state.survey.pages));
+    this.surveyName$ = store.pipe(select(fromRoot.getSurveyName));
+    this.surveyDescription$ = store.pipe(select(fromRoot.getSurveyDescription));
+    this.pages$ = store.pipe(select(fromRoot.getSurveyPages));
   }
 
   ngOnInit() {
@@ -39,8 +40,8 @@ export class BuilderViewerComponent implements OnInit {
       debounceTime(1000)
     );
 
-    surveyName$.subscribe(value => {
-      this.store.dispatch(new SurveyNameChangedAction(value));
+    surveyName$.subscribe(name => {
+      this.store.dispatch(new SurveyNameChangedAction({ name }));
     });
   }
 
@@ -53,13 +54,17 @@ export class BuilderViewerComponent implements OnInit {
       debounceTime(1000)
     );
 
-    surveyName$.subscribe(value => {
-      this.store.dispatch(new SurveyDescriptionChangedAction(value));
+    surveyName$.subscribe(description => {
+      this.store.dispatch(new SurveyDescriptionChangedAction({ description }));
     });
   }
 
   addPage() {
     this.store.dispatch(new SurveyAddPageAction());
+  }
+
+  trackElement(index: number, element: any) {
+    return element ? element.key : null;
   }
 
 }

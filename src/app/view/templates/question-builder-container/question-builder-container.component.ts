@@ -25,11 +25,9 @@ export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // this.question = this.questionBuilder$.getRadio();
-    console.log('QUESTION COINTAINER INIT');
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes: ', changes);
     if (!!changes.element.currentValue) {
       setTimeout(() => {
         this.handleQuestionNameChange();
@@ -39,7 +37,6 @@ export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
 
   onQuestionTypeSelect(type: string) {
     this.questionType = type;
-    console.log('this.questionType: ', this.questionType);
     this.store.dispatch(new SurveyAddQuestionTypeAction({
       pageId: this.page.id,
       elementId: this.element.id,

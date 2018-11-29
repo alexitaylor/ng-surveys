@@ -6,7 +6,7 @@ export function createNextPage(pages: IPageMap): IPageMap {
   const newPage: IPage = new Page();
   const lastPage = getLastValueInMap(pages);
 
-  newPage.number = lastPage.number + 1;
+  newPage.orderNo = lastPage.orderNo + 1;
   pages.set(newPage.id, newPage);
 
   return new Map<string, IPage>(pages);
@@ -56,7 +56,8 @@ export function addQuestionType(pages: IPageMap, pageId: string, elementId: stri
 
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
 export const getElementByKeyInMap = (map, key) => map.get(key);
-export const updateElementPositionInMap = (map) => Array.from(map).reduce((acc: number, el: any[]) => el[1].number = acc + 1, 0);
+export const updateElementPositionInMap = (map) => Array.from(map).reduce(
+  (acc: number, el: IPage | IQuestion[]) => el[1].orderNo = acc + 1, 0);
 export const getCurrentQuestion = (pages, pageId, elementId) => getElementByKeyInMap(
   getElementByKeyInMap(pages, pageId).elements, elementId)
   .question;

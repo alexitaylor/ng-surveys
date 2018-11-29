@@ -34,14 +34,11 @@ export class QuestionBuilderComponent implements OnInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private questionBuilder$: QuestionBuilderService) { }
 
   ngOnInit() {
-    console.log('QUSTION BUILDER INIT');
     this._questionType.subscribe(payload => {
       if (!!payload) {
         this.hasQuestion = true;
         setTimeout(() => {
-          console.log('payload: ', payload);
           this.question = this.getQuestionType(payload);
-          console.log('this.question: ', this.question);
           this.loadComponent();
         }, 300);
       } else {

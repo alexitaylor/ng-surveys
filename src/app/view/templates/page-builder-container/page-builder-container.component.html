@@ -1,7 +1,7 @@
 <div class="card mt-5">
   <div class="card-header d-flex w-100">
     <div class="mr-auto">
-      Page {{page.number}} of {{pages.size}}
+      Page {{page.orderNo}} of {{pageSize$ | async}}
     </div>
     <div class="btn-group" role="group">
       <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
@@ -9,7 +9,7 @@
       <button type="button" class="btn btn-outline-primary" (click)="removePage()"><i class="fas fa-trash-alt"></i></button>
     </div>
   </div>
-  <div class="card-body" *ngFor="let item of page.elements | mapValues">
+  <div class="card-body" *ngFor="let item of page.elements | mapValues; trackBy: trackElement">
     <sb-question-builder-container
       [element]="item.value"
       [page]="page"
