@@ -11,8 +11,12 @@
       <button *ngIf="isEditPage" type="button" class="btn btn-outline-primary" tooltip="Save page name and description" (click)="isEditPage = false">
         <i class="fas fa-save"></i>
       </button>
-      <button type="button" class="btn btn-outline-primary" tooltip="Move Down"><i class="fas fa-chevron-down"></i></button>
-      <button type="button" class="btn btn-outline-primary" tooltip="Move Up"><i class="fas fa-chevron-up"></i></button>
+      <button type="button" class="btn btn-outline-primary" tooltip="Move Down" (click)="movePageDown()" [disabled]="page.orderNo === pages.size">
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <button type="button" class="btn btn-outline-primary" tooltip="Move Up" (click)="movePageUp()" [disabled]="page.orderNo === 1">
+        <i class="fas fa-chevron-up"></i>
+      </button>
       <button type="button" class="btn btn-outline-primary" tooltip="Remove Page" (click)="removePage()">
         <i class="fas fa-trash-alt"></i>
       </button>

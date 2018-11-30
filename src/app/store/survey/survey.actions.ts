@@ -6,6 +6,8 @@ export enum SurveyActionTypes {
   SURVEY_DESCRIPTION_CHANGED_ACTION = '[Angular Surveys] Survey description change',
   SURVEY_ADD_PAGE_ACTION = '[Angular Surveys Page] Add survey page',
   SURVEY_INSERT_PAGE_ACTION = '[Angular Surveys Page] Insert survey page',
+  SURVEY_MOVE_PAGE_UP_ACTION = '[Angular Surveys Page] Move survey page up',
+  SURVEY_MOVE_PAGE_DOWN_ACTION = '[Angular Surveys Page] Mvoe survey page down',
   SURVEY_REMOVE_PAGE_ACTION = '[Angular Surveys Page] Remove survey page',
   SURVEY_UPDATE_PAGE_NAME_ACTION = '[Angular Surveys Page] Update survey page name',
   SURVEY_UPDATE_PAGE_DESCRIPTION_ACTION = '[Angular Surveys Page] Update survey page description',
@@ -42,6 +44,16 @@ export class SurveyAddPageAction implements Action {
 export class SurveyInsertPageAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_INSERT_PAGE_ACTION;
   constructor(public payload?: { previousPageId: string }) { }
+}
+
+export class SurveyMovePageUpAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_MOVE_PAGE_UP_ACTION;
+  constructor(public payload?: { pageId: string }) { }
+}
+
+export class SurveyMovePageDownAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_MOVE_PAGE_DOWN_ACTION;
+  constructor(public payload?: { pageId: string }) { }
 }
 
 export class SurveyRemovePageAction implements Action {
@@ -129,6 +141,8 @@ export type SurveyActions =
   SurveyDescriptionChangedAction |
   SurveyAddPageAction |
   SurveyInsertPageAction |
+  SurveyMovePageUpAction |
+  SurveyMovePageDownAction |
   SurveyRemovePageAction |
   SurveyUpdatePageNameAction |
   SurveyUpdatePageDescriptionAction |

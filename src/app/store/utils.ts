@@ -34,6 +34,30 @@ export function insertPage(state: IAngularSurvey, pages: IPageMap, previousPageI
   return new Map<string, IPage>(pages);
 }
 
+export function movePageUp(state: IAngularSurvey, pages: IPageMap, pageId: string): IPageMap {
+  const currentPage = pages.get(pageId);
+  const index = currentPage.orderNo - 2;
+
+  pages.delete(pageId);
+  const pagesMap = moveItemInMap(pages, index, currentPage);
+  updateElementPositionInMap(pagesMap);
+  state.pages = new Map<string, IPage>(pagesMap);
+
+  return new Map<string, IPage>(pages);
+}
+
+export function movePageDown(state: IAngularSurvey, pages: IPageMap, pageId: string): IPageMap {
+  const currentPage = pages.get(pageId);
+  const index = currentPage.orderNo;
+
+  pages.delete(pageId);
+  const pagesMap = moveItemInMap(pages, index, currentPage);
+  updateElementPositionInMap(pagesMap);
+  state.pages = new Map<string, IPage>(pagesMap);
+
+  return new Map<string, IPage>(pages);
+}
+
 export function removePage(pages: IPageMap, pageId: string): IPageMap {
   pages.delete(pageId);
   updateElementPositionInMap(pages);
@@ -180,6 +204,26 @@ export function updateOptionAnswerPageFlow(
 
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
 export const getElementByKeyInMap = (map, key) => map.get(key);
+export const arrayToMap = (array) => array.reduce((map, arrayEl) => map.set(arrayEl[0], arrayEl[1]), new Map<string, IPage>());
+
+export const moveItemInMap = (map, index, item) => {
+  let array = Array.from(map);
+
+  if (index > array.length - 1) {
+    array.push([item.id, item]);
+  } else {
+    array = array.reduce((newArray, el, idx) => {
+      if (idx === index) {
+        newArray.push([item.id, item]);
+        newArray.push(el);
+      } else {
+        newArray.push(el);
+      }
+      return newArray;
+    }, []);
+  }
+  return arrayToMap(array);
+};
 
 export const updateElementPositionInMap = (map) => Array.from(map).reduce(
   (acc: number, el: string | IPage | IQuestion | IOptionAnswers[]) => el[1].orderNo = acc + 1, 0);

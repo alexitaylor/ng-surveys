@@ -5,7 +5,8 @@ import {IPage, IPageMap} from '../../../models/page.model';
 import {AppState} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
 import {
-  SurveyAddElementAction, SurveyInsertPageAction, SurveyRemovePageAction, SurveyUpdatePageDescriptionAction,
+  SurveyAddElementAction, SurveyInsertPageAction, SurveyMovePageDownAction, SurveyMovePageUpAction, SurveyRemovePageAction,
+  SurveyUpdatePageDescriptionAction,
   SurveyUpdatePageNameAction, SurveyUpdatePagePageFlowAction
 } from '../../../store/survey/survey.actions';
 import * as fromRoot from '../../../store/app.reducer';
@@ -39,6 +40,14 @@ export class PageBuilderContainerComponent implements OnInit {
 
   insertPage() {
     this.store.dispatch(new SurveyInsertPageAction({ previousPageId: this.page.id }));
+  }
+
+  movePageDown() {
+    this.store.dispatch(new SurveyMovePageDownAction({ pageId: this.page.id }));
+  }
+
+  movePageUp() {
+    this.store.dispatch(new SurveyMovePageUpAction({ pageId: this.page.id }));
   }
 
   addElement() {

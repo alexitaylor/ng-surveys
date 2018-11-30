@@ -40,6 +40,20 @@ export function surveyReducer(state = appInitialState, action: SurveyActions): I
       return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
     }
 
+    case SurveyActionTypes.SURVEY_MOVE_PAGE_UP_ACTION: {
+      const { pageId } = action.payload;
+      const pages: IPageMap = utils.movePageUp(state, state.pages, pageId);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_MOVE_PAGE_DOWN_ACTION: {
+      const { pageId } = action.payload;
+      const pages: IPageMap = utils.movePageDown(state, state.pages, pageId);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
     case SurveyActionTypes.SURVEY_REMOVE_PAGE_ACTION: {
       const { pageId } = action.payload;
       const pages: IPageMap = utils.removePage(state.pages, pageId);
