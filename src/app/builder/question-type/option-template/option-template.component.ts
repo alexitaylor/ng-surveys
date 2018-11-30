@@ -38,6 +38,7 @@ export class OptionTemplateComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.onOptionsValueChange();
+      this.onSaveQuestionClick();
     }, 300);
   }
 
@@ -92,6 +93,32 @@ export class OptionTemplateComponent implements OnInit {
         optionAnswerId: this.optionAnswer.id,
         value
       }));
+    });
+  }
+
+  onSaveQuestionClick() {
+    const $saveQuestionButton = document.getElementById(`save-question-button-${this.element.id}`);
+
+    fromEvent($saveQuestionButton, 'click').pipe(
+      map(event => event)
+    ).subscribe(res => {
+      if (res) {
+        this.isOptionActive = false;
+        this.onEditQuestionClick();
+      }
+    });
+  }
+
+  onEditQuestionClick() {
+    const $editQuestionButton = document.getElementById(`edit-question-button-${this.element.id}`);
+
+    fromEvent($editQuestionButton, 'click').pipe(
+      map(event => event)
+    ).subscribe(res => {
+      if (res) {
+        this.isOptionActive = true;
+        this.onSaveQuestionClick();
+      }
     });
   }
 

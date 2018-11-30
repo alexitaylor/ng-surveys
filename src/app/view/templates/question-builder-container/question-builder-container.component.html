@@ -6,7 +6,7 @@
       <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
       <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary" (click)="removeElement()"><i class="fas fa-trash-alt"></i></button>
       <button *ngIf="isSaved" type="button" class="btn btn-outline-primary"><i class="fas fa-clone"></i></button>
-      <button *ngIf="isSaved" type="button" class="btn btn-outline-primary" (click)="isSaved = false"><i class="fas fa-edit"></i></button>
+      <button [id]="'edit-question-button-' + element.id" *ngIf="isSaved" type="button" class="btn btn-outline-primary" (click)="isSaved = false"><i class="fas fa-edit"></i></button>
     </div>
   </div>
   <!-- #/Header -->
@@ -58,5 +58,5 @@
     ></sb-question-builder-component>
   <!-- #/Question Builder Element -->
 
-  <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion()" [disabled]="!questionType">Save Question</button>
+  <button [id]="'save-question-button-' + element.id" *ngIf="!isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion()" [disabled]="!questionType">Save Question</button>
 </div>

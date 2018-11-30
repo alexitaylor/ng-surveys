@@ -1,16 +1,80 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
+import {
+  SurveyRemoveQuestionMinAndMaxAction, SurveyUpdateQuestionMaxAction,
+  SurveyUpdateQuestionMinAction
+} from '../../../store/survey/survey.actions';
+import {IElements} from '../../../models/elements.model';
 
 @Component({
   selector: 'sb-range',
   templateUrl: './range.component.html',
   styleUrls: ['./range.component.scss']
 })
-export class RangeComponent implements OnInit {
+export class RangeComponent implements OnInit, OnDestroy {
   @Input() data: any;
 
-  constructor() { }
+  element: IElements;
+  pageId: string;
+
+  constructor(
+    private store: Store<AppState>,
+  ) { }
 
   ngOnInit() {
+    this.element = this.data.element;
+    this.pageId = this.data.element.pageId;
+
+    setTimeout(() => {
+      this.onMinChange();
+      this.onMaxChange();
+    }, 300);
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(new SurveyRemoveQuestionMinAndMaxAction({
+      pageId: this.pageId,
+      elementId: this.element.id,
+    }));
+  }
+
+  onMinChange() {
+    const $min = document.getElementById(`min-range-${this.element.id}`);
+
+    const min$ = fromEvent($min, 'input').pipe(
+      map((event: any) => event.target.value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    );
+
+    min$.subscribe(min => {
+      this.store.dispatch(new SurveyUpdateQuestionMinAction({
+        pageId: this.pageId,
+        elementId: this.element.id,
+        min
+      }));
+    });
+  }
+
+  onMaxChange() {
+    const $max = document.getElementById(`max-range-${this.element.id}`);
+
+    const max$ = fromEvent($max, 'input').pipe(
+      map((event: any) => event.target.value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    );
+
+    max$.subscribe(max => {
+      this.store.dispatch(new SurveyUpdateQuestionMaxAction({
+        pageId: this.pageId,
+        elementId: this.element.id,
+        max
+      }));
+    });
   }
 
 }

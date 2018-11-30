@@ -9,6 +9,8 @@ export interface IQuestion {
   pageFlowModifier?: boolean;
   elementId?: string;
   optionAnswers?: IOptionAnswersMap;
+  min?: number;
+  max?: number;
 }
 
 export class Question implements IQuestion {
@@ -20,6 +22,8 @@ export class Question implements IQuestion {
     public pageFlowModifier?: boolean,
     public elementId?: string,
     public optionAnswers?: IOptionAnswersMap,
+    public min?: number,
+    public max?: number,
   ) {
     this.id = id ? id : UUID.UUID();
     this.text = text ? text : '';
@@ -28,5 +32,7 @@ export class Question implements IQuestion {
     this.pageFlowModifier = pageFlowModifier ? pageFlowModifier : false;
     this.elementId = elementId ? elementId : '';
     this.optionAnswers = optionAnswers ? optionAnswers : null;
+    this.min = min ? min : null;
+    this.max = max ? max : null;
   }
 }

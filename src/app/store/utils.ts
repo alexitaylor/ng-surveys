@@ -62,6 +62,31 @@ export function addQuestionType(pages: IPageMap, pageId: string, elementId: stri
   return new Map<string, IPage>(pages);
 }
 
+export function updateQuestionMin(pages: IPageMap, pageId: string, elementId: string, min: number): IPageMap {
+  const currentQuestion: IQuestion = getCurrentQuestion(pages, pageId, elementId);
+
+  currentQuestion.min = min;
+
+  return new Map<string, IPage>(pages);
+}
+
+export function updateQuestionMax(pages: IPageMap, pageId: string, elementId: string, max: number): IPageMap {
+  const currentQuestion: IQuestion = getCurrentQuestion(pages, pageId, elementId);
+
+  currentQuestion.max = max;
+
+  return new Map<string, IPage>(pages);
+}
+
+export function removeQuestionMinAndMax(pages: IPageMap, pageId: string, elementId: string): IPageMap {
+  const currentQuestion: IQuestion = getCurrentQuestion(pages, pageId, elementId);
+
+  currentQuestion.min = null;
+  currentQuestion.max = null;
+
+  return new Map<string, IPage>(pages);
+}
+
 export function updateQuestionPageFlowModifier(pages: IPageMap, pageId: string, elementId: string, pageFlowModifier: boolean): IPageMap {
   const currentQuestion: IQuestion = getCurrentQuestion(pages, pageId, elementId);
 

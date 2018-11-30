@@ -68,6 +68,27 @@ export function surveyReducer(state = appInitialState, action: SurveyActions): I
       return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
     }
 
+    case SurveyActionTypes.SURVEY_QUESTION_UPDATE_MIN_ACTION: {
+      const { pageId, elementId, min } = action.payload;
+      const pages: IPageMap = utils.updateQuestionMin(state.pages, pageId, elementId, min);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_QUESTION_UPDATE_MAX_ACTION: {
+      const { pageId, elementId, max } = action.payload;
+      const pages: IPageMap = utils.updateQuestionMax(state.pages, pageId, elementId, max);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_QUESTION_REMOVE_MIN_MAX_ACTION: {
+      const { pageId, elementId } = action.payload;
+      const pages: IPageMap = utils.removeQuestionMinAndMax(state.pages, pageId, elementId);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
     case SurveyActionTypes.SURVEY_QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION: {
       const { pageId, elementId, pageFlowModifier } = action.payload;
       const pages: IPageMap = utils.updateQuestionPageFlowModifier(state.pages, pageId, elementId, pageFlowModifier);

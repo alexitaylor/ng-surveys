@@ -10,6 +10,9 @@ export enum SurveyActionTypes {
   SURVEY_REMOVE_ELEMENT_ACTION = '[Angular Surveys Element] Remove survey question element',
   SURVEY_QUESTION_ADD_TEXT_ACTION = '[Angular Surveys Question] Add question text',
   SURVEY_QUESTION_ADD_TYPE_ACTION = '[Angular Surveys Question] Add question type',
+  SURVEY_QUESTION_UPDATE_MIN_ACTION = '[Angular Surveys Question] Update question max value',
+  SURVEY_QUESTION_UPDATE_MAX_ACTION = '[Angular Surveys Question] Update question min value',
+  SURVEY_QUESTION_REMOVE_MIN_MAX_ACTION = '[Angular Surveys Question] Remove question min and max value',
   SURVEY_QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION = '[Angular Surveys Question] UPDATE question page flow modifier',
   SURVEY_QUESTION_ADD_OPTION_ANSWERS_ACTION = '[Angular Surveys Option Answers] Add question option answer',
   SURVEY_QUESTION_REMOVE_OPTION_ANSWERS_ACTION = '[Angular Surveys Option Answers] Remove question option answer',
@@ -57,6 +60,21 @@ export class SurveyAddQuestionTypeAction implements Action {
   constructor(public payload: { pageId: string, elementId: string, type: string }) { }
 }
 
+export class SurveyUpdateQuestionMinAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_UPDATE_MIN_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, min: number }) { }
+}
+
+export class SurveyUpdateQuestionMaxAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_UPDATE_MAX_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, max: number }) { }
+}
+
+export class SurveyRemoveQuestionMinAndMaxAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_REMOVE_MIN_MAX_ACTION;
+  constructor(public payload: { pageId: string, elementId: string }) { }
+}
+
 export class SurveyUpdateQuestionPageFlowModifierAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION;
   constructor(public payload: { pageId: string, elementId: string, pageFlowModifier: boolean }) { }
@@ -91,6 +109,9 @@ export type SurveyActions =
   SurveyRemoveElementAction |
   SurveyAddQuestionTextAction |
   SurveyAddQuestionTypeAction |
+  SurveyUpdateQuestionMinAction |
+  SurveyUpdateQuestionMaxAction |
+  SurveyRemoveQuestionMinAndMaxAction |
   SurveyUpdateQuestionPageFlowModifierAction |
   SurveyAddOptionAnswersAction |
   SurveyRemoveOptionAnswersAction |
