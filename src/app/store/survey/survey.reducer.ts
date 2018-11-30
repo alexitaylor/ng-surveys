@@ -110,6 +110,13 @@ export function surveyReducer(state = appInitialState, action: SurveyActions): I
       return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
     }
 
+    case SurveyActionTypes.SURVEY_DRAG_ELEMENT_ACTION: {
+      const { pageId, startIndex, endIndex } = action.payload;
+      const pages: IPageMap = utils.dragElement(state.pages, pageId, startIndex, endIndex);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
     case SurveyActionTypes.SURVEY_QUESTION_ADD_TEXT_ACTION: {
       const { pageId, elementId, text } = action.payload;
       const pages: IPageMap = utils.addQuestionText(state.pages, pageId, elementId, text);
@@ -176,6 +183,13 @@ export function surveyReducer(state = appInitialState, action: SurveyActions): I
     case SurveyActionTypes.SURVEY_QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW: {
       const { pageId, elementId, optionAnswerId, pageFlow } = action.payload;
       const pages: IPageMap = utils.updateOptionAnswerPageFlow(state.pages, pageId, elementId, optionAnswerId, pageFlow);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_DRAG_OPTION_ANSWERS_ACTION: {
+      const { pageId, elementId, startIndex, endIndex } = action.payload;
+      const pages: IPageMap = utils.dragOptionAnswer(state.pages, pageId, elementId, startIndex, endIndex);
 
       return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
     }

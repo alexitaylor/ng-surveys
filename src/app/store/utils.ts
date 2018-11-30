@@ -4,6 +4,7 @@ import {IQuestion} from '../models/question.model';
 import {IOptionAnswers, IOptionAnswersMap, OptionAnswers} from '../models/option-answers.model';
 import {IPageFlow} from '../models/page-flow.model';
 import {IAngularSurvey} from '../models/angular-survey.model';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 export function createNextPage(pages: IPageMap): IPageMap {
   const newPage: IPage = new Page();
@@ -137,6 +138,18 @@ export function moveElementDown(pages: IPageMap, pageId: string, elementId: stri
   return new Map<string, IPage>(pages);
 }
 
+export function dragElement(pages: IPageMap, pageId: string, startIndex: number, endIndex: number): IPageMap {
+  const currentPage: IPage = getElementByKeyInMap(pages, pageId);
+  const elementsMap: IElementsMap = currentPage.elements;
+
+  const newElementsMap = dragItemInArray(elementsMap, startIndex, endIndex);
+  updateElementPositionInMap(newElementsMap);
+
+  currentPage.elements = newElementsMap;
+
+  return new Map<string, IPage>(pages);
+}
+
 export function addQuestionText(pages: IPageMap, pageId: string, elementId: string, text: string): IPageMap {
   const currentQuestion: IQuestion = getCurrentQuestion(pages, pageId, elementId);
 
@@ -230,17 +243,30 @@ export function updateOptionAnswerPageFlow(
   return new Map<string, IPage>(pages);
 }
 
+export function dragOptionAnswer(pages: IPageMap, pageId: string, elementId: string, startIndex: number, endIndex: number) {
+  const currentPage: IPage = getElementByKeyInMap(pages, pageId);
+  const currentElement: IElements = currentPage.elements.get(elementId);
+  const currentOptionAnswersMap: IOptionAnswersMap = currentElement.question.optionAnswers;
+
+  const newOptionAnswersMap = dragItemInArray(currentOptionAnswersMap, startIndex, endIndex);
+  updateElementPositionInMap(newOptionAnswersMap);
+
+  currentElement.question.optionAnswers = newOptionAnswersMap;
+
+  return new Map<string, IPage>(pages);
+}
+
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
 export const getElementByKeyInMap = (map, key) => map.get(key);
 export const arrayToMap = (array) => array.reduce((map, arrayEl) => map.set(arrayEl[0], arrayEl[1]), new Map<string, IPage | IElements>());
 
-export const moveItemInMap = (map, index, item) => {
-  let array = Array.from(map);
+export const moveItemInMap = (map: Map<string, IPage | IElements>, index: number, item: IPage | IElements) => {
+  let array: Array<[string, IPage | IElements]> = Array.from(map);
 
   if (index > array.length - 1) {
     array.push([item.id, item]);
   } else {
-    array = array.reduce((newArray, el, idx) => {
+    array = array.reduce((newArray: Array<[string, IPage | IElements]>, el: [string, IPage | IElements], idx: number) => {
       if (idx === index) {
         newArray.push([item.id, item]);
         newArray.push(el);
@@ -251,6 +277,14 @@ export const moveItemInMap = (map, index, item) => {
     }, []);
   }
 
+  return arrayToMap(array);
+};
+
+export const dragItemInArray = (
+  map: Map<string, IPage | IElements>, startIndex: number, endIndex: number
+): Map<string, IPage | IElements> => {
+  const array = Array.from(map);
+  moveItemInArray(array, startIndex, endIndex);
   return arrayToMap(array);
 };
 

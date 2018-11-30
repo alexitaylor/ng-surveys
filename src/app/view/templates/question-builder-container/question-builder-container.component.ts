@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AppState} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
 import {
@@ -20,15 +20,17 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
   @Input() element: IElements;
   @Input() page: IPage;
-  elementsSize: number;
 
+  @Output() isSavedEvent = new EventEmitter<any>();
+
+  elementsSize: number;
   questionType: string;
   isSaved = false;
 
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-     this.store.pipe(select(fromRoot.getElementsSize, { pageId: this.page.id })).subscribe(res => this.elementsSize = res);
+    this.store.pipe(select(fromRoot.getElementsSize, { pageId: this.page.id })).subscribe(res => this.elementsSize = res);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -66,7 +68,12 @@ export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
 
   saveQuestion() {
     this.isSaved = true;
-    // TODO add another question template to parent
+    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved });
+  }
+
+  editQuestion() {
+    this.isSaved = false;
+    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved });
   }
 
   removeElement() {

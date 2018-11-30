@@ -16,6 +16,7 @@ export enum SurveyActionTypes {
   SURVEY_REMOVE_ELEMENT_ACTION = '[Angular Surveys Element] Remove survey question element',
   SURVEY_MOVE_ELEMENT_UP_ACTION = '[Angular Surveys Element] Move survey question element up',
   SURVEY_MOVE_ELEMENT_DOWN_ACTION = '[Angular Surveys Element] Move survey question element down',
+  SURVEY_DRAG_ELEMENT_ACTION = '[Angular Surveys Element] Drag survey question element',
   SURVEY_QUESTION_ADD_TEXT_ACTION = '[Angular Surveys Question] Add question text',
   SURVEY_QUESTION_ADD_TYPE_ACTION = '[Angular Surveys Question] Add question type',
   SURVEY_QUESTION_UPDATE_MIN_ACTION = '[Angular Surveys Question] Update question max value',
@@ -26,6 +27,7 @@ export enum SurveyActionTypes {
   SURVEY_QUESTION_REMOVE_OPTION_ANSWERS_ACTION = '[Angular Surveys Option Answers] Remove question option answer',
   SURVEY_QUESTION_ADD_OPTION_ANSWERS_VALUE_ACTION = '[Angular Surveys Option Answers] Add question option answer value',
   SURVEY_QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW = '[Angular Surveys Option Answers] Update question option page flow',
+  SURVEY_DRAG_OPTION_ANSWERS_ACTION = '[Angular Surveys Option Answers] Drag question options',
 }
 
 export class SurveyNameChangedAction implements Action {
@@ -90,12 +92,17 @@ export class SurveyRemoveElementAction implements Action {
 
 export class SurveyMoveElementUpAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_MOVE_ELEMENT_UP_ACTION;
-  constructor(public payload?: { pageId: string, elementId: string }) { }
+  constructor(public payload: { pageId: string, elementId: string }) { }
 }
 
 export class SurveyMoveElementDownAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_MOVE_ELEMENT_DOWN_ACTION;
-  constructor(public payload?: { pageId: string, elementId: string }) { }
+  constructor(public payload: { pageId: string, elementId: string }) { }
+}
+
+export class SurveyDragElementAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_DRAG_ELEMENT_ACTION;
+  constructor(public payload: { pageId: string, startIndex: number, endIndex: number }) { }
 }
 
 export class SurveyAddQuestionTextAction implements Action {
@@ -148,6 +155,11 @@ export class SurveyUpdateOptionAnswerPageFlow implements Action {
   constructor(public payload: { pageId: string, elementId: string, optionAnswerId: string, pageFlow: IPageFlow }) { }
 }
 
+export class SurveyDragOptionAnswerAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_DRAG_OPTION_ANSWERS_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, startIndex: number, endIndex: number }) { }
+}
+
 export type SurveyActions =
   SurveyNameChangedAction |
   SurveyDescriptionChangedAction |
@@ -163,6 +175,7 @@ export type SurveyActions =
   SurveyRemoveElementAction |
   SurveyMoveElementUpAction |
   SurveyMoveElementDownAction |
+  SurveyDragElementAction |
   SurveyAddQuestionTextAction |
   SurveyAddQuestionTypeAction |
   SurveyUpdateQuestionMinAction |
@@ -172,4 +185,5 @@ export type SurveyActions =
   SurveyAddOptionAnswersAction |
   SurveyRemoveOptionAnswersAction |
   SurveyAddOptionAnswerValueAction |
-  SurveyUpdateOptionAnswerPageFlow;
+  SurveyUpdateOptionAnswerPageFlow |
+  SurveyDragOptionAnswerAction;

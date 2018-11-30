@@ -1,4 +1,5 @@
 // Components
+@import "components/drap-and-drop";
 @import "components/shadow";
 @import "components/text";
 
@@ -18,3 +19,8 @@
 .bg-grey {
   background-color: #f1f1f1 !important;
 }
+
+#question-builder-container {
+  padding: 2%;
+}
+

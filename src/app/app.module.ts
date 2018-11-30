@@ -37,6 +37,7 @@ import { SharedCommonModule } from './shared/shared-common.module';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  exports: []
+  exports: [
+  ]
 })
 export class AppModule { }

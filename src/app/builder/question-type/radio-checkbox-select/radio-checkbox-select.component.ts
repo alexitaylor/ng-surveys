@@ -5,7 +5,11 @@ import * as fromRoot from '../../../store/app.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {IElements} from '../../../models/elements.model';
 import {Observable} from 'rxjs';
-import {SurveyUpdateQuestionPageFlowModifierAction} from '../../../store/survey/survey.actions';
+import {
+  SurveyDragOptionAnswerAction,
+  SurveyUpdateQuestionPageFlowModifierAction
+} from '../../../store/survey/survey.actions';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'sb-radio-checkbox-select',
@@ -20,6 +24,7 @@ export class RadioCheckboxSelectComponent implements OnInit {
   optionAnswersSize: number;
   pageId: string;
   isPageNavChecked = false;
+  isOptionActive = false;
 
   constructor(
     private store: Store<AppState>,
@@ -46,6 +51,19 @@ export class RadioCheckboxSelectComponent implements OnInit {
         elementId: this.element.id,
         pageFlowModifier: this.isPageNavChecked
       }));
+  }
+
+  handleOptionActiveEvent(value) {
+    this.isOptionActive = value;
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    this.store.dispatch(new SurveyDragOptionAnswerAction({
+      pageId: this.pageId,
+      elementId: this.element.id,
+      startIndex: event.previousIndex,
+      endIndex: event.currentIndex,
+    }));
   }
 
   trackElement(index: number, element: any) {

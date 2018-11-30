@@ -1,4 +1,4 @@
-<div id="question-builder-container" [ngClass]="!isSaved ? 'z-depth-1' : ''">
+<div>
   <!-- Header -->
   <div class="d-flex justify-content-end">
     <div class="btn-group" role="group">
@@ -36,7 +36,7 @@
         *ngIf="isSaved" type="button"
         class="btn btn-outline-primary"
         tooltip="Edit Element"
-        (click)="isSaved = false">
+        (click)="editQuestion()">
         <i class="fas fa-edit"></i>
       </button>
     </div>
@@ -44,7 +44,7 @@
   <!-- #/Header -->
 
   <!-- Question Form Builder -->
-  <form name="questionForm" #questionForm="ngForm">
+  <form name="questionForm" #questionForm="ngForm" class="mt-2">
 
     <!-- Question Value Input -->
     <div class="form-group">

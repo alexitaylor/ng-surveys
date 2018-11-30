@@ -25,7 +25,7 @@
   <!-- #/Card Header -->
 
   <!-- Card Body -->
-  <div class="card-body" *ngFor="let item of page.elements | mapValues; trackBy: trackElement">
+  <div class="card-body bg-white">
     <!-- Edit Page Name and Description Form -->
     <form *ngIf="isEditPage" class="mb-5 mt-2">
       <div class="form-group">
@@ -67,10 +67,31 @@
     <!-- #/Page Name and Description -->
 
     <!-- Question Builder Container -->
-    <sb-question-builder-container
-      [element]="item.value"
-      [page]="page"
-    ></sb-question-builder-container>
+    <div cdkDropList [cdkDropListData]="page.elements" #pageElements="cdkDropList" (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let item of page.elements | mapValues; trackBy: trackElement" [ngClass]="item.value.orderNo !== page.elements.size ? 'mb-5' : ''" cdkDrag>
+        <!-- Drag and Drop Background Place Holder -->
+        <div class="drag-drop-placeholder-question" *cdkDragPlaceholder></div>
+        <!-- #/Drag and Drop Background Place Holder -->
+        <div id="question-builder-container" class="d-flex flex-row align-content-start" [ngClass]="!isSavedMap.get(item.key) ? 'z-depth-1' : ''">
+          <!-- Move Option Button -->
+          <span class="mr-3 mb-3">
+            <button type="button" class="btn btn-outline-secondary" tooltip="Drag and Drop Question" cdkDragHandle>
+              <i class="fas fa-arrows-alt"></i>
+            </button>
+          </span>
+          <!-- #/Move Option Button -->
+
+          <!-- Question Builder Container -->
+          <sb-question-builder-container
+            class="w-100"
+            [element]="item.value"
+            [page]="page"
+            (isSavedEvent)="handleIsSavedEvent($event)"
+          ></sb-question-builder-container>
+          <!-- #/Question Builder Container -->
+        </div>
+      </div>
+    </div>
     <!-- #/Question Builder Container -->
   </div>
   <!-- #/Card Body -->

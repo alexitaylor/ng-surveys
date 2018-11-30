@@ -5,13 +5,15 @@ import {IPage, IPageMap} from '../../../models/page.model';
 import {AppState} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
 import {
-  SurveyAddElementAction, SurveyInsertPageAction, SurveyMovePageDownAction, SurveyMovePageUpAction, SurveyRemovePageAction,
+  SurveyAddElementAction, SurveyDragElementAction, SurveyInsertPageAction, SurveyMovePageDownAction, SurveyMovePageUpAction,
+  SurveyRemovePageAction,
   SurveyUpdatePageDescriptionAction,
   SurveyUpdatePageNameAction, SurveyUpdatePagePageFlowAction
 } from '../../../store/survey/survey.actions';
 import * as fromRoot from '../../../store/app.reducer';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {PageFlow} from '../../../models/page-flow.model';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'sb-page-builder-container',
@@ -24,6 +26,7 @@ export class PageBuilderContainerComponent implements OnInit {
   pageSize$: Observable<number>;
   isEditPage: boolean;
   pageNavNext = 'goToNextPage';
+  isSavedMap = new Map<string, boolean>();
 
   constructor(
     private store: Store<AppState>
@@ -32,6 +35,7 @@ export class PageBuilderContainerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setSavedMap();
   }
 
   removePage() {
@@ -101,6 +105,24 @@ export class PageBuilderContainerComponent implements OnInit {
       pageId: this.page.id,
       pageFlow
     }));
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    this.store.dispatch(new SurveyDragElementAction({
+      pageId: this.page.id,
+      startIndex: event.previousIndex,
+      endIndex: event.currentIndex,
+    }));
+  }
+
+  private setSavedMap() {
+    this.page.elements.forEach((value, key) => {
+      this.isSavedMap.set(key, false);
+    });
+  }
+
+  handleIsSavedEvent({ key, isSaved }) {
+    this.isSavedMap.set(key, isSaved);
   }
 
   trackElement(index: number, element: any) {
