@@ -2,19 +2,41 @@
   <!-- Header -->
   <div class="d-flex justify-content-end">
     <div class="btn-group" role="group">
-      <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary" tooltip="Move Down">
+      <button
+        *ngIf="!isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Move Down"
+        (click)="moveElementDown()"
+        [disabled]="element.orderNo === elementsSize">
         <i class="fas fa-chevron-down"></i>
       </button>
-      <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary" tooltip="Move Up">
+      <button
+        *ngIf="!isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Move Up"
+        (click)="moveElementUp()"
+        [disabled]="element.orderNo === 1">
         <i class="fas fa-chevron-up"></i>
       </button>
-      <button *ngIf="!isSaved" type="button" class="btn btn-outline-primary" tooltip="Remove Element" (click)="removeElement()">
+      <button
+        *ngIf="!isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Remove Element"
+        (click)="removeElement()">
         <i class="fas fa-trash-alt"></i>
       </button>
       <button *ngIf="isSaved" type="button" class="btn btn-outline-primary" tooltip="Clone Element">
         <i class="fas fa-clone"></i>
       </button>
-      <button [id]="'edit-question-button-' + element.id" *ngIf="isSaved" type="button" class="btn btn-outline-primary" tooltip="Edit Element" (click)="isSaved = false">
+      <button
+        [id]="'edit-question-button-' + element.id"
+        *ngIf="isSaved" type="button"
+        class="btn btn-outline-primary"
+        tooltip="Edit Element"
+        (click)="isSaved = false">
         <i class="fas fa-edit"></i>
       </button>
     </div>

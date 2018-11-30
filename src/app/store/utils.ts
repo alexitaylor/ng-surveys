@@ -1,5 +1,5 @@
 import {IPage, IPageMap, Page} from '../models/page.model';
-import {Elements, IElements} from '../models/elements.model';
+import {Elements, IElements, IElementsMap} from '../models/elements.model';
 import {IQuestion} from '../models/question.model';
 import {IOptionAnswers, IOptionAnswersMap, OptionAnswers} from '../models/option-answers.model';
 import {IPageFlow} from '../models/page-flow.model';
@@ -109,6 +109,34 @@ export function removeElement(pages: IPageMap, pageId: string, elementId: string
   return new Map<string, IPage>(pages);
 }
 
+export function moveElementUp(pages: IPageMap, pageId: string, elementId: string): IPageMap {
+  const currentPage: IPage = getElementByKeyInMap(pages, pageId);
+  const elementsMap: IElementsMap = currentPage.elements;
+  const currentElement: IElements = elementsMap.get(elementId);
+  const index = currentElement.orderNo - 2;
+
+  elementsMap.delete(elementId);
+  const newElementsMap: IElementsMap = moveItemInMap(elementsMap, index, currentElement);
+  updateElementPositionInMap(newElementsMap);
+  currentPage.elements = newElementsMap;
+
+  return new Map<string, IPage>(pages);
+}
+
+export function moveElementDown(pages: IPageMap, pageId: string, elementId: string): IPageMap {
+  const currentPage: IPage = getElementByKeyInMap(pages, pageId);
+  const elementsMap: IElementsMap = currentPage.elements;
+  const currentElement: IElements = elementsMap.get(elementId);
+  const index = currentElement.orderNo;
+
+  elementsMap.delete(elementId);
+  const newElementsMap: IElementsMap = moveItemInMap(elementsMap, index, currentElement);
+  updateElementPositionInMap(newElementsMap);
+  currentPage.elements = newElementsMap;
+
+  return new Map<string, IPage>(pages);
+}
+
 export function addQuestionText(pages: IPageMap, pageId: string, elementId: string, text: string): IPageMap {
   const currentQuestion: IQuestion = getCurrentQuestion(pages, pageId, elementId);
 
@@ -204,7 +232,7 @@ export function updateOptionAnswerPageFlow(
 
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
 export const getElementByKeyInMap = (map, key) => map.get(key);
-export const arrayToMap = (array) => array.reduce((map, arrayEl) => map.set(arrayEl[0], arrayEl[1]), new Map<string, IPage>());
+export const arrayToMap = (array) => array.reduce((map, arrayEl) => map.set(arrayEl[0], arrayEl[1]), new Map<string, IPage | IElements>());
 
 export const moveItemInMap = (map, index, item) => {
   let array = Array.from(map);
@@ -222,6 +250,7 @@ export const moveItemInMap = (map, index, item) => {
       return newArray;
     }, []);
   }
+
   return arrayToMap(array);
 };
 

@@ -7,13 +7,15 @@ export enum SurveyActionTypes {
   SURVEY_ADD_PAGE_ACTION = '[Angular Surveys Page] Add survey page',
   SURVEY_INSERT_PAGE_ACTION = '[Angular Surveys Page] Insert survey page',
   SURVEY_MOVE_PAGE_UP_ACTION = '[Angular Surveys Page] Move survey page up',
-  SURVEY_MOVE_PAGE_DOWN_ACTION = '[Angular Surveys Page] Mvoe survey page down',
+  SURVEY_MOVE_PAGE_DOWN_ACTION = '[Angular Surveys Page] Move survey page down',
   SURVEY_REMOVE_PAGE_ACTION = '[Angular Surveys Page] Remove survey page',
   SURVEY_UPDATE_PAGE_NAME_ACTION = '[Angular Surveys Page] Update survey page name',
   SURVEY_UPDATE_PAGE_DESCRIPTION_ACTION = '[Angular Surveys Page] Update survey page description',
   SURVEY_UPDATE_PAGE_PAGE_FLOW_ACTION = '[Angular Surveys Page] Update survey page page flow',
   SURVEY_ADD_ELEMENT_ACTION = '[Angular Surveys Element] Add survey question element',
   SURVEY_REMOVE_ELEMENT_ACTION = '[Angular Surveys Element] Remove survey question element',
+  SURVEY_MOVE_ELEMENT_UP_ACTION = '[Angular Surveys Element] Move survey question element up',
+  SURVEY_MOVE_ELEMENT_DOWN_ACTION = '[Angular Surveys Element] Move survey question element down',
   SURVEY_QUESTION_ADD_TEXT_ACTION = '[Angular Surveys Question] Add question text',
   SURVEY_QUESTION_ADD_TYPE_ACTION = '[Angular Surveys Question] Add question type',
   SURVEY_QUESTION_UPDATE_MIN_ACTION = '[Angular Surveys Question] Update question max value',
@@ -86,6 +88,16 @@ export class SurveyRemoveElementAction implements Action {
   constructor(public payload: { pageId: string, elementId: string }) { }
 }
 
+export class SurveyMoveElementUpAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_MOVE_ELEMENT_UP_ACTION;
+  constructor(public payload?: { pageId: string, elementId: string }) { }
+}
+
+export class SurveyMoveElementDownAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_MOVE_ELEMENT_DOWN_ACTION;
+  constructor(public payload?: { pageId: string, elementId: string }) { }
+}
+
 export class SurveyAddQuestionTextAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_QUESTION_ADD_TEXT_ACTION;
   constructor(public payload: { pageId: string, elementId: string, text: string }) { }
@@ -149,6 +161,8 @@ export type SurveyActions =
   SurveyUpdatePagePageFlowAction |
   SurveyAddElementAction |
   SurveyRemoveElementAction |
+  SurveyMoveElementUpAction |
+  SurveyMoveElementDownAction |
   SurveyAddQuestionTextAction |
   SurveyAddQuestionTypeAction |
   SurveyUpdateQuestionMinAction |

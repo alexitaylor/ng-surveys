@@ -1,11 +1,14 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {IQuestionItem} from '../../../builder/question-builder/question-item.component';
 import {AppState} from '../../../store/app.state';
-import {Store} from '@ngrx/store';
-import {SurveyAddQuestionTextAction, SurveyAddQuestionTypeAction, SurveyRemoveElementAction} from '../../../store/survey/survey.actions';
+import {select, Store} from '@ngrx/store';
+import {
+  SurveyAddQuestionTextAction, SurveyAddQuestionTypeAction, SurveyMoveElementDownAction, SurveyMoveElementUpAction,
+  SurveyRemoveElementAction
+} from '../../../store/survey/survey.actions';
 import {IElements} from '../../../models/elements.model';
 import {IPage} from '../../../models/page.model';
-import {fromEvent} from 'rxjs';
+import * as fromRoot from '../../../store/app.reducer';
+import {fromEvent, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 
@@ -17,13 +20,15 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
   @Input() element: IElements;
   @Input() page: IPage;
+  elementsSize: number;
 
   questionType: string;
   isSaved = false;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
+     this.store.pipe(select(fromRoot.getElementsSize, { pageId: this.page.id })).subscribe(res => this.elementsSize = res);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -66,6 +71,14 @@ export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
 
   removeElement() {
     this.store.dispatch(new SurveyRemoveElementAction({pageId: this.page.id, elementId: this.element.id}));
+  }
+
+  moveElementDown() {
+    this.store.dispatch(new SurveyMoveElementDownAction({pageId: this.page.id, elementId: this.element.id}));
+  }
+
+  moveElementUp() {
+    this.store.dispatch(new SurveyMoveElementUpAction({pageId: this.page.id, elementId: this.element.id}));
   }
 }
 

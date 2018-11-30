@@ -24,7 +24,7 @@ export class Elements implements IElements {
     newQuestion.elementId = uuid;
 
     this.id = id ? id : uuid;
-    this.orderNo = orderNo ? orderNo : null;
+    this.orderNo = orderNo ? orderNo : 1;
     this.type = type ? type : 'question';
     this.pageId = pageId ? pageId : '';
     this.question = question ? question : newQuestion;
