@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageBuilderContainerComponent } from './page-builder-container.component';
+import { PageBuilderContainerComponent } from '../../../../../app/view/templates/page-builder-container/page-builder-container.component';
 
 describe('PageBuilderContainerComponent', () => {
   let component: PageBuilderContainerComponent;

@@ -1,39 +1,122 @@
 <div class="card mt-5">
+  <!-- Card Header -->
   <div class="card-header d-flex w-100">
-    <div class="mr-auto">
-      Page {{page.orderNo}} of {{pageSize$ | async}}
+    <div class="mr-auto d-flex flex-row w-50">
+      <span class="w-25">Page {{page.orderNo}} of {{pageSize$ | async}}</span>
     </div>
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-down"></i></button>
-      <button type="button" class="btn btn-outline-primary"><i class="fas fa-chevron-up"></i></button>
-      <button type="button" class="btn btn-outline-primary" (click)="removePage()"><i class="fas fa-trash-alt"></i></button>
+      <button *ngIf="!isEditPage" type="button" class="btn btn-outline-primary" tooltip="Edit page name and description" (click)="onEditPageClick()">
+        <i class="fas fa-pencil-alt"></i>
+      </button>
+      <button *ngIf="isEditPage" type="button" class="btn btn-outline-primary" tooltip="Save page name and description" (click)="isEditPage = false">
+        <i class="fas fa-save"></i>
+      </button>
+      <button type="button" class="btn btn-outline-primary" tooltip="Move Down"><i class="fas fa-chevron-down"></i></button>
+      <button type="button" class="btn btn-outline-primary" tooltip="Move Up"><i class="fas fa-chevron-up"></i></button>
+      <button type="button" class="btn btn-outline-primary" tooltip="Remove Page" (click)="removePage()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
     </div>
   </div>
+  <!-- #/Card Header -->
+
+  <!-- Card Body -->
   <div class="card-body" *ngFor="let item of page.elements | mapValues; trackBy: trackElement">
+    <!-- Edit Page Name and Description Form -->
+    <form *ngIf="isEditPage" class="mb-5 mt-2">
+      <div class="form-group">
+        <label [for]="'page-name-input-' + page.id">Edit Page Name</label>
+        <input
+          [id]="'page-name-input-' + page.id"
+          name="page-name-input"
+          type="text"
+          class="form-control w-100"
+          placeholder="Enter page name"
+          [ngModel]="page.name"
+        >
+      </div>
+      <div class="form-group">
+        <label [for]="'page-description-input-' + page.id">Edit Page Description</label>
+        <input
+          [id]="'page-description-input-' + page.id"
+          name="page-description-input"
+          type="text"
+          class="form-control w-100"
+          placeholder="Enter page description"
+          [ngModel]="page.description"
+        >
+      </div>
+    </form>
+    <!-- #/Edit Page Name and Description Form -->
+
+    <!-- Page Name and Description -->
+    <div *ngIf="!isEditPage && (page.name || page.description)" class="d-flex flex-column mb-3 mt-2">
+      <div *ngIf="page.name">
+        <label>Page Name</label>
+        <h4>{{page.name}}</h4>
+      </div>
+      <div *ngIf="page.description">
+        <label>Page Description</label>
+        <h4>{{page.description}}</h4>
+      </div>
+    </div>
+    <!-- #/Page Name and Description -->
+
+    <!-- Question Builder Container -->
     <sb-question-builder-container
       [element]="item.value"
       [page]="page"
     ></sb-question-builder-container>
+    <!-- #/Question Builder Container -->
   </div>
+  <!-- #/Card Body -->
 
-  <div class="card-footer">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <button type="button" class="btn btn-outline-primary" (click)="addElement()">Add Element</button>
-        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">
-            <i class="fas fa-question"></i>
-            <span class="ml-2">Question</span>
-          </a>
-          <a class="dropdown-item" href="#">
-            <i class="fas fa-paragraph"></i>
-            <span class="ml-2">Paragraph</span>
-          </a>
+  <!-- Card Footer -->
+  <div class="card-footer d-flex w-100">
+    <div class="mr-auto">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <button type="button" class="btn btn-outline-primary" (click)="addElement()">Add Element</button>
+          <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" (click)="addElement()">
+              <i class="fas fa-question"></i>
+              <span class="ml-2">Question</span>
+            </a>
+            <a class="dropdown-item">
+              <i class="fas fa-paragraph"></i>
+              <span class="ml-2">Paragraph</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+    <div class="d-flex flex-row" *ngIf="pages.size > 1">
+      <!-- Navigate to page selection -->
+      <div>
+        <select
+          id="pageNavNext"
+          name="pageNavNext"
+          class="form-control"
+          [(ngModel)]="pageNavNext"
+          (ngModelChange)="handlePageNavNext($event)">
+          <option value="goToNextPage" selected>Continue to next page</option>
+          <option *ngFor="let item of pages | mapValues; trackBy:trackElement" [value]="item.key" [disabled]="item.value.id === page.id">
+            <span id="page-orderNo" *ngIf="item.value.orderNo">Go to page {{item.value.orderNo}}</span>
+            <span id="page-title" *ngIf="item.value.title">| {{item.value.title}}</span>
+          </option>
+        </select>
+      </div>
+      <!-- #/Navigate to page selection -->
+
+      <!-- Insert Page -->
+      <button type="button" class="btn btn-outline-primary ml-4" tooltip="Insert Page" (click)="insertPage()">
+        <i class="fas fa-plus"></i>
+      </button>
+      <!-- #/Add Page -->
+    </div>
   </div>
+  <!-- #/Card Footer -->
 </div>

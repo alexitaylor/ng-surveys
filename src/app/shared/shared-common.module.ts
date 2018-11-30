@@ -4,7 +4,7 @@ import {MapValuesPipe} from './pipes/map-values.pipe';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   declarations: [
     MapValuesPipe,

@@ -1,10 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {IPage} from '../../../models/page.model';
+import {fromEvent, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {IPage, IPageMap} from '../../../models/page.model';
 import {AppState} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
-import {SurveyAddElementAction, SurveyRemovePageAction} from '../../../store/survey/survey.actions';
+import {
+  SurveyAddElementAction, SurveyInsertPageAction, SurveyRemovePageAction, SurveyUpdatePageDescriptionAction,
+  SurveyUpdatePageNameAction, SurveyUpdatePagePageFlowAction
+} from '../../../store/survey/survey.actions';
 import * as fromRoot from '../../../store/app.reducer';
+import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
+import {PageFlow} from '../../../models/page-flow.model';
 
 @Component({
   selector: 'sb-page-builder-container',
@@ -13,7 +19,10 @@ import * as fromRoot from '../../../store/app.reducer';
 })
 export class PageBuilderContainerComponent implements OnInit {
   @Input() page: IPage;
+  @Input() pages: IPageMap;
   pageSize$: Observable<number>;
+  isEditPage: boolean;
+  pageNavNext = 'goToNextPage';
 
   constructor(
     private store: Store<AppState>
@@ -21,14 +30,68 @@ export class PageBuilderContainerComponent implements OnInit {
     this.pageSize$ = this.store.pipe(select(fromRoot.getSurveyPageSize));
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   removePage() {
-    this.store.dispatch(new SurveyRemovePageAction({pageId: this.page.id}));
+    this.store.dispatch(new SurveyRemovePageAction({ pageId: this.page.id }));
+  }
+
+  insertPage() {
+    this.store.dispatch(new SurveyInsertPageAction({ previousPageId: this.page.id }));
   }
 
   addElement() {
     this.store.dispatch(new SurveyAddElementAction({pageId: this.page.id}));
+  }
+
+  onEditPageClick() {
+    this.isEditPage = true;
+    setTimeout(() => {
+      this.editPageName();
+      this.editPageDescription();
+    }, 300);
+  }
+
+  editPageName() {
+    const $pageNameInput = document.getElementById(`page-name-input-${this.page.id}`);
+
+    fromEvent($pageNameInput, 'input').pipe(
+      map((event: any) => event.target.value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    ).subscribe(name => {
+      this.store.dispatch(new SurveyUpdatePageNameAction({ pageId: this.page.id, name}));
+    });
+  }
+
+  editPageDescription() {
+    const $pageDescriptionInput = document.getElementById(`page-description-input-${this.page.id}`);
+
+    fromEvent($pageDescriptionInput, 'input').pipe(
+      map((event: any) => event.target.value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    ).subscribe(description => {
+      this.store.dispatch(new SurveyUpdatePageDescriptionAction({ pageId: this.page.id, description}));
+    });
+  }
+
+  handlePageNavNext(value) {
+    const pageFlow = new PageFlow();
+    if (value === 'goToNextPage') {
+      pageFlow.nextPage = true;
+      pageFlow.label = 'pageFlow.goToNextPage';
+    } else {
+      pageFlow.nextPage = false;
+      pageFlow.label = 'pageFlow.goToPage';
+      pageFlow.pageId = value;
+    }
+
+    this.store.dispatch(new SurveyUpdatePagePageFlowAction({
+      pageId: this.page.id,
+      pageFlow
+    }));
   }
 
   trackElement(index: number, element: any) {

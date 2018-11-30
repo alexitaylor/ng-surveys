@@ -7,13 +7,14 @@ import { QuestionBuilderContainerComponent } from './templates/question-builder-
 import {BuilderModule} from '../builder/builder.module';
 import {FormsModule} from '@angular/forms';
 import {PageBuilderContainerComponent} from './templates/page-builder-container/page-builder-container.component';
-import {MapValuesPipe} from '../shared/pipes/map-values.pipe';
 import {SharedCommonModule} from '../shared/shared-common.module';
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedCommonModule,
+    TooltipModule.forRoot(),
     BuilderModule,
     FormsModule,
   ],

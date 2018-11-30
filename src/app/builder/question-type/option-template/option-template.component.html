@@ -43,7 +43,8 @@
       (ngModelChange)="handlePageNavNext($event)">
       <option value="goToNextPage" selected>Continue to next page</option>
       <option *ngFor="let item of pages$ | async | mapValues; trackBy:trackElement" [value]="item.value.id">
-        <span id="page-orderNo">Go to page {{item.value.orderNo}}</span> <span id="page-title" *ngIf="item.value.title">| {{item.value.title}}</span>
+        <span id="page-orderNo" *ngIf="item.value.orderNo">Go to page {{item.value.orderNo}}</span>
+        <span id="page-title" *ngIf="item.value.title">| {{item.value.title}}</span>
       </option>
     </select>
     <!-- #/Navigate to page selection -->

@@ -3,6 +3,7 @@ import {Elements, IElements} from '../models/elements.model';
 import {IQuestion} from '../models/question.model';
 import {IOptionAnswers, IOptionAnswersMap, OptionAnswers} from '../models/option-answers.model';
 import {IPageFlow} from '../models/page-flow.model';
+import {IAngularSurvey} from '../models/angular-survey.model';
 
 export function createNextPage(pages: IPageMap): IPageMap {
   const newPage: IPage = new Page();
@@ -14,9 +15,52 @@ export function createNextPage(pages: IPageMap): IPageMap {
   return new Map<string, IPage>(pages);
 }
 
+export function insertPage(state: IAngularSurvey, pages: IPageMap, previousPageId: string): IPageMap {
+  const newPage: IPage = new Page();
+  const pagesMap = new Map<string, IPage>();
+
+  pages.forEach((value, key) => {
+    if (key === previousPageId) {
+      pagesMap.set(key, value);
+      pagesMap.set(newPage.id, newPage);
+    } else {
+      pagesMap.set(key, value);
+    }
+  });
+
+  updateElementPositionInMap(pagesMap);
+  state.pages = new Map<string, IPage>(pagesMap);
+
+  return new Map<string, IPage>(pages);
+}
+
 export function removePage(pages: IPageMap, pageId: string): IPageMap {
   pages.delete(pageId);
   updateElementPositionInMap(pages);
+
+  return new Map<string, IPage>(pages);
+}
+
+export function updatePageName(pages: IPageMap, pageId: string, name: string): IPageMap {
+  const currentPage: IPage = pages.get(pageId);
+
+  currentPage.name = name;
+
+  return new Map<string, IPage>(pages);
+}
+
+export function updatePageDescription(pages: IPageMap, pageId: string, description: string): IPageMap {
+  const currentPage: IPage = pages.get(pageId);
+
+  currentPage.description = description;
+
+  return new Map<string, IPage>(pages);
+}
+
+export function updatePagePageFlow(pages: IPageMap, pageId: string, pageFlow: IPageFlow): IPageMap {
+  const currentPage: IPage = pages.get(pageId);
+
+  currentPage.pageFlow = pageFlow;
 
   return new Map<string, IPage>(pages);
 }

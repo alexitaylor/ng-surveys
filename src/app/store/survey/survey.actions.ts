@@ -5,7 +5,11 @@ export enum SurveyActionTypes {
   SURVEY_NAME_CHANGED_ACTION = '[Angular Surveys] Survey title change',
   SURVEY_DESCRIPTION_CHANGED_ACTION = '[Angular Surveys] Survey description change',
   SURVEY_ADD_PAGE_ACTION = '[Angular Surveys Page] Add survey page',
+  SURVEY_INSERT_PAGE_ACTION = '[Angular Surveys Page] Insert survey page',
   SURVEY_REMOVE_PAGE_ACTION = '[Angular Surveys Page] Remove survey page',
+  SURVEY_UPDATE_PAGE_NAME_ACTION = '[Angular Surveys Page] Update survey page name',
+  SURVEY_UPDATE_PAGE_DESCRIPTION_ACTION = '[Angular Surveys Page] Update survey page description',
+  SURVEY_UPDATE_PAGE_PAGE_FLOW_ACTION = '[Angular Surveys Page] Update survey page page flow',
   SURVEY_ADD_ELEMENT_ACTION = '[Angular Surveys Element] Add survey question element',
   SURVEY_REMOVE_ELEMENT_ACTION = '[Angular Surveys Element] Remove survey question element',
   SURVEY_QUESTION_ADD_TEXT_ACTION = '[Angular Surveys Question] Add question text',
@@ -35,9 +39,29 @@ export class SurveyAddPageAction implements Action {
   constructor(public payload?: any) { }
 }
 
+export class SurveyInsertPageAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_INSERT_PAGE_ACTION;
+  constructor(public payload?: { previousPageId: string }) { }
+}
+
 export class SurveyRemovePageAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_REMOVE_PAGE_ACTION;
   constructor(public payload: { pageId: string }) { }
+}
+
+export class SurveyUpdatePageNameAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_UPDATE_PAGE_NAME_ACTION;
+  constructor(public payload: { pageId: string,  name: string }) { }
+}
+
+export class SurveyUpdatePageDescriptionAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_UPDATE_PAGE_DESCRIPTION_ACTION;
+  constructor(public payload: { pageId: string,  description: string }) { }
+}
+
+export class SurveyUpdatePagePageFlowAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_UPDATE_PAGE_PAGE_FLOW_ACTION;
+  constructor(public payload: { pageId: string,  pageFlow: IPageFlow }) { }
 }
 
 export class SurveyAddElementAction implements Action {
@@ -104,7 +128,11 @@ export type SurveyActions =
   SurveyNameChangedAction |
   SurveyDescriptionChangedAction |
   SurveyAddPageAction |
+  SurveyInsertPageAction |
   SurveyRemovePageAction |
+  SurveyUpdatePageNameAction |
+  SurveyUpdatePageDescriptionAction |
+  SurveyUpdatePagePageFlowAction |
   SurveyAddElementAction |
   SurveyRemoveElementAction |
   SurveyAddQuestionTextAction |

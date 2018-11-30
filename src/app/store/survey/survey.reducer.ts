@@ -33,9 +33,37 @@ export function surveyReducer(state = appInitialState, action: SurveyActions): I
       return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
     }
 
+    case SurveyActionTypes.SURVEY_INSERT_PAGE_ACTION: {
+      const { previousPageId } = action.payload;
+      const pages: IPageMap = utils.insertPage(state, state.pages, previousPageId);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
     case SurveyActionTypes.SURVEY_REMOVE_PAGE_ACTION: {
       const { pageId } = action.payload;
       const pages: IPageMap = utils.removePage(state.pages, pageId);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_UPDATE_PAGE_NAME_ACTION: {
+      const { pageId, name } = action.payload;
+      const pages: IPageMap = utils.updatePageName(state.pages, pageId, name);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_UPDATE_PAGE_DESCRIPTION_ACTION: {
+      const { pageId, description } = action.payload;
+      const pages: IPageMap = utils.updatePageDescription(state.pages, pageId, description);
+
+      return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
+    }
+
+    case SurveyActionTypes.SURVEY_UPDATE_PAGE_PAGE_FLOW_ACTION: {
+      const { pageId, pageFlow } = action.payload;
+      const pages: IPageMap = utils.updatePagePageFlow(state.pages, pageId, pageFlow);
 
       return Object.assign(state, _.cloneDeep(state), _.cloneDeep(pages));
     }
