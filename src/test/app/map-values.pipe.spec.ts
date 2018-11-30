@@ -1,4 +1,4 @@
-import { MapValuesPipe } from '../../app/map-values.pipe';
+import { MapValuesPipe } from '../../app/shared/pipes/map-values.pipe';
 
 describe('MapValuesPipe', () => {
   it('create an instance', () => {

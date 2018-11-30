@@ -66,5 +66,4 @@ export class BuilderViewerComponent implements OnInit {
   trackElement(index: number, element: any) {
     return element ? element.key : null;
   }
-
 }

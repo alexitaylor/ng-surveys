@@ -1,0 +1,51 @@
+<div class="form-group d-flex flex-row align-items-center">
+  <!-- Move Option Button -->
+  <span *ngIf="isOptionActive" class="mr-3 mb-0">
+    <button type="button" class="btn btn-outline-primary">
+      <i class="fas fa-arrows-alt"></i>
+    </button>
+  </span>
+  <!-- #/Move Option Button -->
+
+  <!-- Option Type Icon -->
+  <label *ngIf="!isOptionActive && element.question.type === 'radio'" [for]="'optionTemplateInput-' + optionAnswer.id" class="mr-3 mb-0"><i class="fas fa-dot-circle"></i></label>
+  <label *ngIf="!isOptionActive && element.question.type === 'checkboxes'" [for]="'optionTemplateInput-' + optionAnswer.id" class="mr-3 mb-0"><i class="fas fa-check-square"></i></label>
+  <label *ngIf="!isOptionActive && element.question.type === 'select'" [for]="'optionTemplateInput-' + optionAnswer.id" class="mr-3 mb-0"><i class="fas fa-chevron-circle-down"></i></label>
+  <!-- #/Option Type Icon -->
+
+  <!-- Option Input -->
+  <input
+    [id]="'optionTemplateInput-' + optionAnswer.id"
+    class="form-control w-50"
+    name="radioTemplate"
+    type="text"
+    placeholder="Click to add options"
+    (focus)="onFocus($event)"
+    [ngModel]="optionAnswer.value"
+  >
+  <!-- #/Option Input -->
+
+  <!-- Remove Option Button -->
+  <span *ngIf="isOptionActive" class="ml-3 mb-0">
+    <button type="button" class="btn btn-outline-primary" (click)="removeOptionAnswer()">
+      <i class="fas fa-times"></i>
+    </button>
+  </span>
+  <!-- #/Remove Option Button -->
+
+  <!-- Navigate to page selection -->
+  <div *ngIf="isOptionActive && isPageNavChecked" class="ml-3 form-group mb-0">
+    <select
+      id="pageNavNext"
+      name="pageNavNext"
+      class="form-control"
+      [(ngModel)]="pageNavNext"
+      (ngModelChange)="handlePageNavNext($event)">
+      <option value="goToNextPage" selected>Continue to next page</option>
+      <option *ngFor="let item of pages$ | async | mapValues; trackBy:trackElement" [value]="item.value.id">
+        <span id="page-orderNo">Go to page {{item.value.orderNo}}</span> <span id="page-title" *ngIf="item.value.title">| {{item.value.title}}</span>
+      </option>
+    </select>
+    <!-- #/Navigate to page selection -->
+  </div>
+</div>

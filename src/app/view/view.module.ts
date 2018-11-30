@@ -7,11 +7,13 @@ import { QuestionBuilderContainerComponent } from './templates/question-builder-
 import {BuilderModule} from '../builder/builder.module';
 import {FormsModule} from '@angular/forms';
 import {PageBuilderContainerComponent} from './templates/page-builder-container/page-builder-container.component';
-import {MapValuesPipe} from '../map-values.pipe';
+import {MapValuesPipe} from '../shared/pipes/map-values.pipe';
+import {SharedCommonModule} from '../shared/shared-common.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    SharedCommonModule,
     BuilderModule,
     FormsModule,
   ],
@@ -21,7 +23,6 @@ import {MapValuesPipe} from '../map-values.pipe';
     ModelViewerComponent,
     QuestionBuilderContainerComponent,
     PageBuilderContainerComponent,
-    MapValuesPipe,
   ],
   exports: [
     BuilderViewerComponent,

@@ -4,6 +4,7 @@ import {QuestionBuilderDirective} from './question-builder.directive';
 import {IQuestionBuilder} from './question-builder.model';
 import {BehaviorSubject} from 'rxjs';
 import {QuestionBuilderService} from './question-builder.service';
+import {IElements} from '../../models/elements.model';
 
 @Component({
   selector: 'sb-question-builder-component',
@@ -18,14 +19,20 @@ export class QuestionBuilderComponent implements OnInit {
   hasQuestion = false;
   question: IQuestionItem;
 
+  @Input() element: IElements;
+
+  // initialize a private variable _questions as a BehaviorSubject
   private _questionType = new BehaviorSubject<string>(null);
 
+  // change questions to use getter and setter
   @Input()
   set questionType(value) {
+    // set the latest value for _questions BehaviorSubject
     this._questionType.next(value);
   }
 
   get questionType() {
+    // get the latest value from _questions BehaviorSubject
     return this._questionType.getValue();
   }
 
@@ -34,11 +41,11 @@ export class QuestionBuilderComponent implements OnInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private questionBuilder$: QuestionBuilderService) { }
 
   ngOnInit() {
-    this._questionType.subscribe(payload => {
+    this._questionType.subscribe((payload: string) => {
       if (!!payload) {
         this.hasQuestion = true;
         setTimeout(() => {
-          this.question = this.getQuestionType(payload);
+          this.question = this.questionBuilder$.getElementTypeComponent(payload, this.element);
           this.loadComponent();
         }, 300);
       } else {
@@ -61,24 +68,6 @@ export class QuestionBuilderComponent implements OnInit {
 
     if (!!questionItem.data) {
       (<IQuestionBuilder>componentRef.instance).data = questionItem.data;
-    }
-  }
-
-  private getQuestionType(type: string): IQuestionItem {
-    if (type === 'shortText') {
-      return this.questionBuilder$.getShortText();
-    } else if (type === 'longText') {
-      return this.questionBuilder$.getLongText();
-    } else if (type === 'radio') {
-      return this.questionBuilder$.getRadio();
-    } else if (type === 'checkboxes') {
-      return this.questionBuilder$.getCheckbox();
-    } else if (type === 'select') {
-      return this.questionBuilder$.getSelect();
-    } else if (type === 'date') {
-      return this.questionBuilder$.getDate();
-    } else if (type === 'range') {
-      return this.questionBuilder$.getRange();
     }
   }
 

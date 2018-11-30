@@ -13,6 +13,8 @@
 
   <!-- Question Form Builder -->
   <form name="questionForm" #questionForm="ngForm">
+
+    <!-- Question Value Input -->
     <div class="form-group">
       <label [for]="'questionText-' + element.id">Question Text</label>
       <input
@@ -24,6 +26,9 @@
         placeholder="Question Text"
         required>
     </div>
+    <!-- #/Question Value Input -->
+
+    <!-- Question Type Selector -->
     <div class="form-group">
       <label for="questionType">Question Type</label>
       <select
@@ -42,12 +47,14 @@
         <option value="range">Range</option>
       </select>
     </div>
+    <!-- #/Question Type Selector -->
   </form>
   <!-- #/Question Form Builder -->
 
   <!-- Question Builder Element -->
     <sb-question-builder-component
       [questionType]="element.question.type"
+      [element]="element"
     ></sb-question-builder-component>
   <!-- #/Question Builder Element -->
 

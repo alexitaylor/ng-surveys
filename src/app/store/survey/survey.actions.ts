@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import {IPageFlow} from '../../models/page-flow.model';
 
 export enum SurveyActionTypes {
   SURVEY_NAME_CHANGED_ACTION = '[Angular Surveys] Survey title change',
@@ -9,6 +10,11 @@ export enum SurveyActionTypes {
   SURVEY_REMOVE_ELEMENT_ACTION = '[Angular Surveys Element] Remove survey question element',
   SURVEY_QUESTION_ADD_TEXT_ACTION = '[Angular Surveys Question] Add question text',
   SURVEY_QUESTION_ADD_TYPE_ACTION = '[Angular Surveys Question] Add question type',
+  SURVEY_QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION = '[Angular Surveys Question] UPDATE question page flow modifier',
+  SURVEY_QUESTION_ADD_OPTION_ANSWERS_ACTION = '[Angular Surveys Option Answers] Add question option answer',
+  SURVEY_QUESTION_REMOVE_OPTION_ANSWERS_ACTION = '[Angular Surveys Option Answers] Remove question option answer',
+  SURVEY_QUESTION_ADD_OPTION_ANSWERS_VALUE_ACTION = '[Angular Surveys Option Answers] Add question option answer value',
+  SURVEY_QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW = '[Angular Surveys Option Answers] Update question option page flow',
 }
 
 export class SurveyNameChangedAction implements Action {
@@ -51,6 +57,31 @@ export class SurveyAddQuestionTypeAction implements Action {
   constructor(public payload: { pageId: string, elementId: string, type: string }) { }
 }
 
+export class SurveyUpdateQuestionPageFlowModifierAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, pageFlowModifier: boolean }) { }
+}
+
+export class SurveyAddOptionAnswersAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_ADD_OPTION_ANSWERS_ACTION;
+  constructor(public payload: { pageId: string, elementId: string }) { }
+}
+
+export class SurveyRemoveOptionAnswersAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_REMOVE_OPTION_ANSWERS_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, optionAnswerId: string }) { }
+}
+
+export class SurveyAddOptionAnswerValueAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_ADD_OPTION_ANSWERS_VALUE_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, optionAnswerId: string, value: string }) { }
+}
+
+export class SurveyUpdateOptionAnswerPageFlow implements Action {
+  readonly type = SurveyActionTypes.SURVEY_QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW;
+  constructor(public payload: { pageId: string, elementId: string, optionAnswerId: string, pageFlow: IPageFlow }) { }
+}
+
 export type SurveyActions =
   SurveyNameChangedAction |
   SurveyDescriptionChangedAction |
@@ -59,4 +90,9 @@ export type SurveyActions =
   SurveyAddElementAction |
   SurveyRemoveElementAction |
   SurveyAddQuestionTextAction |
-  SurveyAddQuestionTypeAction;
+  SurveyAddQuestionTypeAction |
+  SurveyUpdateQuestionPageFlowModifierAction |
+  SurveyAddOptionAnswersAction |
+  SurveyRemoveOptionAnswersAction |
+  SurveyAddOptionAnswerValueAction |
+  SurveyUpdateOptionAnswerPageFlow;

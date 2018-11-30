@@ -22,11 +22,13 @@ export class Page implements IPage {
     public description?: string,
     public elements?: IElementsMap,
   ) {
+    const uuid: string = UUID.UUID();
     const newElements = new Elements();
+    newElements.pageId = uuid;
     const elementsMap = new Map<string, IElements>();
     elementsMap.set(newElements.id, newElements);
 
-    this.id = id ? id : UUID.UUID();
+    this.id = id ? id : uuid;
     this.orderNo = orderNo ? orderNo : 1;
     this.pageFlow = pageFlow ? pageFlow : new PageFlow();
     this.name = name ? name : '';

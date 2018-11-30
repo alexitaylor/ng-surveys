@@ -16,12 +16,13 @@
             >
             <label class="form-check-label" for="pageNavCheckbox">Go to page based on answer</label>
           </div>
-
-          <div *ngFor="let i of radioOptions">
-            <sb-radio-option-template
-              [position]="i"
+          <div *ngFor="let item of optionAnswers$ | async | mapValues; trackBy: trackElement">
+            <sb-option-template
+              [optionAnswersSize]="optionAnswersSize"
+              [optionAnswer]="item.value"
+              [element]="element"
               [isPageNavChecked]="isPageNavChecked"
-            ></sb-radio-option-template>
+            ></sb-option-template>
           </div>
         </form>
       </div>

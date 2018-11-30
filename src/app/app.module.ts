@@ -10,16 +10,12 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { ContentComponent } from './layouts/content/content.component';
 import { BuilderModule } from './builder/builder.module';
 import {reducers} from './store/app.reducer';
+import { SharedCommonModule } from './shared/shared-common.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TestPipe,
-    NavbarComponent,
-    ContentComponent,
-  ],
   imports: [
     BrowserModule,
+    SharedCommonModule,
     ViewModule,
     BuilderModule,
     /**
@@ -32,6 +28,12 @@ import {reducers} from './store/app.reducer';
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     }),
+  ],
+  declarations: [
+    AppComponent,
+    TestPipe,
+    NavbarComponent,
+    ContentComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

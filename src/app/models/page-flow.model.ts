@@ -3,17 +3,17 @@ import {IPage} from './page.model';
 export interface IPageFlow {
   nextPage?: boolean;
   label?: string;
-  page?: IPage;
+  pageId?: string;
 }
 
 export class PageFlow implements IPageFlow {
   constructor(
     public nextPage?: boolean,
     public label?: string,
-    public page?: IPage,
+    public pageId?: string,
   ) {
     this.nextPage = nextPage ? nextPage : true;
     this.label = label ? label : 'pageFlow.goToNextPage';
-    this.page = page ? page : null;
+    this.pageId = pageId ? pageId : '';
   }
 }

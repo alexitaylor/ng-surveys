@@ -7,6 +7,7 @@ export interface IElements {
   id?: string;
   orderNo?: number;
   type?: string;
+  pageId?: string;
   question?: IQuestion;
 }
 
@@ -15,11 +16,17 @@ export class Elements implements IElements {
     public id?: string,
     public orderNo?: number,
     public type?: string,
+    public pageId?: string,
     public question?: IQuestion,
   ) {
-    this.id = id ? id : UUID.UUID();
+    const uuid: string = UUID.UUID();
+    const newQuestion = new Question();
+    newQuestion.elementId = uuid;
+
+    this.id = id ? id : uuid;
     this.orderNo = orderNo ? orderNo : null;
     this.type = type ? type : 'question';
-    this.question = question ? question : new Question();
+    this.pageId = pageId ? pageId : '';
+    this.question = question ? question : newQuestion;
   }
 }

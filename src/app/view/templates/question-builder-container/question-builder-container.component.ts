@@ -24,7 +24,6 @@ export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    // this.question = this.questionBuilder$.getRadio();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -42,8 +41,6 @@ export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
       elementId: this.element.id,
       type,
     }));
-    setTimeout(() => {
-    }, 1000);
   }
 
   handleQuestionNameChange() {

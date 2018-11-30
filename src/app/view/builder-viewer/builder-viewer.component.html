@@ -32,7 +32,6 @@
 </div>
 
 <div *ngFor="let item of pages$ | async | mapValues; trackBy: trackElement">
-  <pre>{{item.key}}</pre>
   <sb-page-builder-container
     [page]="item.value"
   ></sb-page-builder-container>

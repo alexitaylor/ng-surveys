@@ -1,4 +1,4 @@
-import {IOfferedAnswers, IOfferedAnswersMap, OfferedAnswers} from './offered-answers.model';
+import {IOptionAnswersMap} from './option-answers.model';
 import { UUID } from 'angular2-uuid';
 
 export interface IQuestion {
@@ -7,7 +7,8 @@ export interface IQuestion {
   type?: string;
   required?: boolean;
   pageFlowModifier?: boolean;
-  offeredAnswers?: IOfferedAnswersMap;
+  elementId?: string;
+  optionAnswers?: IOptionAnswersMap;
 }
 
 export class Question implements IQuestion {
@@ -17,17 +18,15 @@ export class Question implements IQuestion {
     public type?: string,
     public required?: boolean,
     public pageFlowModifier?: boolean,
-    public offeredAnswers?: IOfferedAnswersMap,
+    public elementId?: string,
+    public optionAnswers?: IOptionAnswersMap,
   ) {
-    const newOfferedAnswers = new OfferedAnswers();
-    const offeredAnswersMap = new Map<string, IOfferedAnswers>();
-    offeredAnswersMap.set(newOfferedAnswers.id, newOfferedAnswers);
-
     this.id = id ? id : UUID.UUID();
     this.text = text ? text : '';
     this.type = type ? type : '';
     this.required = required ? required : false;
     this.pageFlowModifier = pageFlowModifier ? pageFlowModifier : false;
-    this.offeredAnswers = offeredAnswers ? offeredAnswers : offeredAnswersMap;
+    this.elementId = elementId ? elementId : '';
+    this.optionAnswers = optionAnswers ? optionAnswers : null;
   }
 }

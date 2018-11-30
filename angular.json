@@ -28,9 +28,7 @@
               "src/styles.css",
               "src/assets/scss/styles.scss"
             ],
-            "scripts": [
-              "./node_modules/lodash"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
