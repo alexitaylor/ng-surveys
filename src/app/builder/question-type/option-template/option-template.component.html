@@ -13,7 +13,9 @@
     type="text"
     placeholder="Click to add options"
     (focus)="onFocus($event)"
+    autofocus
     [ngModel]="optionAnswer.value"
+    [disabled]="!isOptionActive"
   >
   <!-- #/Option Input -->
 

@@ -4,6 +4,7 @@ import {IPageFlow} from '../../models/page-flow.model';
 export enum SurveyActionTypes {
   SURVEY_NAME_CHANGED_ACTION = '[Angular Surveys] Survey title change',
   SURVEY_DESCRIPTION_CHANGED_ACTION = '[Angular Surveys] Survey description change',
+  SURVEY_SUMMARY_CHANGED_ACTION = '[Angular Surveys] Survey summary change',
   SURVEY_ADD_PAGE_ACTION = '[Angular Surveys Page] Add survey page',
   SURVEY_INSERT_PAGE_ACTION = '[Angular Surveys Page] Insert survey page',
   SURVEY_MOVE_PAGE_UP_ACTION = '[Angular Surveys Page] Move survey page up',
@@ -38,6 +39,11 @@ export class SurveyNameChangedAction implements Action {
 export class SurveyDescriptionChangedAction implements Action {
   readonly type = SurveyActionTypes.SURVEY_DESCRIPTION_CHANGED_ACTION;
   constructor(public payload: { description: string }) { }
+}
+
+export class SurveySummaryChangedAction implements Action {
+  readonly type = SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION;
+  constructor(public payload: { summary: string }) { }
 }
 
 export class SurveyAddPageAction implements Action {
@@ -163,6 +169,7 @@ export class SurveyDragOptionAnswerAction implements Action {
 export type SurveyActions =
   SurveyNameChangedAction |
   SurveyDescriptionChangedAction |
+  SurveySummaryChangedAction |
   SurveyAddPageAction |
   SurveyInsertPageAction |
   SurveyMovePageUpAction |

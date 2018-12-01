@@ -37,12 +37,23 @@
                     [optionAnswer]="item.value"
                     [element]="element"
                     [isPageNavChecked]="isPageNavChecked"
-                    (isOptionActiveEvent)="handleOptionActiveEvent($event)"
                   ></sb-option-template>
-                  <!-- #?Option Template -->
+                  <!-- #/Option Template -->
                 </div>
             </div>
           </div>
+          <!-- Add Option Input -->
+          <span *ngIf="!isSaved" (click)="addOptionInput()">
+            <input
+              class="form-control w-50"
+              style="margin-left: 5.5rem;"
+              name="radioTemplate"
+              type="text"
+              placeholder="Click to add options"
+              disabled
+            >
+          </span>
+          <!-- #/Add Option Input -->
         </form>
       </div>
     </div>

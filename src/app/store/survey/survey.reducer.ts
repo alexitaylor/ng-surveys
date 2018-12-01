@@ -27,6 +27,12 @@ export function surveyReducer(state = appInitialState, action: SurveyActions): I
       });
     }
 
+    case SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION: {
+      return Object.assign(state, _.cloneDeep(state), {
+        ...action.payload
+      });
+    }
+
     case SurveyActionTypes.SURVEY_ADD_PAGE_ACTION: {
       const pages: IPageMap = utils.createNextPage(state.pages);
 

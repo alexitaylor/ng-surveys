@@ -12,6 +12,7 @@ import { QuestionBuilderContainerComponent } from './templates/question-builder-
 import {BuilderModule} from '../builder/builder.module';
 import {PageBuilderContainerComponent} from './templates/page-builder-container/page-builder-container.component';
 import {SharedCommonModule} from '../shared/shared-common.module';
+import { SummaryContainerComponent } from './templates/summary-container/summary-container.component';
 
 @NgModule({
   imports: [
@@ -29,11 +30,13 @@ import {SharedCommonModule} from '../shared/shared-common.module';
     ModelViewerComponent,
     QuestionBuilderContainerComponent,
     PageBuilderContainerComponent,
+    SummaryContainerComponent,
   ],
   exports: [
     BuilderViewerComponent,
     ViewerComponent,
     ModelViewerComponent,
+    SummaryContainerComponent,
   ]
 })
 export class ViewModule { }

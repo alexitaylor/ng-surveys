@@ -4,12 +4,14 @@ import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../../store/app.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {IElements} from '../../../models/elements.model';
-import {Observable} from 'rxjs';
+import {fromEvent, Observable} from 'rxjs';
 import {
+  SurveyAddOptionAnswersAction,
   SurveyDragOptionAnswerAction,
   SurveyUpdateQuestionPageFlowModifierAction
 } from '../../../store/survey/survey.actions';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'sb-radio-checkbox-select',
@@ -24,7 +26,7 @@ export class RadioCheckboxSelectComponent implements OnInit {
   optionAnswersSize: number;
   pageId: string;
   isPageNavChecked = false;
-  isOptionActive = false;
+  isSaved = false;
 
   constructor(
     private store: Store<AppState>,
@@ -42,6 +44,10 @@ export class RadioCheckboxSelectComponent implements OnInit {
     this.optionAnswers$.subscribe(res => {
       this.optionAnswersSize = res.size;
     });
+
+    setTimeout(() => {
+      this.onSaveQuestionClick();
+    }, 300);
   }
 
   togglePageNavChecked(e) {
@@ -53,8 +59,8 @@ export class RadioCheckboxSelectComponent implements OnInit {
       }));
   }
 
-  handleOptionActiveEvent(value) {
-    this.isOptionActive = value;
+  addOptionInput() {
+    this.store.dispatch(new SurveyAddOptionAnswersAction({ pageId: this.element.pageId, elementId: this.element.id }));
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -64,6 +70,32 @@ export class RadioCheckboxSelectComponent implements OnInit {
       startIndex: event.previousIndex,
       endIndex: event.currentIndex,
     }));
+  }
+
+  onSaveQuestionClick() {
+    const $saveQuestionButton = document.getElementById(`save-question-button-${this.element.id}`);
+
+    fromEvent($saveQuestionButton, 'click').pipe(
+      map(event => event)
+    ).subscribe(res => {
+      if (res) {
+        this.isSaved = true;
+        this.onEditQuestionClick();
+      }
+    });
+  }
+
+  onEditQuestionClick() {
+    const $editQuestionButton = document.getElementById(`edit-question-button-${this.element.id}`);
+
+    fromEvent($editQuestionButton, 'click').pipe(
+      map(event => event)
+    ).subscribe(res => {
+      if (res) {
+        this.isSaved = false;
+        this.onSaveQuestionClick();
+      }
+    });
   }
 
   trackElement(index: number, element: any) {

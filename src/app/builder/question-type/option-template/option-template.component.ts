@@ -25,10 +25,8 @@ export class OptionTemplateComponent implements OnInit {
   @Input() element: IElements;
   @Input() isPageNavChecked: boolean;
 
-  @Output() isOptionActiveEvent = new EventEmitter<boolean>();
-
   pages$: Observable<IPageMap>;
-  isOptionActive = false;
+  isOptionActive = true;
   pageNavNext = 'goToNextPage';
 
   constructor(
@@ -39,6 +37,8 @@ export class OptionTemplateComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
+      const $optionTemplateInput = document.getElementById(`optionTemplateInput-${this.optionAnswer.id}`);
+      $optionTemplateInput.focus();
       this.onOptionsValueChange();
       this.onSaveQuestionClick();
     }, 300);
@@ -47,8 +47,6 @@ export class OptionTemplateComponent implements OnInit {
   onFocus(e) {
     if (e.returnValue && this.optionAnswer.orderNo === this.optionAnswersSize) {
       this.isOptionActive = e.returnValue;
-      this.isOptionActiveEvent.emit(this.isOptionActive);
-      this.store.dispatch(new SurveyAddOptionAnswersAction({ pageId: this.element.pageId, elementId: this.element.id }));
     }
   }
 
@@ -107,7 +105,6 @@ export class OptionTemplateComponent implements OnInit {
     ).subscribe(res => {
       if (res) {
         this.isOptionActive = false;
-        this.isOptionActiveEvent.emit(this.isOptionActive);
         this.onEditQuestionClick();
       }
     });
@@ -121,7 +118,6 @@ export class OptionTemplateComponent implements OnInit {
     ).subscribe(res => {
       if (res) {
         this.isOptionActive = true;
-        this.isOptionActiveEvent.emit(this.isOptionActive);
         this.onSaveQuestionClick();
       }
     });

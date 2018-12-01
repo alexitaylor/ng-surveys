@@ -6,6 +6,7 @@ export interface IAngularSurvey {
   name?: string;
   pages?: IPageMap;
   description?: string;
+  summary?: string;
 }
 
 export class AngularSurvey implements IAngularSurvey {
@@ -14,6 +15,7 @@ export class AngularSurvey implements IAngularSurvey {
     public name?: string,
     public pages?: IPageMap,
     public description?: string,
+    public summary?: string,
     ) {
     const newPage = new Page();
     const pagesMap = new Map<string, IPage>();
@@ -23,5 +25,6 @@ export class AngularSurvey implements IAngularSurvey {
     this.name = name ? name : '';
     this.pages = pages ? pages : new Map<string, IPage>(pagesMap);
     this.description = description ? description : '';
+    this.summary = summary ? summary : '';
   }
 }
