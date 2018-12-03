@@ -3,6 +3,7 @@ import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
 import {Store} from '@ngrx/store';
 import {SurveySummaryChangedAction} from '../../../store/survey/survey.actions';
+import {AppState} from '../../../store/app.state';
 
 @Component({
   selector: 'sb-summary-container',
@@ -12,7 +13,7 @@ import {SurveySummaryChangedAction} from '../../../store/survey/survey.actions';
 export class SummaryContainerComponent implements OnInit {
 
   constructor(
-    private store: Store,
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit() {
