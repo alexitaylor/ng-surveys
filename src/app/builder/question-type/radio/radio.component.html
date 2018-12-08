@@ -1,5 +1,13 @@
 <h4>{{data.title}}</h4>
 <div class="custom-control custom-radio" *ngFor="let item of optionAnswers | mapValues; trackBy: trackElement;">
-  <input type="radio" [id]="'radio' + item?.key" name="customRadio" class="custom-control-input">
+  <input
+    type="radio"
+    [id]="'radio' + item?.key"
+    name="customRadio"
+    class="custom-control-input"
+    [value]="item?.value.value"
+    [(ngModel)]="data?.element.question.answer"
+    (ngModelChange)="handleChange($event)"
+  >
   <label class="custom-control-label" [for]="'radio' + item?.key">{{item?.value.value}}</label>
 </div>

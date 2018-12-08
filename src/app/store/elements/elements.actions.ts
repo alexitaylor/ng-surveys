@@ -13,9 +13,10 @@ export enum ElementsActionTypes {
   QUESTION_ADD_TYPE_ACTION = '[Angular Question] Add question type',
   QUESTION_UPDATE_MIN_ACTION = '[Angular Question] Update question max value',
   QUESTION_UPDATE_MAX_ACTION = '[Angular Question] Update question min value',
-  QUESTION_REMOVE_MIN_MAX_ACTION = '[Angular Question] Remove question min and max value',
+  QUESTION_REMOVE_VALUES_ACTION = '[Angular Question] Remove question values',
   QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION = '[Angular Question] UPDATE question page flow modifier',
   TOGGLE_IS_ACTIVE_ELEMENT_ACTION = '[Angular Element] Toggle isActive element',
+  QUESTION_UPDATE_ANSWER_ACTION = '[Angular Question] Update question answer value',
 }
 
 export class AddElementAction implements Action {
@@ -68,8 +69,8 @@ export class UpdateQuestionMaxAction implements Action {
   constructor(public payload: { pageId: string, elementId: string, max: number }) { }
 }
 
-export class RemoveQuestionMinAndMaxAction implements Action {
-  readonly type = ElementsActionTypes.QUESTION_REMOVE_MIN_MAX_ACTION;
+export class RemoveQuestionValuesAction implements Action {
+  readonly type = ElementsActionTypes.QUESTION_REMOVE_VALUES_ACTION;
   constructor(public payload: { pageId: string, elementId: string }) { }
 }
 
@@ -83,6 +84,11 @@ export class ToggleIsActiveElementAction implements Action {
   constructor(public payload: { pageId: string, elementId: string, isSaved: boolean }) { }
 }
 
+export class UpdateQuestionAnswerAction implements Action {
+  readonly type = ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, answer: string | number }) { }
+}
+
 export type Actions =
   AddElementAction |
   RemoveElementAction |
@@ -94,6 +100,7 @@ export type Actions =
   AddQuestionTypeAction |
   UpdateQuestionMinAction |
   UpdateQuestionMaxAction |
-  RemoveQuestionMinAndMaxAction |
+  RemoveQuestionValuesAction |
   UpdateQuestionPageFlowModifierAction |
-  ToggleIsActiveElementAction;
+  ToggleIsActiveElementAction |
+  UpdateQuestionAnswerAction;

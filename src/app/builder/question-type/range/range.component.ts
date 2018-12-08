@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
 import {Store} from '@ngrx/store';
@@ -11,7 +11,7 @@ import * as elements from '../../../store/elements/elements.actions';
   templateUrl: './range.component.html',
   styleUrls: ['./range.component.scss']
 })
-export class RangeComponent implements OnInit {
+export class RangeComponent implements OnInit, OnDestroy {
   @Input() data: any;
   isView: boolean;
   currentRange: number;
@@ -21,6 +21,8 @@ export class RangeComponent implements OnInit {
 
   minSub: Subscription;
   maxSub: Subscription;
+
+  rangeInputSub: Subscription;
 
   constructor(
     private store: Store<AppState>,
@@ -36,6 +38,16 @@ export class RangeComponent implements OnInit {
         this.onMinChange();
         this.onMaxChange();
       }, 300);
+    } else {
+      setTimeout(() => {
+        this.onRangeChange();
+      }, 300);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.isView) {
+      this.rangeInputSub.unsubscribe();
     }
   }
 
@@ -65,6 +77,22 @@ export class RangeComponent implements OnInit {
         elementId: this.element.id,
         max
       })));
+  }
+
+  onRangeChange() {
+    const $rangeInput = document.getElementById(`range-input-${this.element.id}`);
+
+    this.rangeInputSub = fromEvent($rangeInput, 'input').pipe(
+      map((event: any) => event.target.value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    ).subscribe(answer => {
+      this.store.dispatch(new elements.UpdateQuestionAnswerAction({
+        pageId: this.element.pageId,
+        elementId: this.element.id,
+        answer,
+      }));
+    });
   }
 
 }

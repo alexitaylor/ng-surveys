@@ -4,6 +4,7 @@ import { UUID } from 'angular2-uuid';
 export interface IQuestion {
   id?: string;
   text?: string;
+  answer?: string | number;
   type?: string;
   required?: boolean;
   pageFlowModifier?: boolean;
@@ -16,6 +17,7 @@ export class Question implements IQuestion {
   constructor(
     public id?: string,
     public text?: string,
+    public answer?: string | number,
     public type?: string,
     public required?: boolean,
     public pageFlowModifier?: boolean,
@@ -25,6 +27,7 @@ export class Question implements IQuestion {
   ) {
     this.id = id ? id : UUID.UUID();
     this.text = text ? text : '';
+    this.answer = answer ? answer : '';
     this.type = type ? type : '';
     this.required = required ? required : false;
     this.pageFlowModifier = pageFlowModifier ? pageFlowModifier : false;

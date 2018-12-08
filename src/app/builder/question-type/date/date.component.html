@@ -1,6 +1,12 @@
 <h4>{{data.title}}</h4>
 <form>
   <div class="form-group">
-    <input type="date" class="form-control" id="date-question" [disabled]="!isView">
+    <input
+      type="date"
+      [id]="'date-input-' + data.element.id"
+      name="date"
+      class="form-control"
+      [ngModel]="data?.element.question.answer"
+      [disabled]="!isView">
   </div>
 </form>

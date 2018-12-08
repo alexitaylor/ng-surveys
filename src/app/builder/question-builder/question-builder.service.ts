@@ -60,7 +60,7 @@ export class QuestionBuilderService {
       type,
       element,
       surveyId,
-      isView
+      isView,
     });
   }
 }

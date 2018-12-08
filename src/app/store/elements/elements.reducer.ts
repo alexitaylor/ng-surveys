@@ -110,10 +110,10 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       return Object.assign(state, _.cloneDeep(state));
     }
 
-    case elements.ElementsActionTypes.QUESTION_REMOVE_MIN_MAX_ACTION: {
+    case elements.ElementsActionTypes.QUESTION_REMOVE_VALUES_ACTION: {
       const { pageId, elementId } = action.payload;
       const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.removeQuestionMinAndMax(elementId, prevElements);
+      const newElements: IElementsMap = elementUtils.removeQuestionValues(elementId, prevElements);
 
       state.set(pageId, newElements);
 
@@ -134,6 +134,16 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       const { pageId, elementId, isSaved } = action.payload;
       const prevElements: IElementsMap = state.get(pageId);
       const newElements: IElementsMap = elementUtils.toggleElementIsSaved(elementId, isSaved, prevElements);
+
+      state.set(pageId, newElements);
+
+      return Object.assign(state, _.cloneDeep(state));
+    }
+
+    case elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION: {
+      const { pageId, elementId, answer } = action.payload;
+      const prevElements: IElementsMap = state.get(pageId);
+      const newElements: IElementsMap = elementUtils.updateQuestionAnswer(elementId, answer, prevElements);
 
       state.set(pageId, newElements);
 

@@ -4,6 +4,7 @@ import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../../store/app.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {Subscription} from 'rxjs';
+import * as elements from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'sb-select',
@@ -27,6 +28,14 @@ export class SelectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.optionAnswersSub.unsubscribe();
+  }
+
+  handleSelect(answer) {
+    this.store.dispatch(new elements.UpdateQuestionAnswerAction({
+      pageId: this.data.element.pageId,
+      elementId: this.data.element.id,
+      answer,
+    }));
   }
 
   trackElement(index: number, element: any) {

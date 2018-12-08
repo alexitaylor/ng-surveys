@@ -90,13 +90,15 @@ export function updateQuestionMax(elementId: string, max: number, elements: IEle
   return new Map<string, IElements>(elements);
 }
 
-export function removeQuestionMinAndMax(elementId: string, elements: IElementsMap): IElementsMap {
+export function removeQuestionValues(elementId: string, elements: IElementsMap): IElementsMap {
   const currentElement: IElements = elements.get(elementId);
 
   if (currentElement) {
     const currentQuestion: IQuestion = currentElement.question;
     currentQuestion.min = null;
     currentQuestion.max = null;
+    currentQuestion.answer = '';
+    currentQuestion.text = '';
     currentElement.question = currentQuestion;
   }
 
@@ -115,6 +117,14 @@ export function toggleElementIsSaved(elementId: string, isSaved: boolean, elemen
   const element: IElements = elements.get(elementId);
 
   element.isSaved = isSaved;
+
+  return new Map<string, IElements>(elements);
+}
+
+export function updateQuestionAnswer(elementId: string, answer: string | number, elements: IElementsMap): IElementsMap {
+  const currentQuestion: IQuestion = elements.get(elementId).question;
+
+  currentQuestion.answer = answer;
 
   return new Map<string, IElements>(elements);
 }

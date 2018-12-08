@@ -27,13 +27,14 @@
   <span class="d-flex flex-row justify-content-between">
     <input
       type="range"
+      [id]="'range-input-' + element.id"
       class="custom-range"
-      [(ngModel)]="currentRange"
-      [id]="'range' + element.id"
+      name="range-input"
+      [(ngModel)]="data?.element.question.answer"
       [min]="element?.question.min"
       [max]="element?.question.max"
     >
-    <h1 class="ml-5">{{currentRange}}</h1>
+    <h1 class="ml-5">{{data?.element.question.answer}}</h1>
   </span>
 </div>
 <!-- #/Range Input -->

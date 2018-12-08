@@ -39,14 +39,14 @@ export class QuestionBuilderContainerComponent implements OnInit {
   onQuestionTypeSelect(type: string, elementId: string) {
     this.questionType = type;
 
-    if (this.prevQuestionType === 'range') {
-      this.store.dispatch(new elements.RemoveQuestionMinAndMaxAction({
-        pageId: this.pageId,
-        elementId: this.element.id,
-      }));
-    } else if (this.prevQuestionType === 'checkboxes' || this.prevQuestionType === 'radio' || this.prevQuestionType === 'select') {
+    if (this.prevQuestionType === 'checkboxes' || this.prevQuestionType === 'radio' || this.prevQuestionType === 'select') {
       this.store.dispatch(new optionAnswers.RemoveOptionAnswersMapAction({ elementId: this.element.id }));
     }
+
+    this.store.dispatch(new elements.RemoveQuestionValuesAction({
+      pageId: this.pageId,
+      elementId: this.element.id,
+    }));
 
     this.store.dispatch(new elements.AddQuestionTypeAction({
       pageId: this.pageId,
@@ -54,6 +54,7 @@ export class QuestionBuilderContainerComponent implements OnInit {
       type,
     }));
 
+    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: false }));
     this.prevQuestionType = type;
   }
 

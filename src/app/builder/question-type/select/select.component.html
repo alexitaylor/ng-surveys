@@ -1,9 +1,18 @@
 <form>
   <div class="form-group">
     <label for="select">Example select</label>
-    <select class="form-control" id="select">
-      <option disabled>Select</option>
-      <option *ngFor="let item of optionAnswers | mapValues; trackBy: trackElement" [value]="item?.value.value">{{item?.value.value}}</option>
+    <select
+      class="form-control" id="select"
+      name="select"
+      [(ngModel)]="data?.element.question.answer"
+      (ngModelChange)="handleSelect($event)"
+    >
+      <option disabled selected [value]="''">Select</option>
+      <option
+        *ngFor="let item of optionAnswers | mapValues; trackBy: trackElement"
+        [value]="item?.value.value">
+        {{item?.value.value}}
+      </option>
     </select>
   </div>
 </form>

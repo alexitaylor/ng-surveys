@@ -4,6 +4,7 @@ import * as fromRoot from '../../../store/app.reducer';
 import {Subscription} from 'rxjs';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {AppState} from '../../../store/app.state';
+import * as elements from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'sb-radio',
@@ -27,6 +28,14 @@ export class RadioComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.optionAnswersSub.unsubscribe();
+  }
+
+  handleChange(answer) {
+    this.store.dispatch(new elements.UpdateQuestionAnswerAction({
+      pageId: this.data.element.pageId,
+      elementId: this.data.element.id,
+      answer,
+    }));
   }
 
   trackElement(index: number, element: any) {
