@@ -2,8 +2,10 @@ import {IPageFlow, PageFlow} from './page-flow.model';
 import { UUID } from 'angular2-uuid';
 
 export type IOptionAnswersMap = Map<string, IOptionAnswers>;
+export type IOptionAnswersMapMap = Map<string, IOptionAnswersMap>;
 
 export interface IOptionAnswers {
+  elementId: string;
   id?: string;
   orderNo?: number;
   value?: string;
@@ -12,12 +14,14 @@ export interface IOptionAnswers {
 
 export class OptionAnswers implements IOptionAnswers {
   constructor(
+    public elementId: string,
     public id?: string,
     public orderNo?: number,
     public value?: string,
     public pageFlow?: IPageFlow,
   ) {
     this.id = id ? id : UUID.UUID();
+    this.elementId = elementId ? elementId : '';
     this.orderNo = orderNo ? orderNo : 1;
     this.value = value ? value : '';
     this.pageFlow = pageFlow ? pageFlow : new PageFlow();

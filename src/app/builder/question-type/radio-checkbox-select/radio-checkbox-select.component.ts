@@ -5,11 +5,8 @@ import * as fromRoot from '../../../store/app.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {IElements} from '../../../models/elements.model';
 import {fromEvent, Observable} from 'rxjs';
-import {
-  SurveyAddOptionAnswersAction,
-  SurveyDragOptionAnswerAction,
-  SurveyUpdateQuestionPageFlowModifierAction
-} from '../../../store/survey/survey.actions';
+import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
+import * as elements from '../../../store/elements/elements.actions';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {map} from 'rxjs/operators';
 
@@ -23,8 +20,10 @@ export class RadioCheckboxSelectComponent implements OnInit {
 
   element: IElements;
   optionAnswers$: Observable<IOptionAnswersMap>;
+  optionAnswers: IOptionAnswersMap;
   optionAnswersSize: number;
   pageId: string;
+  surveyId: string;
   isPageNavChecked = false;
   isSaved = false;
 
@@ -36,14 +35,26 @@ export class RadioCheckboxSelectComponent implements OnInit {
   ngOnInit() {
     this.element = this.data.element;
     this.pageId = this.data.element.pageId;
+    this.surveyId = this.data.surveyId;
     this.optionAnswers$ = this.store.pipe(
       select(fromRoot.getOptionAnswers,
-        { pageId: this.pageId, elementId: this.element.id }
+        { elementId: this.element.id }
         ));
 
     this.optionAnswers$.subscribe(res => {
-      this.optionAnswersSize = res.size;
+      if (res) {
+        this.optionAnswersSize = res.size;
+      }
     });
+
+
+    // this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.pageId })).subscribe(res => {
+    //   console.log('@@@res: ', res);
+    //   console.log('res.get(this.element.id).question.optionAnswers: ', res.get(this.element.id).question.optionAnswers);
+    //   setTimeout(() => {
+    //     this.optionAnswers = res.get(this.element.id).question.optionAnswers;
+    //   });
+    // });
 
     setTimeout(() => {
       this.onSaveQuestionClick();
@@ -52,20 +63,21 @@ export class RadioCheckboxSelectComponent implements OnInit {
 
   togglePageNavChecked(e) {
     this.isPageNavChecked = e.target.checked;
-    this.store.dispatch(new SurveyUpdateQuestionPageFlowModifierAction(
-      { pageId: this.pageId,
+    this.store.dispatch(new elements.UpdateQuestionPageFlowModifierAction({
+        pageId: this.pageId,
         elementId: this.element.id,
         pageFlowModifier: this.isPageNavChecked
       }));
   }
 
   addOptionInput() {
-    this.store.dispatch(new SurveyAddOptionAnswersAction({ pageId: this.element.pageId, elementId: this.element.id }));
+    this.store.dispatch(new optionAnswers.AddOptionAnswersAction({
+      elementId: this.element.id
+    }));
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    this.store.dispatch(new SurveyDragOptionAnswerAction({
-      pageId: this.pageId,
+    this.store.dispatch(new optionAnswers.DragOptionAnswerAction({
       elementId: this.element.id,
       startIndex: event.previousIndex,
       endIndex: event.currentIndex,

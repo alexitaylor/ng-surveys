@@ -31,12 +31,15 @@
   </div>
 </div>
 
-<div *ngFor="let item of pages$ | async | mapValues; trackBy: trackElement">
+<!-- Page Builder Container -->
+<div *ngFor="let item of pages | mapValues; trackBy: trackElement">
   <sb-page-builder-container
-    [page]="item.value"
+    [surveyId]="surveyId"
+    [page]="item?.value"
     [pages]="pages$ | async"
   ></sb-page-builder-container>
 </div>
+<!-- #/Page Builder Container -->
 
 <!--<sb-summary-container></sb-summary-container>-->
 

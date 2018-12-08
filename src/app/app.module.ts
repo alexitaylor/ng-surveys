@@ -11,6 +11,9 @@ import { ContentComponent } from './layouts/content/content.component';
 import { BuilderModule } from './builder/builder.module';
 import {reducers} from './store/app.reducer';
 import { SharedCommonModule } from './shared/shared-common.module';
+import {EffectsModule} from '@ngrx/effects';
+import {PagesEffect} from './store/pages/pages.effect';
+import {ElementsEffect} from './store/elements/elements.effect';
 
 @NgModule({
   imports: [
@@ -28,6 +31,7 @@ import { SharedCommonModule } from './shared/shared-common.module';
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     }),
+    EffectsModule.forRoot([PagesEffect, ElementsEffect])
   ],
   declarations: [
     AppComponent,

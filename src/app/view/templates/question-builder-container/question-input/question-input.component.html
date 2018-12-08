@@ -1,0 +1,13 @@
+<!-- Question Value Input -->
+<div class="form-group">
+  <label [for]="'questionText-' + elementId">Question Text</label>
+  <input
+    [id]="'questionText-' + elementId"
+    name="questionText"
+    type="text"
+    class="form-control"
+    [ngModel]="elementValue"
+    placeholder="Question Text"
+    required>
+</div>
+<!-- #/Question Value Input -->

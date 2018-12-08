@@ -7,7 +7,7 @@
         type="button"
         class="btn btn-outline-primary"
         tooltip="Remove Element"
-        (click)="removeElement()">
+        (click)="removeElement(element?.id)">
         <i class="fas fa-trash-alt"></i>
       </button>
       <button
@@ -15,8 +15,8 @@
         type="button"
         class="btn btn-outline-primary"
         tooltip="Move Down"
-        (click)="moveElementDown()"
-        [disabled]="element.orderNo === elementsSize">
+        (click)="moveElementDown(element?.id)"
+        [disabled]="element?.orderNo === elementsSize">
         <i class="fas fa-chevron-down"></i>
       </button>
       <button
@@ -24,19 +24,19 @@
         type="button"
         class="btn btn-outline-primary"
         tooltip="Move Up"
-        (click)="moveElementUp()"
-        [disabled]="element.orderNo === 1">
+        (click)="moveElementUp(element?.id)"
+        [disabled]="element?.orderNo === 1">
         <i class="fas fa-chevron-up"></i>
       </button>
       <button *ngIf="isSaved" type="button" class="btn btn-outline-primary" tooltip="Clone Element">
         <i class="fas fa-clone"></i>
       </button>
       <button
-        [id]="'edit-question-button-' + element.id"
+        [id]="'edit-question-button-' + element?.id"
         *ngIf="isSaved" type="button"
         class="btn btn-outline-primary"
         tooltip="Edit Element"
-        (click)="editQuestion()">
+        (click)="editQuestion(element?.id)">
         <i class="fas fa-edit"></i>
       </button>
     </div>
@@ -47,17 +47,11 @@
   <form name="questionForm" #questionForm="ngForm" class="mt-2">
 
     <!-- Question Value Input -->
-    <div class="form-group">
-      <label [for]="'questionText-' + element.id">Question Text</label>
-      <input
-        [id]="'questionText-' + element.id"
-        name="questionText"
-        type="text"
-        class="form-control"
-        [ngModel]="element.question.text"
-        placeholder="Question Text"
-        required>
-    </div>
+    <sb-question-input
+      [elementId]="element?.id"
+      [elementValue]="element?.question.text"
+      [pageId]="pageId"
+    ></sb-question-input>
     <!-- #/Question Value Input -->
 
     <!-- Question Type Selector -->
@@ -67,8 +61,8 @@
         id="questionType"
         name="questionType"
         class="form-control"
-        [(ngModel)]="element.question.type"
-        (ngModelChange)="onQuestionTypeSelect($event)">
+        [(ngModel)]="element?.question.type"
+        (ngModelChange)="onQuestionTypeSelect($event, element?.id)">
         <option selected></option>
         <option value="shortText">Short Text</option>
         <option value="longText">Long Text</option>
@@ -85,10 +79,12 @@
 
   <!-- Question Builder Element -->
     <sb-question-builder-component
-      [questionType]="element.question.type"
+      [questionType]="element?.question.type"
       [element]="element"
+      [surveyId]="surveyId"
     ></sb-question-builder-component>
   <!-- #/Question Builder Element -->
 
-  <button [id]="'save-question-button-' + element.id" *ngIf="!isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion()" [disabled]="!questionType">Save Question</button>
+  <button [id]="'save-question-button-' + element?.id" *ngIf="!isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion(element?.id)" [disabled]="!questionType">Save Question</button>
 </div>
+

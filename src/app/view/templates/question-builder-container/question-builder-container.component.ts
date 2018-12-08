@@ -1,91 +1,63 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Store} from '@ngrx/store';
+
 import {AppState} from '../../../store/app.state';
-import {select, Store} from '@ngrx/store';
-import {
-  SurveyAddQuestionTextAction, SurveyAddQuestionTypeAction, SurveyMoveElementDownAction, SurveyMoveElementUpAction,
-  SurveyRemoveElementAction
-} from '../../../store/survey/survey.actions';
 import {IElements} from '../../../models/elements.model';
-import {IPage} from '../../../models/page.model';
-import * as fromRoot from '../../../store/app.reducer';
-import {fromEvent, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
+import * as elements from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'sb-question-builder-container',
   templateUrl: './question-builder-container.component.html',
   styleUrls: ['./question-builder-container.component.scss']
 })
-export class QuestionBuilderContainerComponent implements OnInit, OnChanges {
+export class QuestionBuilderContainerComponent implements OnInit {
+  @Input() surveyId: string;
+  @Input() pageId: string;
   @Input() element: IElements;
-  @Input() page: IPage;
+  @Input() elementsSize: number;
 
   @Output() isSavedEvent = new EventEmitter<any>();
 
-  elementsSize: number;
   questionType: string;
   isSaved = false;
 
   constructor(private store: Store<AppState>) {}
 
-  ngOnInit() {
-    this.store.pipe(select(fromRoot.getElementsSize, { pageId: this.page.id })).subscribe(res => this.elementsSize = res);
-  }
+  ngOnInit() {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (!!changes.element.currentValue) {
-      setTimeout(() => {
-        this.handleQuestionNameChange();
-      }, 300);
-    }
-  }
-
-  onQuestionTypeSelect(type: string) {
+  onQuestionTypeSelect(type: string, elementId: string) {
     this.questionType = type;
-    this.store.dispatch(new SurveyAddQuestionTypeAction({
-      pageId: this.page.id,
-      elementId: this.element.id,
+    this.store.dispatch(new elements.AddQuestionTypeAction({
+      pageId: this.pageId,
+      elementId,
       type,
     }));
   }
 
-  handleQuestionNameChange() {
-    const $questionText = document.getElementById(`questionText-${this.element.id}`);
-
-    const questionText$ = fromEvent($questionText, 'input').pipe(
-      map((event: any) => event.target.value),
-      distinctUntilChanged(),
-      debounceTime(1000)
-    );
-
-    questionText$.subscribe(text => this.store.dispatch(new SurveyAddQuestionTextAction({
-      pageId: this.page.id,
-      elementId: this.element.id,
-      text,
-    })));
-  }
-
-  saveQuestion() {
+  saveQuestion(key: string) {
     this.isSaved = true;
-    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved });
+    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved })
   }
 
-  editQuestion() {
+  editQuestion(key: string) {
     this.isSaved = false;
-    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved });
+    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved })
   }
 
-  removeElement() {
-    this.store.dispatch(new SurveyRemoveElementAction({pageId: this.page.id, elementId: this.element.id}));
+  removeElement(elementId: string) {
+    this.store.dispatch(new elements.RemoveElementAction({ pageId: this.pageId, elementId }));
   }
 
-  moveElementDown() {
-    this.store.dispatch(new SurveyMoveElementDownAction({pageId: this.page.id, elementId: this.element.id}));
+  moveElementDown(elementId: string) {
+    this.store.dispatch(new elements.MoveElementDownAction({ pageId: this.pageId, elementId }));
   }
 
-  moveElementUp() {
-    this.store.dispatch(new SurveyMoveElementUpAction({pageId: this.page.id, elementId: this.element.id}));
+  moveElementUp(elementId: string) {
+    this.store.dispatch(new elements.MoveElementUpAction({ pageId: this.pageId, elementId }));
+  }
+
+  trackElement(index: number, element: any) {
+    return element ? element.key : null;
   }
 }
 

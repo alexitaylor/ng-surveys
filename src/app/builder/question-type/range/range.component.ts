@@ -3,11 +3,8 @@ import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
-import {
-  SurveyRemoveQuestionMinAndMaxAction, SurveyUpdateQuestionMaxAction,
-  SurveyUpdateQuestionMinAction
-} from '../../../store/survey/survey.actions';
 import {IElements} from '../../../models/elements.model';
+import * as elements from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'sb-range',
@@ -35,7 +32,7 @@ export class RangeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new SurveyRemoveQuestionMinAndMaxAction({
+    this.store.dispatch(new elements.RemoveQuestionMinAndMaxAction({
       pageId: this.pageId,
       elementId: this.element.id,
     }));
@@ -51,7 +48,7 @@ export class RangeComponent implements OnInit, OnDestroy {
     );
 
     min$.subscribe(min => {
-      this.store.dispatch(new SurveyUpdateQuestionMinAction({
+      this.store.dispatch(new elements.UpdateQuestionMinAction({
         pageId: this.pageId,
         elementId: this.element.id,
         min
@@ -69,7 +66,7 @@ export class RangeComponent implements OnInit, OnDestroy {
     );
 
     max$.subscribe(max => {
-      this.store.dispatch(new SurveyUpdateQuestionMaxAction({
+      this.store.dispatch(new elements.UpdateQuestionMaxAction({
         pageId: this.pageId,
         elementId: this.element.id,
         max

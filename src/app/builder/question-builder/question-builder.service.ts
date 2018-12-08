@@ -12,7 +12,7 @@ export class QuestionBuilderService {
 
   constructor() { }
 
-  getElementTypeComponent(type: string, element: IElements): IQuestionItem {
+  getElementTypeComponent(type: string, element: IElements, surveyId: string): IQuestionItem {
     let title = '', component;
     if (type === 'shortText') {
       component = ShortTextComponent;
@@ -40,7 +40,8 @@ export class QuestionBuilderService {
     return new QuestionItemComponent(component, {
       title,
       type,
-      element
+      element,
+      surveyId,
     });
   }
 }

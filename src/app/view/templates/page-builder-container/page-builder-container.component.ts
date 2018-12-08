@@ -1,29 +1,33 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {fromEvent, Observable} from 'rxjs';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IPage, IPageMap} from '../../../models/page.model';
 import {AppState} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
-import {
-  SurveyAddElementAction, SurveyDragElementAction, SurveyInsertPageAction, SurveyMovePageDownAction, SurveyMovePageUpAction,
-  SurveyRemovePageAction,
-  SurveyUpdatePageDescriptionAction,
-  SurveyUpdatePageNameAction, SurveyUpdatePagePageFlowAction
-} from '../../../store/survey/survey.actions';
+
 import * as fromRoot from '../../../store/app.reducer';
+import * as pages from '../../../store/pages/pages.actions';
+import * as elements from '../../../store/elements/elements.actions';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {PageFlow} from '../../../models/page-flow.model';
+import {UUID} from 'angular2-uuid';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {IElementsMap} from '../../../models/elements.model';
 
 @Component({
   selector: 'sb-page-builder-container',
   templateUrl: './page-builder-container.component.html',
   styleUrls: ['./page-builder-container.component.scss']
 })
-export class PageBuilderContainerComponent implements OnInit {
+export class PageBuilderContainerComponent implements OnInit, OnDestroy {
+  @Input() surveyId: string;
   @Input() page: IPage;
   @Input() pages: IPageMap;
-  pageSize$: Observable<number>;
+  pageSizeSub: Subscription;
+  pageSize: number;
+  elementsSub: Subscription;
+  elements: IElementsMap;
+  elementsSize: number;
   isEditPage: boolean;
   pageNavNext = 'goToNextPage';
   isSavedMap = new Map<string, boolean>();
@@ -31,62 +35,78 @@ export class PageBuilderContainerComponent implements OnInit {
   constructor(
     private store: Store<AppState>
   ) {
-    this.pageSize$ = this.store.pipe(select(fromRoot.getSurveyPageSize));
   }
 
   ngOnInit() {
-    this.setSavedMap();
+    this.pageSizeSub = this.store.pipe(select(fromRoot.getSurveyPageSize, { surveyId: this.surveyId })).subscribe(res => {
+      this.pageSize = res;
+    });
+
+    this.elementsSub = this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.page.id })).subscribe(res => {
+      this.elements = res;
+      if (res) {
+        this.elementsSize = res.size;
+        this.setSavedMap();
+      }
+    });
   }
 
-  removePage() {
-    this.store.dispatch(new SurveyRemovePageAction({ pageId: this.page.id }));
+  ngOnDestroy() {
+    this.elementsSub.unsubscribe();
+    this.pageSizeSub.unsubscribe();
   }
 
-  insertPage() {
-    this.store.dispatch(new SurveyInsertPageAction({ previousPageId: this.page.id }));
+  removePage(pageId: string) {
+    const elementIds = Array.from(this.elements).reduce((array, el) => [...array, el[0]], []);
+    this.store.dispatch(new pages.RemovePageAction({ pageId, surveyId: this.surveyId, elementIds }));
   }
 
-  movePageDown() {
-    this.store.dispatch(new SurveyMovePageDownAction({ pageId: this.page.id }));
+  insertPage(previousPageId: string) {
+    const pageId = UUID.UUID();
+    this.store.dispatch(new pages.InsertPageAction({ previousPageId, surveyId: this.surveyId, pageId }));
   }
 
-  movePageUp() {
-    this.store.dispatch(new SurveyMovePageUpAction({ pageId: this.page.id }));
+  movePageDown(pageId: string) {
+    this.store.dispatch(new pages.MovePageDownAction({ pageId, surveyId: this.surveyId }));
   }
 
-  addElement() {
-    this.store.dispatch(new SurveyAddElementAction({pageId: this.page.id}));
+  movePageUp(pageId: string) {
+    this.store.dispatch(new pages.MovePageUpAction({ pageId, surveyId: this.surveyId }));
   }
 
-  onEditPageClick() {
+  addElement(pageId: string) {
+    this.store.dispatch(new elements.AddElementAction({ pageId }));
+  }
+
+  onEditPageClick(pageId: string) {
     this.isEditPage = true;
     setTimeout(() => {
-      this.editPageName();
-      this.editPageDescription();
+      this.editPageName(pageId);
+      this.editPageDescription(pageId);
     }, 300);
   }
 
-  editPageName() {
-    const $pageNameInput = document.getElementById(`page-name-input-${this.page.id}`);
+  editPageName(pageId: string) {
+    const $pageNameInput = document.getElementById(`page-name-input-${pageId}`);
 
     fromEvent($pageNameInput, 'input').pipe(
       map((event: any) => event.target.value),
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(name => {
-      this.store.dispatch(new SurveyUpdatePageNameAction({ pageId: this.page.id, name}));
+      this.store.dispatch(new pages.UpdatePageNameAction({ pageId, name, surveyId: this.surveyId }));
     });
   }
 
-  editPageDescription() {
-    const $pageDescriptionInput = document.getElementById(`page-description-input-${this.page.id}`);
+  editPageDescription(pageId: string) {
+    const $pageDescriptionInput = document.getElementById(`page-description-input-${pageId}`);
 
     fromEvent($pageDescriptionInput, 'input').pipe(
       map((event: any) => event.target.value),
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(description => {
-      this.store.dispatch(new SurveyUpdatePageDescriptionAction({ pageId: this.page.id, description}));
+      this.store.dispatch(new pages.UpdatePageDescriptionAction({ pageId, description, surveyId: this.surveyId }));
     });
   }
 
@@ -101,28 +121,30 @@ export class PageBuilderContainerComponent implements OnInit {
       pageFlow.pageId = value;
     }
 
-    this.store.dispatch(new SurveyUpdatePagePageFlowAction({
+    this.store.dispatch(new pages.UpdatePagePageFlowAction({
       pageId: this.page.id,
-      pageFlow
+      pageFlow,
+      surveyId: this.surveyId
     }));
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    this.store.dispatch(new SurveyDragElementAction({
-      pageId: this.page.id,
+  drop(event: CdkDragDrop<string[]>, pageId: string) {
+    this.store.dispatch(new elements.DragElementAction({
+      pageId,
       startIndex: event.previousIndex,
       endIndex: event.currentIndex,
     }));
   }
 
-  private setSavedMap() {
-    this.page.elements.forEach((value, key) => {
-      this.isSavedMap.set(key, false);
-    });
-  }
-
   handleIsSavedEvent({ key, isSaved }) {
     this.isSavedMap.set(key, isSaved);
+  }
+
+  private setSavedMap() {
+    // TODO get elements by pageId
+    this.elements.forEach((value, key) => {
+      this.isSavedMap.set(key, false);
+    });
   }
 
   trackElement(index: number, element: any) {

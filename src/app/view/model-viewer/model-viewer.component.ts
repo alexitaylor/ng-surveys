@@ -11,12 +11,12 @@ import {AppState} from '../../store/app.state';
   styleUrls: ['./model-viewer.component.scss']
 })
 export class ModelViewerComponent implements OnInit {
-  surveyModel$: Observable<IAngularSurvey>;
+  surveyModel$: Observable<AppState>;
 
   constructor(
     private store: Store<AppState>,
   ) {
-    this.surveyModel$ = this.store.pipe(select(state => state.survey));
+    this.surveyModel$ = this.store.pipe(select(state => state));
   }
 
   ngOnInit() {

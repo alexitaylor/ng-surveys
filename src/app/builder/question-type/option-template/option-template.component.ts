@@ -1,17 +1,14 @@
-import {Component, EventEmitter, Input, Output, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {fromEvent, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 import {AppState} from '../../../store/app.state';
-import {
-  SurveyAddOptionAnswersAction, SurveyAddOptionAnswerValueAction,
-  SurveyRemoveOptionAnswersAction, SurveyUpdateOptionAnswerPageFlow, SurveyUpdateQuestionPageFlowModifierAction
-} from '../../../store/survey/survey.actions';
 import {IElements} from '../../../models/elements.model';
-import {IOptionAnswers, IOptionAnswersMap} from '../../../models/option-answers.model';
+import {IOptionAnswers} from '../../../models/option-answers.model';
 import {IPageMap} from '../../../models/page.model';
 import * as fromRoot from '../../../store/app.reducer';
+import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
 import {PageFlow} from '../../../models/page-flow.model';
 
 @Component({
@@ -24,6 +21,7 @@ export class OptionTemplateComponent implements OnInit {
   @Input() optionAnswer: IOptionAnswers;
   @Input() element: IElements;
   @Input() isPageNavChecked: boolean;
+  @Input() surveyId: string;
 
   pages$: Observable<IPageMap>;
   isOptionActive = true;
@@ -32,7 +30,7 @@ export class OptionTemplateComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
   ) {
-    this.pages$ = store.pipe(select(fromRoot.getSurveyPages));
+    this.pages$ = this.store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId }));
   }
 
   ngOnInit() {
@@ -61,8 +59,7 @@ export class OptionTemplateComponent implements OnInit {
       pageFlow.pageId = value;
     }
 
-    this.store.dispatch(new SurveyUpdateOptionAnswerPageFlow({
-      pageId: this.element.pageId,
+    this.store.dispatch(new optionAnswers.UpdateOptionAnswerPageFlow({
       elementId: this.element.id,
       optionAnswerId: this.optionAnswer.id,
       pageFlow
@@ -70,9 +67,8 @@ export class OptionTemplateComponent implements OnInit {
   }
 
   removeOptionAnswer() {
-    this.store.dispatch(new SurveyRemoveOptionAnswersAction(
+    this.store.dispatch(new optionAnswers.RemoveOptionAnswersAction(
       {
-        pageId: this.element.pageId,
         elementId: this.element.id,
         optionAnswerId: this.optionAnswer.id
       }));
@@ -88,8 +84,7 @@ export class OptionTemplateComponent implements OnInit {
     );
 
     optionTemplateInput$.subscribe(value => {
-      this.store.dispatch(new SurveyAddOptionAnswerValueAction({
-        pageId: this.element.pageId,
+      this.store.dispatch(new optionAnswers.AddOptionAnswerValueAction({
         elementId: this.element.id,
         optionAnswerId: this.optionAnswer.id,
         value
