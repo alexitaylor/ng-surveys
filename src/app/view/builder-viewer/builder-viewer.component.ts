@@ -34,6 +34,7 @@ export class BuilderViewerComponent implements OnInit, OnDestroy {
       this.surveyId = res;
     });
     this.pagesSub = store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => {
+      console.log('????res: ', res);
       this.pages = res;
     });
   }
