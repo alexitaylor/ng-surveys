@@ -34,9 +34,10 @@ export function moveElementUp(elementId: string, elements: IElementsMap): IEleme
 
   elements.delete(elementId);
   const newElementsMap: IElementsMap = moveItemInMap(elements, index, currentElement);
+
   updateElementPositionInMap(newElementsMap);
 
-  return new Map<string, IElements>(elements);
+  return new Map<string, IElements>(newElementsMap);
 }
 
 export function moveElementDown(elementId: string, elements: IElementsMap): IElementsMap {
@@ -47,20 +48,19 @@ export function moveElementDown(elementId: string, elements: IElementsMap): IEle
   const newElementsMap: IElementsMap = moveItemInMap(elements, index, currentElement);
   updateElementPositionInMap(newElementsMap);
 
-  return new Map<string, IElements>(elements);
+  return new Map<string, IElements>(newElementsMap);
 }
 
 export function dragElement(startIndex: number, endIndex: number, elements: IElementsMap): IElementsMap {
-  const newElementsMap = dragItemInArray(elements, startIndex, endIndex);
+  const newElementsMap: IElementsMap = dragItemInArray(elements, startIndex, endIndex);
   updateElementPositionInMap(newElementsMap);
 
-  return new Map<string, IElements>(elements);
+  return new Map<string, IElements>(newElementsMap);
 }
 
 export function addQuestionText(elementId: string, text: string, elements: IElementsMap): IElementsMap {
   const currentQuestion: IQuestion = elements.get(elementId).question;
 
-  currentQuestion.elementId = elementId;
   currentQuestion.text = text;
 
   return new Map<string, IElements>(elements);
@@ -91,10 +91,14 @@ export function updateQuestionMax(elementId: string, max: number, elements: IEle
 }
 
 export function removeQuestionMinAndMax(elementId: string, elements: IElementsMap): IElementsMap {
-  const currentQuestion: IQuestion = elements.get(elementId).question;
+  const currentElement: IElements = elements.get(elementId);
 
-  currentQuestion.min = null;
-  currentQuestion.max = null;
+  if (currentElement) {
+    const currentQuestion: IQuestion = currentElement.question;
+    currentQuestion.min = null;
+    currentQuestion.max = null;
+    currentElement.question = currentQuestion;
+  }
 
   return new Map<string, IElements>(elements);
 }

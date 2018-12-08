@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
 import {IElements} from '../../../models/elements.model';
 import * as elements from '../../../store/elements/elements.actions';
+import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
 
 @Component({
   selector: 'sb-question-builder-container',
@@ -19,19 +20,35 @@ export class QuestionBuilderContainerComponent implements OnInit {
   @Output() isSavedEvent = new EventEmitter<any>();
 
   questionType: string;
+  prevQuestionType: string;
   isSaved = false;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.prevQuestionType = this.element.question.type;
+  }
 
   onQuestionTypeSelect(type: string, elementId: string) {
     this.questionType = type;
+
+    if (this.prevQuestionType === 'range') {
+      this.store.dispatch(new elements.RemoveQuestionMinAndMaxAction({
+        pageId: this.pageId,
+        elementId: this.element.id,
+      }));
+    } else if (this.prevQuestionType === 'checkboxes' || this.prevQuestionType === 'radio' || this.prevQuestionType === 'select') {
+      this.store.dispatch(new optionAnswers.RemoveOptionAnswersMapAction({ elementId: this.element.id }));
+    }
+
     this.store.dispatch(new elements.AddQuestionTypeAction({
       pageId: this.pageId,
       elementId,
       type,
     }));
+
+    this.prevQuestionType = type;
   }
 
   saveQuestion(key: string) {

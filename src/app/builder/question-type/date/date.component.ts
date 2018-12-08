@@ -7,10 +7,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DateComponent implements OnInit {
   @Input() data: any;
+  isView: boolean;
 
   constructor() { }
 
   ngOnInit() {
+    this.isView = this.data.isView;
   }
-
 }

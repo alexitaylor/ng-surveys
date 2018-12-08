@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
@@ -15,6 +15,9 @@ import {SharedCommonModule} from '../shared/shared-common.module';
 import {OptionTemplateComponent} from './question-type/option-template/option-template.component';
 import { RadioCheckboxSelectComponent } from './question-type/radio-checkbox-select/radio-checkbox-select.component';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import { SelectComponent } from './question-type/select/select.component';
+import { CheckboxComponent } from './question-type/checkbox/checkbox.component';
+import { RadioComponent } from './question-type/radio/radio.component';
 
 @NgModule({
   imports: [
@@ -23,6 +26,7 @@ import {TooltipModule} from 'ngx-bootstrap/tooltip';
     BrowserAnimationsModule,
     DragDropModule,
     SharedCommonModule,
+    ReactiveFormsModule,
     TooltipModule.forRoot(),
   ],
   providers: [
@@ -37,6 +41,9 @@ import {TooltipModule} from 'ngx-bootstrap/tooltip';
     QuestionBuilderComponent,
     OptionTemplateComponent,
     RadioCheckboxSelectComponent,
+    SelectComponent,
+    CheckboxComponent,
+    RadioComponent,
   ],
   entryComponents: [
     ShortTextComponent,
@@ -44,6 +51,9 @@ import {TooltipModule} from 'ngx-bootstrap/tooltip';
     DateComponent,
     RangeComponent,
     RadioCheckboxSelectComponent,
+    SelectComponent,
+    CheckboxComponent,
+    RadioComponent,
   ],
   exports: [
     ShortTextComponent,
@@ -54,6 +64,9 @@ import {TooltipModule} from 'ngx-bootstrap/tooltip';
     RangeComponent,
     OptionTemplateComponent,
     RadioCheckboxSelectComponent,
+    SelectComponent,
+    CheckboxComponent,
+    RadioComponent,
   ]
 })
 export class BuilderModule { }

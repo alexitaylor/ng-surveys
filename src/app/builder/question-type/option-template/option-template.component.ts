@@ -22,6 +22,7 @@ export class OptionTemplateComponent implements OnInit {
   @Input() element: IElements;
   @Input() isPageNavChecked: boolean;
   @Input() surveyId: string;
+  @Input() isNewOption: boolean;
 
   pages$: Observable<IPageMap>;
   isOptionActive = true;
@@ -35,8 +36,11 @@ export class OptionTemplateComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
-      const $optionTemplateInput = document.getElementById(`optionTemplateInput-${this.optionAnswer.id}`);
-      $optionTemplateInput.focus();
+      if (this.isNewOption) {
+        const $optionTemplateInput = document.getElementById(`optionTemplateInput-${this.optionAnswer.id}`);
+        $optionTemplateInput.focus();
+        this.isNewOption = false;
+      }
       this.onOptionsValueChange();
       this.onSaveQuestionClick();
     }, 300);

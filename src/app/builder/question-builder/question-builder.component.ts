@@ -21,6 +21,7 @@ export class QuestionBuilderComponent implements OnInit {
 
   @Input() element: IElements;
   @Input() surveyId: string;
+  @Input() isView: boolean;
 
   // initialize a private variable _questions as a BehaviorSubject
   private _questionType = new BehaviorSubject<string>(null);
@@ -46,7 +47,7 @@ export class QuestionBuilderComponent implements OnInit {
       if (!!payload) {
         this.hasQuestion = true;
         setTimeout(() => {
-          this.question = this.questionBuilder$.getElementTypeComponent(payload, this.element, this.surveyId);
+          this.question = this.questionBuilder$.getElementTypeComponent(payload, this.element, this.surveyId, this.isView);
           this.loadComponent();
         }, 300);
       } else {

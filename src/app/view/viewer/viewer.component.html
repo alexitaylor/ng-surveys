@@ -1,3 +1,28 @@
-<p>
-  viewer works!
-</p>
+<div class="card">
+  <!-- Card Header -->
+  <div class="card-header d-flex w-100">
+    <div class="mr-auto d-flex flex-row w-50">
+      <span class="w-25">Page {{page?.orderNo}} of {{pageSize}}</span>
+    </div>
+  </div>
+  <!-- #/Card Header -->
+
+  <!-- Card Body -->
+  <div class="card-body">
+    <sb-page-viewer-container
+      [page]="page"
+    ></sb-page-viewer-container>
+  </div>
+  <!-- #/Card Body -->
+
+  <!-- Card Footer -->
+  <div class="card-footer d-flex w-100">
+    <div class="mr-auto">
+      <button type="button" class="btn btn-primary btn-lg" [disabled]="!pagePrev" [routerLink]="'/viewer/' + pagePrev?.id">Back</button>
+    </div>
+    <div class="ml-auto">
+      <button type="button" class="btn btn-primary btn-lg" [disabled]="!pageNext" [routerLink]="'/viewer/' + pageNext?.id">Next</button>
+    </div>
+  </div>
+  <!-- #/Card Footer -->
+</div>

@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {fromEvent} from 'rxjs';
+import {Component, OnInit, Input} from '@angular/core';
+import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
@@ -11,11 +11,16 @@ import * as elements from '../../../store/elements/elements.actions';
   templateUrl: './range.component.html',
   styleUrls: ['./range.component.scss']
 })
-export class RangeComponent implements OnInit, OnDestroy {
+export class RangeComponent implements OnInit {
   @Input() data: any;
+  isView: boolean;
+  currentRange: number;
 
   element: IElements;
   pageId: string;
+
+  minSub: Subscription;
+  maxSub: Subscription;
 
   constructor(
     private store: Store<AppState>,
@@ -24,54 +29,42 @@ export class RangeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.element = this.data.element;
     this.pageId = this.data.element.pageId;
+    this.isView = this.data.isView;
 
-    setTimeout(() => {
-      this.onMinChange();
-      this.onMaxChange();
-    }, 300);
-  }
-
-  ngOnDestroy() {
-    this.store.dispatch(new elements.RemoveQuestionMinAndMaxAction({
-      pageId: this.pageId,
-      elementId: this.element.id,
-    }));
+    if (!this.isView) {
+      setTimeout(() => {
+        this.onMinChange();
+        this.onMaxChange();
+      }, 300);
+    }
   }
 
   onMinChange() {
     const $min = document.getElementById(`min-range-${this.element.id}`);
 
-    const min$ = fromEvent($min, 'input').pipe(
+    this.minSub = fromEvent($min, 'input').pipe(
       map((event: any) => event.target.value),
       distinctUntilChanged(),
-      debounceTime(1000)
-    );
-
-    min$.subscribe(min => {
-      this.store.dispatch(new elements.UpdateQuestionMinAction({
+      debounceTime(1000),
+    ).subscribe(min => this.store.dispatch(new elements.UpdateQuestionMinAction({
         pageId: this.pageId,
         elementId: this.element.id,
         min
-      }));
-    });
+      })));
   }
 
   onMaxChange() {
     const $max = document.getElementById(`max-range-${this.element.id}`);
 
-    const max$ = fromEvent($max, 'input').pipe(
+    this.maxSub = fromEvent($max, 'input').pipe(
       map((event: any) => event.target.value),
       distinctUntilChanged(),
       debounceTime(1000)
-    );
-
-    max$.subscribe(max => {
-      this.store.dispatch(new elements.UpdateQuestionMaxAction({
+    ).subscribe(max => this.store.dispatch(new elements.UpdateQuestionMaxAction({
         pageId: this.pageId,
         elementId: this.element.id,
         max
-      }));
-    });
+      })));
   }
 
 }

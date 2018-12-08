@@ -1,0 +1,55 @@
+<sb-navbar></sb-navbar>
+<div id="content" class="container-fluid">
+  <div>
+    <div class="row">
+      <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a
+            class="nav-link"
+            id="builder-tab"
+            data-toggle="pill"
+            routerLink=""
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}"
+            role="tab"
+            aria-controls="builder"
+            aria-selected="true">
+            Builder
+          </a>
+          <a
+            class="nav-link"
+            id="viewer-tab"
+            data-toggle="pill"
+            routerLink="/viewer"
+            routerLinkActive="active"
+            role="tab" aria-controls="viewer"
+            aria-selected="false">
+            Viewer
+          </a>
+          <a
+            class="nav-link"
+            id="model-tab"
+            data-toggle="pill"
+            routerLink="/model"
+            routerLinkActive="active"
+            role="tab"
+            aria-controls="model"
+            aria-selected="false">
+            Model
+          </a>
+          <span *ngFor="let link of links">
+            <a class="nav-link" [routerLink]="'/' + link.path">{{ link.text }}</a>
+          </span>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="card bg-grey">
+          <div class="card-body">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

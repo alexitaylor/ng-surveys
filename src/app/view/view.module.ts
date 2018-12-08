@@ -14,10 +14,14 @@ import {PageBuilderContainerComponent} from './templates/page-builder-container/
 import {SharedCommonModule} from '../shared/shared-common.module';
 import { SummaryContainerComponent } from './templates/summary-container/summary-container.component';
 import { QuestionInputComponent } from './templates/question-builder-container/question-input/question-input.component';
+import { PageViewerContainerComponent } from './templates/page-viewer-container/page-viewer-container.component';
+import {RouterModule} from '@angular/router';
+import { QuestionViewerContainerComponent } from './templates/question-viewer-container/question-viewer-container.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule,
     BrowserAnimationsModule,
     DragDropModule,
     SharedCommonModule,
@@ -33,13 +37,18 @@ import { QuestionInputComponent } from './templates/question-builder-container/q
     PageBuilderContainerComponent,
     SummaryContainerComponent,
     QuestionInputComponent,
+    PageViewerContainerComponent,
+    QuestionViewerContainerComponent
   ],
+  entryComponents: [PageViewerContainerComponent],
   exports: [
     BuilderViewerComponent,
     ViewerComponent,
     ModelViewerComponent,
     SummaryContainerComponent,
     QuestionInputComponent,
+    PageViewerContainerComponent,
+    QuestionViewerContainerComponent,
   ]
 })
 export class ViewModule { }

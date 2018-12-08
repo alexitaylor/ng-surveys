@@ -1,0 +1,16 @@
+<h4>{{data.title}}</h4>
+
+<form [formGroup]="form">
+  <label
+    class="container"
+    formArrayName="optionAnswers"
+    *ngFor="let item of optionAnswers | mapValues; trackBy: trackElement; let i = index">
+    {{item?.value.value}}
+    <input type="checkbox" [formControlName]="i">
+    <span class="checkmark"></span>
+  </label>
+
+  <div *ngIf="!form.valid" class="text-red">At least one checkbox must be selected</div>
+  <br>
+</form>
+

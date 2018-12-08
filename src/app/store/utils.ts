@@ -29,8 +29,8 @@ export const moveItemInMap = (map: Map<string, IPage | IElements>, index: number
 };
 
 export const dragItemInArray = (
-  map: Map<string, IPage | IElements | IOptionAnswers>, startIndex: number, endIndex: number
-): Map<string, IPage | IElements | IOptionAnswers> => {
+  map: Map<string, any>, startIndex: number, endIndex: number
+): Map<string, any> => {
   const array = Array.from(map);
   moveItemInArray(array, startIndex, endIndex);
   return arrayToMap(array);

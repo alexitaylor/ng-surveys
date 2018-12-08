@@ -7,10 +7,12 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ShortTextComponent implements OnInit {
   @Input() data: any;
+  isView: boolean;
 
   constructor() { }
 
   ngOnInit() {
+    this.isView = this.data.isView;
   }
 
 }

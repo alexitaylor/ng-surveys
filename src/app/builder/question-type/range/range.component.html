@@ -1,15 +1,14 @@
-<h4>{{data.title}}</h4>
-
-<div class="row mt-5">
-  <div class="col-9 offset-2">
+<div *ngIf="!isView" class="row mt-5">
+  <h4>{{data.title}}</h4>
+  <div class="col-8 offset-2">
     <form class="form-inline">
       <div class="form-group mb-2">
         <label class="mr-3 text-2x">Range from </label>
-        <input type="number" class="form-control" [id]="'min-range-' + element.id" placeholder="Min Value">
+        <input type="number" name="min" class="form-control" [id]="'min-range-' + element.id" [ngModel]="element.question.min" placeholder="Min Value">
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label class="mr-3 text-2x">to</label>
-        <input type="number" class="form-control" [id]="'max-range-' + element.id" placeholder="Max Value">
+        <input type="number" name="max" class="form-control" [id]="'max-range-' + element.id" [ngModel]="element.question.max" placeholder="Max Value">
       </div>
     </form>
 
@@ -18,5 +17,23 @@
       <input type="range" class="form-control-range" id="formControlRange" disabled>
     </div>
     <!-- #/Range Input -->
+
   </div>
 </div>
+
+<!-- Range Input -->
+<div class="form-group" *ngIf="isView">
+  <label [for]="'range' + element.id"><h2>{{element.question.text}}</h2></label>
+  <span class="d-flex flex-row justify-content-between">
+    <input
+      type="range"
+      class="custom-range"
+      [(ngModel)]="currentRange"
+      [id]="'range' + element.id"
+      [min]="element?.question.min"
+      [max]="element?.question.max"
+    >
+    <h1 class="ml-5">{{currentRange}}</h1>
+  </span>
+</div>
+<!-- #/Range Input -->

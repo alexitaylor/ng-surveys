@@ -1,6 +1,6 @@
 <h4>{{data.title}}</h4>
 <form>
   <div class="form-group">
-    <input type="text" class="form-control" id="long-text-question" placeholder="Long answer text" disabled>
+    <input type="text" class="form-control" id="long-text-question" placeholder="Long answer text" [disabled]="!isView">
   </div>
 </form>

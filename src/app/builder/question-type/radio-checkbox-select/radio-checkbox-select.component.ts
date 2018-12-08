@@ -26,6 +26,7 @@ export class RadioCheckboxSelectComponent implements OnInit {
   surveyId: string;
   isPageNavChecked = false;
   isSaved = false;
+  isNewOption = false;
 
   constructor(
     private store: Store<AppState>,
@@ -47,15 +48,6 @@ export class RadioCheckboxSelectComponent implements OnInit {
       }
     });
 
-
-    // this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.pageId })).subscribe(res => {
-    //   console.log('@@@res: ', res);
-    //   console.log('res.get(this.element.id).question.optionAnswers: ', res.get(this.element.id).question.optionAnswers);
-    //   setTimeout(() => {
-    //     this.optionAnswers = res.get(this.element.id).question.optionAnswers;
-    //   });
-    // });
-
     setTimeout(() => {
       this.onSaveQuestionClick();
     }, 300);
@@ -74,6 +66,7 @@ export class RadioCheckboxSelectComponent implements OnInit {
     this.store.dispatch(new optionAnswers.AddOptionAnswersAction({
       elementId: this.element.id
     }));
+    this.isNewOption = true;
   }
 
   drop(event: CdkDragDrop<string[]>) {
