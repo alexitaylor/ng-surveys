@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import {IPageFlow} from '../../models/page-flow.model';
+import {OptionAnswersActionTypes} from '../option-answers/option-answers.actions';
 
 export enum ElementsActionTypes {
   ADD_ELEMENT_ACTION = '[Angular Element] Add survey question element',
@@ -14,6 +15,7 @@ export enum ElementsActionTypes {
   QUESTION_UPDATE_MAX_ACTION = '[Angular Question] Update question min value',
   QUESTION_REMOVE_MIN_MAX_ACTION = '[Angular Question] Remove question min and max value',
   QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION = '[Angular Question] UPDATE question page flow modifier',
+  TOGGLE_IS_ACTIVE_ELEMENT_ACTION = '[Angular Element] Toggle isActive element',
 }
 
 export class AddElementAction implements Action {
@@ -76,6 +78,11 @@ export class UpdateQuestionPageFlowModifierAction implements Action {
   constructor(public payload: { pageId: string, elementId: string, pageFlowModifier: boolean }) { }
 }
 
+export class ToggleIsActiveElementAction implements Action {
+  readonly type = ElementsActionTypes.TOGGLE_IS_ACTIVE_ELEMENT_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, isSaved: boolean }) { }
+}
+
 export type Actions =
   AddElementAction |
   RemoveElementAction |
@@ -88,4 +95,5 @@ export type Actions =
   UpdateQuestionMinAction |
   UpdateQuestionMaxAction |
   RemoveQuestionMinAndMaxAction |
-  UpdateQuestionPageFlowModifierAction;
+  UpdateQuestionPageFlowModifierAction |
+  ToggleIsActiveElementAction;

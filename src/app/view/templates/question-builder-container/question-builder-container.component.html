@@ -3,7 +3,7 @@
   <div class="d-flex justify-content-end">
     <div class="btn-group" role="group">
       <button
-        *ngIf="!isSaved"
+        *ngIf="!element?.isSaved"
         type="button"
         class="btn btn-outline-primary"
         tooltip="Remove Element"
@@ -11,7 +11,7 @@
         <i class="fas fa-trash-alt"></i>
       </button>
       <button
-        *ngIf="!isSaved"
+        *ngIf="!element?.isSaved"
         type="button"
         class="btn btn-outline-primary"
         tooltip="Move Down"
@@ -20,7 +20,7 @@
         <i class="fas fa-chevron-down"></i>
       </button>
       <button
-        *ngIf="!isSaved"
+        *ngIf="!element?.isSaved"
         type="button"
         class="btn btn-outline-primary"
         tooltip="Move Up"
@@ -28,12 +28,13 @@
         [disabled]="element?.orderNo === 1">
         <i class="fas fa-chevron-up"></i>
       </button>
-      <button *ngIf="isSaved" type="button" class="btn btn-outline-primary" tooltip="Clone Element">
+      <button *ngIf="element?.isSaved" type="button" class="btn btn-outline-primary" tooltip="Clone Element">
         <i class="fas fa-clone"></i>
       </button>
       <button
         [id]="'edit-question-button-' + element?.id"
-        *ngIf="isSaved" type="button"
+        *ngIf="element?.isSaved"
+        type="button"
         class="btn btn-outline-primary"
         tooltip="Edit Element"
         (click)="editQuestion(element?.id)">
@@ -86,6 +87,6 @@
     ></sb-question-builder-component>
   <!-- #/Question Builder Element -->
 
-  <button [id]="'save-question-button-' + element?.id" *ngIf="!isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion(element?.id)" [disabled]="!questionType">Save Question</button>
+  <button [id]="'save-question-button-' + element?.id" *ngIf="!element?.isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion(element?.id)" [disabled]="!questionType">Save Question</button>
 </div>
 

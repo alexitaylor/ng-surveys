@@ -12,6 +12,7 @@ export interface IElements {
   type?: string;
   question?: IQuestion;
   paragraph?: IParagraph;
+  isSaved?: boolean;
 }
 
 export class Elements implements IElements {
@@ -22,6 +23,7 @@ export class Elements implements IElements {
     public type?: string,
     public question?: IQuestion,
     public paragraph?: IParagraph,
+    public isSaved?: boolean,
   ) {
     const uuid: string = UUID.UUID();
     const newQuestion = new Question();
@@ -33,5 +35,6 @@ export class Elements implements IElements {
     this.type = type ? type : 'question';
     this.question = question ? question : newQuestion;
     this.paragraph = paragraph ? paragraph : null;
+    this.isSaved = isSaved ? isSaved : false;
   }
 }

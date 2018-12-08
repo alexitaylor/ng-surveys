@@ -10,6 +10,7 @@ export interface IOptionAnswers {
   orderNo?: number;
   value?: string;
   pageFlow?: IPageFlow;
+  isSaved?: boolean;
 }
 
 export class OptionAnswers implements IOptionAnswers {
@@ -19,11 +20,13 @@ export class OptionAnswers implements IOptionAnswers {
     public orderNo?: number,
     public value?: string,
     public pageFlow?: IPageFlow,
+    public isSaved?: boolean,
   ) {
     this.id = id ? id : UUID.UUID();
     this.elementId = elementId ? elementId : '';
     this.orderNo = orderNo ? orderNo : 1;
     this.value = value ? value : '';
     this.pageFlow = pageFlow ? pageFlow : new PageFlow();
+    this.isSaved = isSaved ? isSaved : false;
   }
 }

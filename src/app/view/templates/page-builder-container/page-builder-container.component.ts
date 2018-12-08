@@ -141,9 +141,12 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy {
   }
 
   private setSavedMap() {
-    // TODO get elements by pageId
     this.elements.forEach((value, key) => {
-      this.isSavedMap.set(key, false);
+      if (value.isSaved) {
+        this.isSavedMap.set(key, true);
+      } else {
+        this.isSavedMap.set(key, false);
+      }
     });
   }
 

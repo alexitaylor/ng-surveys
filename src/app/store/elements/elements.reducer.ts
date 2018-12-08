@@ -130,6 +130,16 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       return Object.assign(state, _.cloneDeep(state));
     }
 
+    case elements.ElementsActionTypes.TOGGLE_IS_ACTIVE_ELEMENT_ACTION: {
+      const { pageId, elementId, isSaved } = action.payload;
+      const prevElements: IElementsMap = state.get(pageId);
+      const newElements: IElementsMap = elementUtils.toggleElementIsSaved(elementId, isSaved, prevElements);
+
+      state.set(pageId, newElements);
+
+      return Object.assign(state, _.cloneDeep(state));
+    }
+
     default: {
       return state;
     }

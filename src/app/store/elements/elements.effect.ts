@@ -38,5 +38,14 @@ export class ElementsEffect {
     catchError(() => of({ type: 'REMOVE_ELEMENTS_MAP_ERROR' }))
   );
 
+  @Effect()
+  toggleIsSaved: Observable<Action> = this.actions$.pipe(
+    ofType(elements.ElementsActionTypes.TOGGLE_IS_ACTIVE_ELEMENT_ACTION),
+    switchMap(({ payload }: CustomAction) =>
+      [new optionAnswers.ToggleIsActiveOptionAnswerAction({ elementId: payload.elementId, isSaved: payload.isSaved })]
+    ),
+    catchError(() => of({ type: 'REMOVE_ELEMENTS_MAP_ERROR' }))
+  );
+
   constructor(private actions$: Actions) {}
 }

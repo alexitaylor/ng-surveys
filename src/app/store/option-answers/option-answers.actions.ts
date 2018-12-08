@@ -9,6 +9,7 @@ export enum OptionAnswersActionTypes {
   QUESTION_ADD_OPTION_ANSWERS_VALUE_ACTION = '[Angular Option Answers] Add question option answer value',
   QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW = '[Angular Option Answers] Update question option page flow',
   DRAG_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Drag question options',
+  TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Toggle isActive question options',
 }
 
 export class AddOptionAnswersAction implements Action {
@@ -46,6 +47,11 @@ export class DragOptionAnswerAction implements Action {
   constructor(public payload: { elementId: string, startIndex: number, endIndex: number }) { }
 }
 
+export class ToggleIsActiveOptionAnswerAction implements Action {
+  readonly type = OptionAnswersActionTypes.TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION;
+  constructor(public payload: { elementId: string, isSaved: boolean }) { }
+}
+
 export type Actions =
   AddOptionAnswersAction |
   RemoveOptionAnswersAction |
@@ -53,4 +59,5 @@ export type Actions =
   RemoveOptionAnswersMapsAction |
   AddOptionAnswerValueAction |
   UpdateOptionAnswerPageFlow |
-  DragOptionAnswerAction;
+  DragOptionAnswerAction |
+  ToggleIsActiveOptionAnswerAction;

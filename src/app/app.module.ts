@@ -72,6 +72,10 @@ export class AppModule {
       this.pages = res;
     });
 
+    this.createPagesRoutes();
+  }
+
+  createPagesRoutes() {
     const pageRoute = [];
     this.pages.forEach(page => {
       pageRoute.push({

@@ -110,3 +110,11 @@ export function updateQuestionPageFlowModifier(elementId: string, pageFlowModifi
 
   return new Map<string, IElements>(elements);
 }
+
+export function toggleElementIsSaved(elementId: string, isSaved: boolean, elements: IElementsMap): IElementsMap {
+  const element: IElements = elements.get(elementId);
+
+  element.isSaved = isSaved;
+
+  return new Map<string, IElements>(elements);
+}

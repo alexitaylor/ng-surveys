@@ -14,12 +14,12 @@
     placeholder="Click to add options"
     (focus)="onFocus($event)"
     [ngModel]="optionAnswer.value"
-    [disabled]="!isOptionActive"
+    [disabled]="optionAnswer?.isSaved"
   >
   <!-- #/Option Input -->
 
   <!-- Remove Option Button -->
-  <span *ngIf="isOptionActive" class="ml-3 mb-0">
+  <span *ngIf="!optionAnswer?.isSaved" class="ml-3 mb-0">
     <button type="button" class="btn btn-outline-primary" tooltip="Remove Option" (click)="removeOptionAnswer()">
       <i class="fas fa-times"></i>
     </button>
@@ -27,7 +27,7 @@
   <!-- #/Remove Option Button -->
 
   <!-- Navigate to page selection -->
-  <div *ngIf="isOptionActive && isPageNavChecked" class="ml-3 form-group mb-0">
+  <div *ngIf="!optionAnswer?.isSaved && isPageNavChecked" class="ml-3 form-group mb-0">
     <select
       id="pageNavNext"
       name="pageNavNext"

@@ -63,10 +63,12 @@ export class RadioCheckboxSelectComponent implements OnInit {
   }
 
   addOptionInput() {
-    this.store.dispatch(new optionAnswers.AddOptionAnswersAction({
-      elementId: this.element.id
-    }));
-    this.isNewOption = true;
+    if (!this.element.isSaved) {
+      this.store.dispatch(new optionAnswers.AddOptionAnswersAction({
+        elementId: this.element.id
+      }));
+      this.isNewOption = true;
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -80,14 +82,16 @@ export class RadioCheckboxSelectComponent implements OnInit {
   onSaveQuestionClick() {
     const $saveQuestionButton = document.getElementById(`save-question-button-${this.element.id}`);
 
-    fromEvent($saveQuestionButton, 'click').pipe(
-      map(event => event)
-    ).subscribe(res => {
-      if (res) {
-        this.isSaved = true;
-        this.onEditQuestionClick();
-      }
-    });
+    if ($saveQuestionButton) {
+      fromEvent($saveQuestionButton, 'click').pipe(
+        map(event => event)
+      ).subscribe(res => {
+        if (res) {
+          this.isSaved = true;
+          this.onEditQuestionClick();
+        }
+      });
+    }
   }
 
   onEditQuestionClick() {

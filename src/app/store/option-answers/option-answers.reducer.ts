@@ -78,6 +78,18 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(state, _.cloneDeep(state));
     }
 
+    case optionAnswers.OptionAnswersActionTypes.TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION: {
+      const { elementId, isSaved } = action.payload;
+      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+
+      if (prevOptionAnswers) {
+        const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.toggleIsActiveOptionAnswerValue(isSaved, prevOptionAnswers);
+        state.set(elementId, newOptionAnswers);
+      }
+
+      return Object.assign(state, _.cloneDeep(state));
+    }
+
     default: {
       return state;
     }

@@ -52,6 +52,14 @@ export function dragOptionAnswer(startIndex: number, endIndex: number, optionAns
   return new Map<string, IOptionAnswers>(newOptionAnswersMap);
 }
 
+export function toggleIsActiveOptionAnswerValue(isSaved: boolean, optionAnswers: IOptionAnswersMap): IOptionAnswersMap {
+  optionAnswers.forEach(value => {
+    value.isSaved = isSaved;
+  });
+
+  return new Map<string, IOptionAnswers>(optionAnswers);
+}
+
 export const dragItemInArray = (
   map: Map<string, IOptionAnswers>, startIndex: number, endIndex: number
 ): Map<string, IOptionAnswers> => {

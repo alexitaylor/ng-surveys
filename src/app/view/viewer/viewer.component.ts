@@ -40,10 +40,27 @@ export class ViewerComponent implements OnInit {
         this.pageSize = res.size;
       }
     });
-    // TODO add NEW PAGES TO ROUTER ON INIT LOAD
+
+    this.createPagesRoutes();
     this.getCurrentPage();
     this.getNextPage();
     this.getPreviousPage();
+  }
+
+  createPagesRoutes() {
+    const pageRoute = [];
+    this.pages.forEach(page => {
+      pageRoute.push({
+        path: `viewer/${page.id}`,
+        component: ViewerComponent,
+      });
+    });
+
+    this.router.config.forEach(route => {
+      if (route.path === '') {
+        route.children.unshift(...pageRoute);
+      }
+    });
   }
 
   getCurrentPage() {

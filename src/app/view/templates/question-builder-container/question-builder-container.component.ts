@@ -21,13 +21,19 @@ export class QuestionBuilderContainerComponent implements OnInit {
 
   questionType: string;
   prevQuestionType: string;
-  isSaved = false;
 
   constructor(private store: Store<AppState>) {
   }
 
   ngOnInit() {
-    this.prevQuestionType = this.element.question.type;
+    this.questionType = this.element.question.type;
+    this.prevQuestionType = this.questionType;
+    setTimeout(() => {
+      if (!!this.questionType) {
+        this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: true }));
+        this.isSavedEvent.emit({ key: this.element.id, isSaved: true });
+      }
+    }, 100);
   }
 
   onQuestionTypeSelect(type: string, elementId: string) {
@@ -52,13 +58,13 @@ export class QuestionBuilderContainerComponent implements OnInit {
   }
 
   saveQuestion(key: string) {
-    this.isSaved = true;
-    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved })
+    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: true }));
+    this.isSavedEvent.emit({ key: this.element.id, isSaved: true });
   }
 
   editQuestion(key: string) {
-    this.isSaved = false;
-    this.isSavedEvent.emit({ key: this.element.id, isSaved: this.isSaved })
+    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: false }));
+    this.isSavedEvent.emit({ key: this.element.id, isSaved: false });
   }
 
   removeElement(elementId: string) {
