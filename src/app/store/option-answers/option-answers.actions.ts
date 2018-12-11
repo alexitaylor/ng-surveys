@@ -1,5 +1,7 @@
 import { Action } from '@ngrx/store';
 import {IPageFlow} from '../../models/page-flow.model';
+import {AppState} from '../app.state';
+import {PagesActionTypes} from '../pages/pages.actions';
 
 export enum OptionAnswersActionTypes {
   QUESTION_ADD_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Add question option answer',
@@ -10,6 +12,7 @@ export enum OptionAnswersActionTypes {
   QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW = '[Angular Option Answers] Update question option page flow',
   DRAG_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Drag question options',
   TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Toggle isActive question options',
+  RESET_OPTION_ANSWERS_STATE = '[Angular Option Answers] Reset option answers state',
 }
 
 export class AddOptionAnswersAction implements Action {
@@ -52,6 +55,11 @@ export class ToggleIsActiveOptionAnswerAction implements Action {
   constructor(public payload: { elementId: string, isSaved: boolean }) { }
 }
 
+export class ResetOptionAnswersStateAction implements Action {
+  readonly type = OptionAnswersActionTypes.RESET_OPTION_ANSWERS_STATE;
+  constructor(public payload: { appState: AppState }) { }
+}
+
 export type Actions =
   AddOptionAnswersAction |
   RemoveOptionAnswersAction |
@@ -60,4 +68,5 @@ export type Actions =
   AddOptionAnswerValueAction |
   UpdateOptionAnswerPageFlow |
   DragOptionAnswerAction |
-  ToggleIsActiveOptionAnswerAction;
+  ToggleIsActiveOptionAnswerAction |
+  ResetOptionAnswersStateAction;

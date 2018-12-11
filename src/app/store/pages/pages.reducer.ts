@@ -89,6 +89,11 @@ export function reducer(state = appInitialState.pages, action: page.Actions): IP
       return Object.assign(state, _.cloneDeep(state));
     }
 
+    case page.PagesActionTypes.RESET_PAGE_STATE: {
+      const { appState } = action.payload;
+      return Object.assign(appState.pages);
+    }
+
     default: {
       return state;
     }

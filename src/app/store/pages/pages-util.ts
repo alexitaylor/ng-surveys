@@ -6,7 +6,7 @@ import * as elements from '../elements/elements.actions';
 export function createNextPage(pages: IPageMap, surveyId: string, pageId: string): IPageMap {
   const newPage: IPage = new Page(pageId, surveyId);
 
-  if (pages.size > 1) {
+  if (pages.size >= 1) {
     const lastPage = getLastValueInMap(pages);
     newPage.orderNo = lastPage.orderNo + 1;
   }
@@ -59,7 +59,7 @@ export function movePageDown(pages: IPageMap, pageId: string): IPageMap {
 export function removePage(pages: IPageMap, pageId: string): IPageMap {
   pages.delete(pageId);
   updateElementPositionInMap(pages);
-  // TODO remove element
+
   return new Map<string, IPage>(pages);
 }
 

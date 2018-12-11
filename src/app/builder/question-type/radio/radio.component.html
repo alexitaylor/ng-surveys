@@ -7,7 +7,7 @@
     class="custom-control-input"
     [value]="item?.value.value"
     [(ngModel)]="data?.element.question.answer"
-    (ngModelChange)="handleChange($event)"
+    (ngModelChange)="handleChange($event, item?.value.pageFlow)"
   >
   <label class="custom-control-label" [for]="'radio' + item?.key">{{item?.value.value}}</label>
 </div>

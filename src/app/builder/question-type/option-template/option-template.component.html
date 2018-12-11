@@ -27,15 +27,15 @@
   <!-- #/Remove Option Button -->
 
   <!-- Navigate to page selection -->
-  <div *ngIf="!optionAnswer?.isSaved && isPageNavChecked" class="ml-3 form-group mb-0">
+  <div *ngIf="!optionAnswer?.isSaved && element.question.pageFlowModifier" class="ml-3 form-group mb-0">
     <select
       id="pageNavNext"
       name="pageNavNext"
       class="form-control"
-      [(ngModel)]="pageNavNext"
+      [(ngModel)]="optionAnswer.pageFlow.pageId"
       (ngModelChange)="handlePageNavNext($event)">
       <option value="goToNextPage" selected>Continue to next page</option>
-      <option *ngFor="let item of pages$ | async | mapValues; trackBy:trackElement" [value]="item.value.id">
+      <option *ngFor="let item of pages | mapValues; trackBy:trackElement" [value]="item.value.id">
         <span id="page-orderNo" *ngIf="item.value.orderNo">Go to page {{item.value.orderNo}}</span>
         <span id="page-title" *ngIf="item.value.title">| {{item.value.title}}</span>
       </option>

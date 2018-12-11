@@ -6,7 +6,7 @@
     formArrayName="optionAnswers"
     *ngFor="let item of optionAnswers | mapValues; trackBy: trackElement; let i = index">
     {{item?.value.value}}
-    <input type="checkbox" [formControlName]="i" (change)="handleChange()">
+    <input type="checkbox" [formControlName]="i" (change)="handleChange(item?.value.pageFlow)">
     <span class="checkmark"></span>
   </label>
 

@@ -3,9 +3,12 @@ import {Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../store/app.reducer';
 import {Observable, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {IPage, IPageMap} from '../../models/page.model';
 import {AppState} from '../../store/app.state';
 import {PageViewerContainerComponent} from '../templates/page-viewer-container/page-viewer-container.component';
+import {IElementsMap} from '../../models/elements.model';
+import {IOptionAnswersMap} from '../../models/option-answers.model';
 
 @Component({
   selector: 'sb-viewer',
@@ -45,6 +48,15 @@ export class ViewerComponent implements OnInit {
     this.getCurrentPage();
     this.getNextPage();
     this.getPreviousPage();
+  }
+
+
+  nextPage() {
+    if (this.page.pageFlow.label === 'pageFlow.goToPage') {
+      this.router.navigate([`/viewer/${this.page.pageFlow.pageId}`]);
+    } else {
+      this.router.navigate([`/viewer/${this.pageNext.id}`]);
+    }
   }
 
   createPagesRoutes() {

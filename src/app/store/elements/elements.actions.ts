@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import {IPageFlow} from '../../models/page-flow.model';
-import {OptionAnswersActionTypes} from '../option-answers/option-answers.actions';
+import {AppState} from '../app.state';
 
 export enum ElementsActionTypes {
   ADD_ELEMENT_ACTION = '[Angular Element] Add survey question element',
@@ -17,6 +17,7 @@ export enum ElementsActionTypes {
   QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION = '[Angular Question] UPDATE question page flow modifier',
   TOGGLE_IS_ACTIVE_ELEMENT_ACTION = '[Angular Element] Toggle isActive element',
   QUESTION_UPDATE_ANSWER_ACTION = '[Angular Question] Update question answer value',
+  RESET_ELEMENTS_STATE = '[Angular Element] Reset elements state',
 }
 
 export class AddElementAction implements Action {
@@ -86,7 +87,19 @@ export class ToggleIsActiveElementAction implements Action {
 
 export class UpdateQuestionAnswerAction implements Action {
   readonly type = ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION;
-  constructor(public payload: { pageId: string, elementId: string, answer: string | number }) { }
+  constructor(public payload: {
+      pageId: string,
+      elementId: string,
+      answer: string | number,
+      pageFlowModifier: boolean,
+      pageFlow: IPageFlow,
+      surveyId: string
+  }) { }
+}
+
+export class ResetElementsStateAction implements Action {
+  readonly type = ElementsActionTypes.RESET_ELEMENTS_STATE;
+  constructor(public payload: { appState: AppState }) { }
 }
 
 export type Actions =
@@ -103,4 +116,5 @@ export type Actions =
   RemoveQuestionValuesAction |
   UpdateQuestionPageFlowModifierAction |
   ToggleIsActiveElementAction |
-  UpdateQuestionAnswerAction;
+  UpdateQuestionAnswerAction |
+  ResetElementsStateAction;

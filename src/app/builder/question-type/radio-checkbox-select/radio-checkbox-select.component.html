@@ -5,13 +5,13 @@
     <div class="row">
       <div class="col-9 offset-2">
         <form>
-          <div class="form-group form-check">
+          <div class="form-group form-check" *ngIf="data.type === 'radio' || data.type === 'select'">
             <input
               id="pageNavCheckbox"
               type="checkbox"
               name="isPageNavChecked"
               class="form-check-input"
-              [(ngModel)]="isPageNavChecked"
+              [(ngModel)]="data.element.question.pageFlowModifier"
               (change)="togglePageNavChecked($event)"
             >
             <label class="form-check-label" for="pageNavCheckbox">Go to page based on answer</label>

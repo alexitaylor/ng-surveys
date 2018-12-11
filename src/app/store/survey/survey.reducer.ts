@@ -1,7 +1,7 @@
 import {SurveyActions, SurveyActionTypes} from './survey.actions';
 import {IAngularSurvey} from '../../models/angular-survey.model';
 import * as _ from 'lodash';
-import {appInitialState, AppState} from '../app.state';
+import {appInitialState} from '../app.state';
 
 export function reducer(state = appInitialState.survey, action: SurveyActions): IAngularSurvey {
 
@@ -23,6 +23,11 @@ export function reducer(state = appInitialState.survey, action: SurveyActions): 
       return Object.assign(state, _.cloneDeep(state), {
         ...action.payload
       });
+    }
+
+    case SurveyActionTypes.RESET_SURVEY_STATE_ACTION: {
+      const { appState } = action.payload;
+      return Object.assign(appState.survey);
     }
 
     default: {

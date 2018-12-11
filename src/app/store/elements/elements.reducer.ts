@@ -150,6 +150,11 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       return Object.assign(state, _.cloneDeep(state));
     }
 
+    case elements.ElementsActionTypes.RESET_ELEMENTS_STATE: {
+      const { appState } = action.payload;
+      return Object.assign(appState.elements);
+    }
+
     default: {
       return state;
     }

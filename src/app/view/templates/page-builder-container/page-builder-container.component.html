@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="surveyId">
   <div class="card mt-5">
     <!-- Card Header -->
     <div class="card-header d-flex w-100">
@@ -76,10 +76,10 @@
           <div id="question-builder-container" class="d-flex flex-row align-content-start" [ngClass]="!isSavedMap.get(item.key) ? 'z-depth-1' : ''">
             <!-- Move Option Button -->
             <span class="mr-3 mb-3">
-            <button type="button" class="btn btn-outline-secondary" tooltip="Drag and Drop Question" cdkDragHandle>
-              <i class="fas fa-arrows-alt"></i>
-            </button>
-          </span>
+              <button [ngClass]="isSavedMap.get(item.key) || elements.size === 1 ? 'd-none' : ''" type="button" class="btn btn-outline-secondary" tooltip="Drag and Drop Question" cdkDragHandle>
+                <i class="fas fa-arrows-alt"></i>
+              </button>
+            </span>
             <!-- #/Move Option Button -->
 
             <!-- Question Builder Container -->

@@ -57,7 +57,7 @@ export class CheckboxComponent implements OnInit, OnDestroy {
     return validator;
   }
 
-  handleChange() {
+  handleChange(pageFlow) {
     const selectedOrderIds = this.form.value.optionAnswers
       .map((v, i) => v ? Array.from(this.optionAnswers)[i][1].value : null)
       .filter(v => v !== null);
@@ -68,6 +68,9 @@ export class CheckboxComponent implements OnInit, OnDestroy {
       pageId: this.data.element.pageId,
       elementId: this.data.element.id,
       answer,
+      pageFlowModifier: this.data.element.question.pageFlowModifier,
+      pageFlow,
+      surveyId: this.data.surveyId,
     }));
   }
 

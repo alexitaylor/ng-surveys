@@ -87,7 +87,13 @@ export const getSurveyId = (state: AppState) => state.survey.id;
 
 // Pages Selectors
 export const getPagesBySurveyId = (state: AppState, { surveyId }) => state.pages.get(surveyId);
-export const getSurveyPageSize = (state: AppState, { surveyId }) => state.pages.get(surveyId).size;
+export const getSurveyPageSize = (state: AppState, { surveyId }) => {
+  if (state.pages.get(surveyId)) {
+    return state.pages.get(surveyId).size;
+  }  else {
+    return 0;
+  }
+};
 
 // Elements Selectors
 export const getElementsByPageId = (state: AppState, { pageId }) => state.elements.get(pageId);

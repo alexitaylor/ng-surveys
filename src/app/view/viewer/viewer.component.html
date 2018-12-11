@@ -21,7 +21,8 @@
       <button type="button" class="btn btn-primary btn-lg" [disabled]="!pagePrev" [routerLink]="'/viewer/' + pagePrev?.id">Back</button>
     </div>
     <div class="ml-auto">
-      <button type="button" class="btn btn-primary btn-lg" [disabled]="!pageNext" [routerLink]="'/viewer/' + pageNext?.id">Next</button>
+      <!--[routerLink]="'/viewer/' + pageNext?.id"-->
+      <button type="button" class="btn btn-primary btn-lg" [disabled]="!pageNext" (click)="nextPage()">Next</button>
     </div>
   </div>
   <!-- #/Card Footer -->

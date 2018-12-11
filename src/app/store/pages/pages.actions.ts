@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import {IPageFlow} from '../../models/page-flow.model';
+import {AppState} from '../app.state';
 
 export enum PagesActionTypes {
   ADD_PAGE_ACTION = '[Angular Page] Add survey page',
@@ -10,6 +11,7 @@ export enum PagesActionTypes {
   UPDATE_PAGE_NAME_ACTION = '[Angular Page] Update survey page name',
   UPDATE_PAGE_DESCRIPTION_ACTION = '[Angular Page] Update survey page description',
   UPDATE_PAGE_PAGE_FLOW_ACTION = '[Angular Page] Update survey page page flow',
+  RESET_PAGE_STATE = '[Angular Page] Reset page state'
 }
 
 export class AddPageAction implements Action {
@@ -52,6 +54,11 @@ export class UpdatePagePageFlowAction implements Action {
   constructor(public payload: { pageId: string,  pageFlow: IPageFlow, surveyId: string }) { }
 }
 
+export class ResetPageStateAction implements Action {
+  readonly type = PagesActionTypes.RESET_PAGE_STATE;
+  constructor(public payload: { appState: AppState }) { }
+}
+
 export type Actions =
   AddPageAction |
   InsertPageAction |
@@ -60,4 +67,5 @@ export type Actions =
   RemovePageAction |
   UpdatePageNameAction |
   UpdatePageDescriptionAction |
-  UpdatePagePageFlowAction;
+  UpdatePagePageFlowAction |
+  ResetPageStateAction;

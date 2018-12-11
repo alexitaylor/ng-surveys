@@ -5,7 +5,7 @@
       class="form-control" id="select"
       name="select"
       [(ngModel)]="data?.element.question.answer"
-      (ngModelChange)="handleSelect($event)"
+      (ngModelChange)="handleSelect($event, item?.value.pageFlow)"
     >
       <option disabled selected [value]="''">Select</option>
       <option

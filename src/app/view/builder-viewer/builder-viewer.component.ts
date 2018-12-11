@@ -2,12 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {fromEvent, Observable, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
+import {UUID} from 'angular2-uuid';
 
 import {AppState} from '../../store/app.state';
 import * as survey from '../../store/survey/survey.actions';
 import * as fromRoot from '../../store/app.reducer';
 import * as pages from '../../store/pages/pages.actions';
-import {UUID} from 'angular2-uuid';
+import {resetAppState} from '../../store/utils';
 import {IPageMap} from '../../models/page.model';
 
 @Component({
@@ -76,6 +77,12 @@ export class BuilderViewerComponent implements OnInit, OnDestroy {
   addPage() {
     const pageId = UUID.UUID();
     this.store.dispatch(new pages.AddPageAction({ surveyId: this.surveyId, pageId }));
+  }
+
+  reset() {
+    location.reload();
+    const appState: AppState = resetAppState();
+    this.store.dispatch(new survey.ResetSurveyStateAction({ appState }));
   }
 
   trackElement(index: number, element: any) {

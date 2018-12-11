@@ -90,6 +90,11 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(state, _.cloneDeep(state));
     }
 
+    case optionAnswers.OptionAnswersActionTypes.RESET_OPTION_ANSWERS_STATE: {
+      const { appState } = action.payload;
+      return Object.assign(appState.optionAnswers);
+    }
+
     default: {
       return state;
     }

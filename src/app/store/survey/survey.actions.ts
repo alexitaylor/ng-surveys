@@ -1,10 +1,11 @@
 import { Action } from '@ngrx/store';
-import {IPageFlow} from '../../models/page-flow.model';
+import {AppState} from '../app.state';
 
 export enum SurveyActionTypes {
   SURVEY_NAME_CHANGED_ACTION = '[Angular Surveys] Survey title change',
   SURVEY_DESCRIPTION_CHANGED_ACTION = '[Angular Surveys] Survey description change',
   SURVEY_SUMMARY_CHANGED_ACTION = '[Angular Surveys] Survey summary change',
+  RESET_SURVEY_STATE_ACTION = '[Angular Surveys] Reset survey state'
 }
 
 export class SurveyNameChangedAction implements Action {
@@ -22,7 +23,13 @@ export class SurveySummaryChangedAction implements Action {
   constructor(public payload: { summary: string }) { }
 }
 
+export class ResetSurveyStateAction implements Action {
+  readonly type = SurveyActionTypes.RESET_SURVEY_STATE_ACTION;
+  constructor(public payload: { appState: AppState }) {}
+}
+
 export type SurveyActions =
   SurveyNameChangedAction |
   SurveyDescriptionChangedAction |
-  SurveySummaryChangedAction;
+  SurveySummaryChangedAction |
+  ResetSurveyStateAction;

@@ -5,6 +5,7 @@ import {Action} from '@ngrx/store';
 import {catchError, map, switchMap} from 'rxjs/internal/operators';
 
 import * as elements from './elements.actions';
+import * as pages from '../pages/pages.actions';
 import * as optionAnswers from '../option-answers/option-answers.actions';
 import {CustomAction} from '../../models/custom-action.model';
 
@@ -45,6 +46,17 @@ export class ElementsEffect {
       [new optionAnswers.ToggleIsActiveOptionAnswerAction({ elementId: payload.elementId, isSaved: payload.isSaved })]
     ),
     catchError(() => of({ type: 'REMOVE_ELEMENTS_MAP_ERROR' }))
+  );
+
+  @Effect()
+  UpdateQuestionAnswer: Observable<Action> = this.actions$.pipe(
+    ofType(elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION),
+    switchMap(({ payload }: CustomAction) => {
+      if (payload.pageFlowModifier) {
+        return [new pages.UpdatePagePageFlowAction({ pageId: payload.pageId, surveyId: payload.surveyId, pageFlow: payload.pageFlow })];
+      }
+    }),
+    catchError(() => of({ type: 'UPDATE_ANSWER_ERROR' }))
   );
 
   constructor(private actions$: Actions) {}

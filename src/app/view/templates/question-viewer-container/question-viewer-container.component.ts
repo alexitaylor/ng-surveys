@@ -8,6 +8,7 @@ import {IElements} from '../../../models/elements.model';
 })
 export class QuestionViewerContainerComponent implements OnInit {
   @Input() element: IElements;
+  @Input() surveyId: string;
 
   constructor() { }
 

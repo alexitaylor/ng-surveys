@@ -91,6 +91,9 @@ export class RangeComponent implements OnInit, OnDestroy {
         pageId: this.element.pageId,
         elementId: this.element.id,
         answer,
+        pageFlowModifier: this.data.element.question.pageFlowModifier,
+        pageFlow: this.data.element.pageFlow,
+        surveyId: this.data.surveyId,
       }));
     });
   }

@@ -30,11 +30,14 @@ export class SelectComponent implements OnInit, OnDestroy {
     this.optionAnswersSub.unsubscribe();
   }
 
-  handleSelect(answer) {
+  handleSelect(answer, pageFlow) {
     this.store.dispatch(new elements.UpdateQuestionAnswerAction({
       pageId: this.data.element.pageId,
       elementId: this.data.element.id,
       answer,
+      pageFlowModifier: this.data.element.question.pageFlowModifier,
+      pageFlow,
+      surveyId: this.data.surveyId,
     }));
   }
 

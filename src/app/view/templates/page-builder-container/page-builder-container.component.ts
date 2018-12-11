@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IPage, IPageMap} from '../../../models/page.model';
@@ -19,7 +19,7 @@ import {IElementsMap} from '../../../models/elements.model';
   templateUrl: './page-builder-container.component.html',
   styleUrls: ['./page-builder-container.component.scss']
 })
-export class PageBuilderContainerComponent implements OnInit, OnDestroy {
+export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChanges {
   @Input() surveyId: string;
   @Input() page: IPage;
   @Input() pages: IPageMap;
@@ -49,6 +49,9 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy {
         this.setSavedMap();
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
   }
 
   ngOnDestroy() {

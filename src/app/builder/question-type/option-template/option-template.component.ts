@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {fromEvent, Observable} from 'rxjs';
+import {fromEvent, Observable, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 import {AppState} from '../../../store/app.state';
@@ -16,7 +16,7 @@ import {PageFlow} from '../../../models/page-flow.model';
   templateUrl: './option-template.component.html',
   styleUrls: ['./option-template.component.scss']
 })
-export class OptionTemplateComponent implements OnInit {
+export class OptionTemplateComponent implements OnInit, OnDestroy {
   @Input() optionAnswersSize: number;
   @Input() optionAnswer: IOptionAnswers;
   @Input() element: IElements;
@@ -24,18 +24,20 @@ export class OptionTemplateComponent implements OnInit {
   @Input() surveyId: string;
   @Input() isNewOption: boolean;
 
-  pages$: Observable<IPageMap>;
+  pagesSub: Subscription;
+  pages: IPageMap;
   isOptionActive = true;
   pageNavNext = 'goToNextPage';
 
   constructor(
     private store: Store<AppState>,
   ) {
-    this.pages$ = this.store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId }));
   }
 
   ngOnInit() {
     setTimeout(() => {
+      this.pagesSub = this.store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => this.pages = res);
+
       if (this.isNewOption) {
         const $optionTemplateInput = document.getElementById(`optionTemplateInput-${this.optionAnswer.id}`);
         $optionTemplateInput.focus();
@@ -43,6 +45,12 @@ export class OptionTemplateComponent implements OnInit {
       }
       this.onOptionsValueChange();
     }, 300);
+  }
+
+  ngOnDestroy() {
+    if (this.pagesSub) {
+      this.pagesSub.unsubscribe();
+    }
   }
 
   onFocus(e) {

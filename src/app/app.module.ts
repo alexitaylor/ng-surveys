@@ -22,6 +22,7 @@ import * as fromRoot from './store/app.reducer';
 import {Subscription} from 'rxjs';
 import {IPageMap} from './models/page.model';
 import {AppState} from './store/app.state';
+import {SurveyEffect} from './store/survey/survey.effect';
 
 @NgModule({
   imports: [
@@ -40,7 +41,7 @@ import {AppState} from './store/app.state';
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     }),
-    EffectsModule.forRoot([PagesEffect, ElementsEffect]),
+    EffectsModule.forRoot([PagesEffect, ElementsEffect, SurveyEffect]),
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [
@@ -77,17 +78,19 @@ export class AppModule {
 
   createPagesRoutes() {
     const pageRoute = [];
-    this.pages.forEach(page => {
-      pageRoute.push({
-        path: `viewer/${page.id}`,
-        component: ViewerComponent,
+    if (!!this.pages) {
+      this.pages.forEach(page => {
+        pageRoute.push({
+          path: `viewer/${page.id}`,
+          component: ViewerComponent,
+        });
       });
-    });
 
-    this.router.config.forEach(route => {
-      if (route.path === '') {
-        route.children.unshift(...pageRoute);
-      }
-    });
+      this.router.config.forEach(route => {
+        if (route.path === '') {
+          route.children.unshift(...pageRoute);
+        }
+      });
+    }
   }
 }

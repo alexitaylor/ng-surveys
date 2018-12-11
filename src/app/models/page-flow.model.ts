@@ -1,5 +1,3 @@
-import {IPage} from './page.model';
-
 export interface IPageFlow {
   nextPage?: boolean;
   label?: string;

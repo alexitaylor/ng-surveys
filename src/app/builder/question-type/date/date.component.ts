@@ -4,6 +4,7 @@ import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import * as elements from '../../../store/elements/elements.actions';
 import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
 
 @Component({
   selector: 'sb-date',
@@ -16,7 +17,7 @@ export class DateComponent implements OnInit, OnDestroy {
   dateTextInputSub: Subscription;
 
   constructor(
-    private store: Store,
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit() {
@@ -47,6 +48,9 @@ export class DateComponent implements OnInit, OnDestroy {
         pageId: this.data.element.pageId,
         elementId: this.data.element.id,
         answer,
+        pageFlowModifier: this.data.element.question.pageFlowModifier,
+        pageFlow: this.data.element.pageFlow,
+        surveyId: this.data.surveyId,
       }));
     });
   }

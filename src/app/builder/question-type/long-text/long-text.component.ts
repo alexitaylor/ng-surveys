@@ -4,6 +4,7 @@ import * as elements from '../../../store/elements/elements.actions';
 import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
 
 @Component({
   selector: 'sb-long-text',
@@ -16,7 +17,7 @@ export class LongTextComponent implements OnInit, OnDestroy {
   longTextInputSub: Subscription;
 
   constructor(
-    private store: Store,
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit() {
@@ -46,6 +47,9 @@ export class LongTextComponent implements OnInit, OnDestroy {
         pageId: this.data.element.pageId,
         elementId: this.data.element.id,
         answer,
+        pageFlowModifier: this.data.element.question.pageFlowModifier,
+        pageFlow: this.data.element.pageFlow,
+        surveyId: this.data.surveyId,
       }));
     });
   }
