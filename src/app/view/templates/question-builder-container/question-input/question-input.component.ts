@@ -15,6 +15,7 @@ export class QuestionInputComponent implements OnInit {
   @Input() elementValue: string;
   @Input() elementId: string;
   @Input() pageId: string;
+  @Input() isElementSaved: boolean;
 
   constructor(private store: Store<AppState>) { }
 

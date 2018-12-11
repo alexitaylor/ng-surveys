@@ -30,8 +30,7 @@ export class QuestionBuilderContainerComponent implements OnInit {
     this.prevQuestionType = this.questionType;
     setTimeout(() => {
       if (!!this.questionType) {
-        this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: true }));
-        this.isSavedEvent.emit({ key: this.element.id, isSaved: true });
+        this.isSavedEvent.emit({ key: this.element.id, isSaved: this.element.isSaved });
       }
     }, 100);
   }
@@ -54,17 +53,17 @@ export class QuestionBuilderContainerComponent implements OnInit {
       type,
     }));
 
-    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: false }));
+    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId, isSaved: false }));
     this.prevQuestionType = type;
   }
 
-  saveQuestion(key: string) {
-    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: true }));
+  saveQuestion(elementId: string) {
+    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId, isSaved: true }));
     this.isSavedEvent.emit({ key: this.element.id, isSaved: true });
   }
 
-  editQuestion(key: string) {
-    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId: this.element.id, isSaved: false }));
+  editQuestion(elementId: string) {
+    this.store.dispatch(new elements.ToggleIsActiveElementAction({ pageId: this.pageId, elementId, isSaved: false }));
     this.isSavedEvent.emit({ key: this.element.id, isSaved: false });
   }
 

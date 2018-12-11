@@ -52,6 +52,7 @@
       [elementId]="element?.id"
       [elementValue]="element?.question.text"
       [pageId]="pageId"
+      [isElementSaved]="element?.isSaved"
     ></sb-question-input>
     <!-- #/Question Value Input -->
 
@@ -63,7 +64,9 @@
         name="questionType"
         class="form-control"
         [(ngModel)]="element?.question.type"
-        (ngModelChange)="onQuestionTypeSelect($event, element?.id)">
+        (ngModelChange)="onQuestionTypeSelect($event, element?.id)"
+        [disabled]="element?.isSaved"
+      >
         <option selected></option>
         <option value="shortText">Short Text</option>
         <option value="longText">Long Text</option>

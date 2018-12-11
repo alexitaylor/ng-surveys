@@ -68,7 +68,7 @@
       <!-- #/Page Name and Description -->
 
       <!-- Question Builder Container -->
-      <div cdkDropList [cdkDropListData]="elements" #pageElements="cdkDropList" (cdkDropListDropped)="drop($event)">
+      <div cdkDropList [cdkDropListData]="elements" #pageElements="cdkDropList" (cdkDropListDropped)="drop($event, page?.id)">
         <div *ngFor="let item of elements | mapValues; trackBy: trackElement" [ngClass]="item.value.orderNo !== elementsSize ? 'mb-5' : ''" cdkDrag>
           <!-- Drag and Drop Background Place Holder -->
           <div class="drag-drop-placeholder-question" *cdkDragPlaceholder></div>
