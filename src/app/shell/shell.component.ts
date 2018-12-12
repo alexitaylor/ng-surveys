@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'sb-shell',
+  selector: 'app-surveys-shell',
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss']
 })

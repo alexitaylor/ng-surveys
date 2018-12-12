@@ -3,17 +3,17 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-surveys": {
+    "ngx-surveys-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "sb",
+      "prefix": "app",
       "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-surveys",
+            "outputPath": "dist/ngx-surveys-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -23,9 +23,8 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/scss/styles.scss"
             ],
             "scripts": []
@@ -46,32 +45,25 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-surveys:build"
+            "browserTarget": "ngx-surveys-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-surveys:build:production"
+              "browserTarget": "ngx-surveys-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-surveys:build"
+            "browserTarget": "ngx-surveys-app:build"
           }
         },
         "test": {
@@ -82,9 +74,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": [],
             "assets": [
@@ -107,20 +98,19 @@
         }
       }
     },
-    "angular-surveys-e2e": {
+    "ngx-surveys-app-e2e": {
       "root": "e2e/",
       "projectType": "application",
-      "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-surveys:serve"
+            "devServerTarget": "ngx-surveys-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-surveys:serve:production"
+              "devServerTarget": "ngx-surveys-app:serve:production"
             }
           }
         },
@@ -134,7 +124,42 @@
           }
         }
       }
+    },
+    "ngx-surveys": {
+      "root": "projects/ngx-surveys",
+      "sourceRoot": "projects/ngx-surveys/src",
+      "projectType": "library",
+      "prefix": "ngxs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-surveys/tsconfig.lib.json",
+            "project": "projects/ngx-surveys/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-surveys/src/test.ts",
+            "tsConfig": "projects/ngx-surveys/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-surveys/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-surveys/tsconfig.lib.json",
+              "projects/ngx-surveys/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "angular-surveys"
+  "defaultProject": "ngx-surveys-app"
 }

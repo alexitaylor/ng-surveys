@@ -1,0 +1,30 @@
+<div class="card mt-5">
+  <!-- Card Header -->
+  <div class="card-header d-flex w-100">
+    <div class="mr-auto d-flex flex-row w-50">
+      <span class="w-25">Summary Page</span>
+    </div>
+  </div>
+  <!-- #/Card Header -->
+
+  <!-- Card Body -->
+  <div class="card-body bg-white">
+    <div class="form-group">
+      <textarea
+        id="summaryInput"
+        class="form-control"
+        name="summary"
+        rows="3"
+        placeholder="Summary"
+        [ngModel]="survey.summary"
+      ></textarea>
+    </div>
+  </div>
+  <!-- #/Card Body -->
+
+  <!-- Card Footer -->
+  <div class="card-footer d-flex w-100">
+    <div class="mr-auto"></div>
+  </div>
+  <!-- #/Card Footer -->
+</div>

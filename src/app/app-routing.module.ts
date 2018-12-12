@@ -1,25 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import {Shell} from './shell/shell.service';
-import {NotFoundComponent} from './layouts/not-found/not-found.component';
-import {ViewerComponent} from './view/viewer/viewer.component';
-import {BuilderViewerComponent} from './view/builder-viewer/builder-viewer.component';
-import {ModelViewerComponent} from './view/model-viewer/model-viewer.component';
+import { NotFoundComponent } from './layouts/not-found/not-found.component';
+import { NgxBuilderViewerComponent, NgxSurveyViewerComponent, NgxModelViewerComponent } from 'ngx-surveys';
 
 const routes: Routes = [
   Shell.childRoutes(
     [
       {
         path: '',
-        component: BuilderViewerComponent
+        component: NgxBuilderViewerComponent
       },
       {
         path: 'viewer',
-        component: ViewerComponent
+        component: NgxSurveyViewerComponent,
       },
       {
         path: 'model',
-        component: ModelViewerComponent
+        component: NgxModelViewerComponent,
       },
       {
         path: '**',
