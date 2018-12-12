@@ -136,7 +136,7 @@ export function updateQuestionAnswer(elementId: string, answer: string | number,
 export const updateShowPageFlowToggle = (elements: IElementsMap, elementId: string): void =>
   elements.forEach((value: IElements, key: string) => value.showPageFlowToggle = key === elementId);
 
-export const handleElementShowPageFlowToggle = (elements: IElementsMap, newElement: IElements): void =>
+export const handleElementShowPageFlowToggle = (elements: IElementsMap, newElement: IElements) =>
   newElement.showPageFlowToggle = Array.from(elements).reduce((show, el) => show && el[1].showPageFlowToggle, true);
 
 export const handleElementsShowPageFlowToggle = (elements: IElementsMap): void => {

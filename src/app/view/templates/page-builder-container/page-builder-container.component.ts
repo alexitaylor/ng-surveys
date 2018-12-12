@@ -53,6 +53,7 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   ngOnDestroy() {
+    console.log('DESTROY PAGE BUILDER: ');
     this.elementsSub.unsubscribe();
     this.pageSizeSub.unsubscribe();
   }

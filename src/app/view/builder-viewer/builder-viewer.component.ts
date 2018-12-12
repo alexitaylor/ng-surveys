@@ -10,6 +10,7 @@ import * as fromRoot from '../../store/app.reducer';
 import * as pages from '../../store/pages/pages.actions';
 import {resetAppState} from '../../store/utils';
 import {IPageMap} from '../../models/page.model';
+import {IAngularSurvey} from '../../models/angular-survey.model';
 
 @Component({
   selector: 'sb-builder-viewer',
@@ -17,34 +18,38 @@ import {IPageMap} from '../../models/page.model';
   styleUrls: ['./builder-viewer.component.scss']
 })
 export class BuilderViewerComponent implements OnInit, OnDestroy {
-  surveyName$: Observable<string>;
-  surveyDescription$: Observable<string>;
-  surveyIdSub: Subscription;
-  surveyId: string;
+  surveySub: Subscription;
+  survey: IAngularSurvey;
+
   surveyNameSub$: Subscription;
+  surveyDescriptionSub$: Subscription;
 
   pagesSub: Subscription;
   pages: IPageMap;
+  isLoading = false;
 
   constructor(
     private store: Store<AppState>
   ) {
-    this.surveyName$ = store.pipe(select(fromRoot.getSurveyName));
-    this.surveyDescription$ = store.pipe(select(fromRoot.getSurveyDescription));
-    this.surveyIdSub = store.pipe(select(fromRoot.getSurveyId)).subscribe(res => {
-      this.surveyId = res;
-    });
-    this.pagesSub = store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => {
-      this.pages = res;
+    this.surveySub = store.pipe(select(fromRoot.getSurvey)).subscribe(res => {
+      this.survey = res;
+      this.pagesSub = store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.survey.id })).subscribe(pages => {
+        this.pages = pages;
+      });
     });
   }
 
   ngOnInit() {
-    this.handleSurveyNameChange();
-    this.handleSurveyDescriptionChange();
+    setTimeout(() => {
+      if (!this.survey.isLoading) {
+        this.handleSurveyNameChange();
+        this.handleSurveyDescriptionChange();
+      }
+    }, 300);
   }
 
   ngOnDestroy() {
+    this.surveySub.unsubscribe();
     this.surveyNameSub$.unsubscribe();
     this.surveyNameSub$.unsubscribe();
     this.pagesSub.unsubscribe();
@@ -65,7 +70,7 @@ export class BuilderViewerComponent implements OnInit, OnDestroy {
   handleSurveyDescriptionChange() {
     const $surveyDescription = document.getElementById('surveyDescription');
 
-    this.surveyNameSub$ = fromEvent($surveyDescription, 'input').pipe(
+    this.surveyDescriptionSub$ = fromEvent($surveyDescription, 'input').pipe(
       map((event: any) => event.target.value),
       distinctUntilChanged(),
       debounceTime(1000)
@@ -76,12 +81,14 @@ export class BuilderViewerComponent implements OnInit, OnDestroy {
 
   addPage() {
     const pageId = UUID.UUID();
-    this.store.dispatch(new pages.AddPageAction({ surveyId: this.surveyId, pageId }));
+    this.store.dispatch(new pages.AddPageAction({ surveyId: this.survey.id, pageId }));
   }
 
   reset() {
-    location.reload();
+    // location.reload();
+    //this.survey.isLoading = true;
     const appState: AppState = resetAppState();
+    appState.survey.isLoading = true;
     this.store.dispatch(new survey.ResetSurveyStateAction({ appState }));
   }
 

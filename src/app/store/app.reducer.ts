@@ -81,6 +81,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
 export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 // Survey Selectors
+export const getSurvey = (state: AppState) => state.survey;
 export const getSurveyName = (state: AppState) => state.survey.name;
 export const getSurveyDescription = (state: AppState) => state.survey.description;
 export const getSurveyId = (state: AppState) => state.survey.id;

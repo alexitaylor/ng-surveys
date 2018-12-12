@@ -5,6 +5,7 @@ export interface IAngularSurvey {
   name?: string;
   description?: string;
   summary?: string;
+  isLoading?: boolean;
 }
 
 export class AngularSurvey implements IAngularSurvey {
@@ -13,10 +14,12 @@ export class AngularSurvey implements IAngularSurvey {
     public name?: string,
     public description?: string,
     public summary?: string,
+    public isLoading?: boolean,
     ) {
     this.id = id ? id : UUID.UUID();
     this.name = name ? name : 'hello world';
     this.description = description ? description : '';
     this.summary = summary ? summary : '';
+    this.isLoading = isLoading ? isLoading : false;
   }
 }

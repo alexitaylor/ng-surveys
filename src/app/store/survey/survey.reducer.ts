@@ -30,6 +30,12 @@ export function reducer(state = appInitialState.survey, action: SurveyActions): 
       return Object.assign(appState.survey);
     }
 
+    case SurveyActionTypes.HANDLE_SURVEY_LOADING: {
+      return Object.assign(state, _.cloneDeep(state), {
+        ...action.payload
+      });
+    }
+
     default: {
       return state;
     }
