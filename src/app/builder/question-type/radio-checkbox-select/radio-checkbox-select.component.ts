@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AppState} from '../../../store/app.state';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from '../../../store/app.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {IElements} from '../../../models/elements.model';
-import {fromEvent, Observable} from 'rxjs';
+import {fromEvent, Observable, Subscription} from 'rxjs';
 import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
 import * as elements from '../../../store/elements/elements.actions';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -15,13 +15,14 @@ import {map} from 'rxjs/operators';
   templateUrl: './radio-checkbox-select.component.html',
   styleUrls: ['./radio-checkbox-select.component.scss']
 })
-export class RadioCheckboxSelectComponent implements OnInit {
+export class RadioCheckboxSelectComponent implements OnInit, OnDestroy {
   @Input() data: any;
 
   element: IElements;
   optionAnswers$: Observable<IOptionAnswersMap>;
   optionAnswers: IOptionAnswersMap;
   optionAnswersSize: number;
+  elementSub: Subscription;
   pageId: string;
   surveyId: string;
   isPageNavChecked = false;
@@ -30,16 +31,19 @@ export class RadioCheckboxSelectComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.element = this.data.element;
     this.pageId = this.data.element.pageId;
     this.surveyId = this.data.surveyId;
+
+    this.elementSub = this.store.pipe(
+      select(fromRoot.getElementByPageIdAndElementId, { pageId: this.pageId, elementId: this.data.element.id }))
+      .subscribe(res => this.element = res);
+
     this.optionAnswers$ = this.store.pipe(
       select(fromRoot.getOptionAnswers,
-        { elementId: this.element.id }
+        { elementId: this.data.element.id }
         ));
 
     this.optionAnswers$.subscribe(res => {
@@ -51,6 +55,10 @@ export class RadioCheckboxSelectComponent implements OnInit {
     setTimeout(() => {
       this.onSaveQuestionClick();
     }, 300);
+  }
+
+  ngOnDestroy() {
+    this.elementSub.unsubscribe();
   }
 
   togglePageNavChecked(e) {

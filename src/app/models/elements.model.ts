@@ -13,6 +13,7 @@ export interface IElements {
   question?: IQuestion;
   paragraph?: IParagraph;
   isSaved?: boolean;
+  showPageFlowToggle?: boolean;
 }
 
 export class Elements implements IElements {
@@ -24,6 +25,7 @@ export class Elements implements IElements {
     public question?: IQuestion,
     public paragraph?: IParagraph,
     public isSaved?: boolean,
+    public showPageFlowToggle?: boolean,
   ) {
     const uuid: string = UUID.UUID();
     const newQuestion = new Question();
@@ -36,5 +38,6 @@ export class Elements implements IElements {
     this.question = question ? question : newQuestion;
     this.paragraph = paragraph ? paragraph : null;
     this.isSaved = isSaved ? isSaved : false;
+    this.showPageFlowToggle = showPageFlowToggle ? showPageFlowToggle : true;
   }
 }

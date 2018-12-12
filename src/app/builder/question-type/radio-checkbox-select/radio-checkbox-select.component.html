@@ -5,13 +5,13 @@
     <div class="row">
       <div class="col-9 offset-2">
         <form>
-          <div class="form-group form-check" *ngIf="data.type === 'radio' || data.type === 'select'">
+          <div class="form-group form-check" *ngIf="element?.showPageFlowToggle && (data.type === 'radio' || data.type === 'select')">
             <input
               id="pageNavCheckbox"
               type="checkbox"
               name="isPageNavChecked"
               class="form-check-input"
-              [(ngModel)]="data.element.question.pageFlowModifier"
+              [(ngModel)]="element?.question.pageFlowModifier"
               (change)="togglePageNavChecked($event)"
             >
             <label class="form-check-label" for="pageNavCheckbox">Go to page based on answer</label>
@@ -23,7 +23,7 @@
               <!-- #/Drag and Drop Background Place Holder -->
                 <div class="d-flex flex-row align-items-center">
                   <!-- Move Option Button -->
-                  <span *ngIf="!element.isSaved" class="mr-3 mb-3">
+                  <span *ngIf="!element?.isSaved" class="mr-3 mb-3">
                     <button type="button" class="btn btn-outline-secondary" tooltip="Drag and Drop Option" cdkDragHandle>
                       <i class="fas fa-arrows-alt"></i>
                     </button>
@@ -45,7 +45,7 @@
             </div>
           </div>
           <!-- Add Option Input -->
-          <span *ngIf="!element.isSaved" (click)="addOptionInput()">
+          <span *ngIf="!element?.isSaved" (click)="addOptionInput()">
             <input
               class="form-control w-50"
               style="margin-left: 5.5rem;"

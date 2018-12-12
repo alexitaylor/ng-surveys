@@ -1,0 +1,21 @@
+<!-- Navigate to page selection -->
+<!-- TODO *ngIf="!optionAnswer?.isSaved && element.question.pageFlowModifier"-->
+<div *ngIf="isPage || (!isPage && !isOptionAnswerSaved && questionPageFlowModifier)" class="ml-3 form-group mb-0">
+  <select
+    id="pageNavNext"
+    name="pageNavNext"
+    class="form-control"
+    [(ngModel)]="pageFlow.pageId"
+    (ngModelChange)="handlePageNavNext($event)">
+    <option value="" selected>Continue to next page</option>
+    <option
+      *ngFor="let item of pages | mapValues; trackBy:trackElement"
+      [value]="item.value.id"
+      [disabled]="item.value.id === pageId"
+    >
+      <span id="page-orderNo" *ngIf="item.value.orderNo">Go to page {{item.value.orderNo}}</span>
+      <span id="page-title" *ngIf="item.value.title">| {{item.value.title}}</span>
+    </option>
+  </select>
+</div>
+<!-- #/Navigate to page selection -->

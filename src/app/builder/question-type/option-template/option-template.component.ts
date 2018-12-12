@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {fromEvent, Observable, Subscription} from 'rxjs';
+import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 import {AppState} from '../../../store/app.state';
@@ -9,7 +9,6 @@ import {IOptionAnswers} from '../../../models/option-answers.model';
 import {IPageMap} from '../../../models/page.model';
 import * as fromRoot from '../../../store/app.reducer';
 import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
-import {PageFlow} from '../../../models/page-flow.model';
 
 @Component({
   selector: 'sb-option-template',
@@ -27,7 +26,6 @@ export class OptionTemplateComponent implements OnInit, OnDestroy {
   pagesSub: Subscription;
   pages: IPageMap;
   isOptionActive = true;
-  pageNavNext = 'goToNextPage';
 
   constructor(
     private store: Store<AppState>,
@@ -57,24 +55,6 @@ export class OptionTemplateComponent implements OnInit, OnDestroy {
     if (e.returnValue && this.optionAnswer.orderNo === this.optionAnswersSize) {
       this.isOptionActive = e.returnValue;
     }
-  }
-
-  handlePageNavNext(value) {
-    const pageFlow = new PageFlow();
-    if (value === 'goToNextPage') {
-      pageFlow.nextPage = true;
-      pageFlow.label = 'pageFlow.goToNextPage';
-    } else {
-      pageFlow.nextPage = false;
-      pageFlow.label = 'pageFlow.goToPage';
-      pageFlow.pageId = value;
-    }
-
-    this.store.dispatch(new optionAnswers.UpdateOptionAnswerPageFlow({
-      elementId: this.element.id,
-      optionAnswerId: this.optionAnswer.id,
-      pageFlow
-    }));
   }
 
   removeOptionAnswer() {

@@ -1,17 +1,16 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
+import {UUID} from 'angular2-uuid';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
+
 import {IPage, IPageMap} from '../../../models/page.model';
 import {AppState} from '../../../store/app.state';
-import {select, Store} from '@ngrx/store';
-
 import * as fromRoot from '../../../store/app.reducer';
 import * as pages from '../../../store/pages/pages.actions';
 import * as elements from '../../../store/elements/elements.actions';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
-import {PageFlow} from '../../../models/page-flow.model';
-import {UUID} from 'angular2-uuid';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {IElementsMap} from '../../../models/elements.model';
 
 @Component({
@@ -29,7 +28,6 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   elements: IElementsMap;
   elementsSize: number;
   isEditPage: boolean;
-  pageNavNext = 'goToNextPage';
   isSavedMap = new Map<string, boolean>();
 
   constructor(
@@ -111,24 +109,6 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
     ).subscribe(description => {
       this.store.dispatch(new pages.UpdatePageDescriptionAction({ pageId, description, surveyId: this.surveyId }));
     });
-  }
-
-  handlePageNavNext(value) {
-    const pageFlow = new PageFlow();
-    if (value === 'goToNextPage') {
-      pageFlow.nextPage = true;
-      pageFlow.label = 'pageFlow.goToNextPage';
-    } else {
-      pageFlow.nextPage = false;
-      pageFlow.label = 'pageFlow.goToPage';
-      pageFlow.pageId = value;
-    }
-
-    this.store.dispatch(new pages.UpdatePagePageFlowAction({
-      pageId: this.page.id,
-      pageFlow,
-      surveyId: this.surveyId
-    }));
   }
 
   drop(event: CdkDragDrop<string[]>, pageId: string) {

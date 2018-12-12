@@ -123,20 +123,12 @@
       </div>
       <div class="d-flex flex-row" *ngIf="pageSize > 1">
         <!-- Navigate to page selection -->
-        <div>
-          <select
-            id="pageNavNext"
-            name="pageNavNext"
-            class="form-control"
-            [(ngModel)]="pageNavNext"
-            (ngModelChange)="handlePageNavNext($event)">
-            <option value="goToNextPage" selected>Continue to next page</option>
-            <option *ngFor="let itemTwo of pages$ | mapValues; trackBy:trackElement" [value]="itemTwo.key" [disabled]="itemTwo?.key === page?.id">
-              <span id="page-orderNo" *ngIf="itemTwo.value.orderNo">Go to page {{itemTwo.value.orderNo}}</span>
-              <span id="page-title" *ngIf="itemTwo.value.title">| {{itemTwo.value.title}}</span>
-            </option>
-          </select>
-        </div>
+        <sb-page-select
+          [isPage]="true"
+          [surveyId]="surveyId"
+          [pageId]="page?.id"
+          [pageFlow]="page.pageFlow"
+        ></sb-page-select>
         <!-- #/Navigate to page selection -->
 
         <!-- Insert Page -->

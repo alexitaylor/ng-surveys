@@ -4,10 +4,12 @@ import {
   dragItemInArray, moveItemInMap,
   updateElementPositionInMap
 } from '../utils';
+import {IOptionAnswersMap} from '../../models/option-answers.model';
 
 export function createNextElement(pageId: string, elements: IElementsMap): IElementsMap {
   const newElement: IElements = new Elements(pageId);
 
+  handleElementShowPageFlowToggle(elements, newElement);
   elements.set(newElement.id, newElement);
   updateElementPositionInMap(elements);
 
@@ -24,6 +26,7 @@ export function createNewElementMap(pageId: string): IElementsMap {
 export function removeElement(elementId: string, elements: IElementsMap): IElementsMap {
   elements.delete(elementId);
   updateElementPositionInMap(elements);
+  handleElementsShowPageFlowToggle(elements);
 
   return new Map<string, IElements>(elements);
 }
@@ -109,6 +112,7 @@ export function updateQuestionPageFlowModifier(elementId: string, pageFlowModifi
   const currentQuestion: IQuestion = elements.get(elementId).question;
 
   currentQuestion.pageFlowModifier = pageFlowModifier;
+  updateShowPageFlowToggle(elements, elementId);
 
   return new Map<string, IElements>(elements);
 }
@@ -128,3 +132,16 @@ export function updateQuestionAnswer(elementId: string, answer: string | number,
 
   return new Map<string, IElements>(elements);
 }
+
+export const updateShowPageFlowToggle = (elements: IElementsMap, elementId: string): void =>
+  elements.forEach((value: IElements, key: string) => value.showPageFlowToggle = key === elementId);
+
+export const handleElementShowPageFlowToggle = (elements: IElementsMap, newElement: IElements): void =>
+  newElement.showPageFlowToggle = Array.from(elements).reduce((show, el) => show && el[1].showPageFlowToggle, true);
+
+export const handleElementsShowPageFlowToggle = (elements: IElementsMap): void => {
+  const changeElementsShowPageFlowToggle = Array.from(elements).reduce((show, el) => show && !el[1].showPageFlowToggle, true);
+  if (changeElementsShowPageFlowToggle) {
+    elements.forEach((value: IElements) => value.showPageFlowToggle = true);
+  }
+};

@@ -8,7 +8,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
 
   switch (action.type) {
 
-    case optionAnswers.OptionAnswersActionTypes.QUESTION_ADD_OPTION_ANSWERS_ACTION: {
+    case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_ACTION: {
       const { elementId } = action.payload;
       const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
       let newOptionAnswers: IOptionAnswersMap;
@@ -24,7 +24,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(state, _.cloneDeep(state));
     }
 
-    case optionAnswers.OptionAnswersActionTypes.QUESTION_REMOVE_OPTION_ANSWERS_ACTION: {
+    case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_ACTION: {
       const { elementId, optionAnswerId } = action.payload;
       const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
       const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.removeOptionAnswer(optionAnswerId, prevOptionAnswers);
@@ -34,19 +34,19 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(state, _.cloneDeep(state));
     }
 
-    case optionAnswers.OptionAnswersActionTypes.QUESTION_REMOVE_OPTION_ANSWERS_MAP_ACTION: {
+    case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAP_ACTION: {
       const { elementId } = action.payload;
       state.delete(elementId);
       return Object.assign(state, _.cloneDeep(state));
     }
 
-    case optionAnswers.OptionAnswersActionTypes.QUESTION_REMOVE_OPTION_ANSWERS_MAPS_ACTION: {
+    case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAPS_ACTION: {
       const { elementIds } = action.payload;
       elementIds.forEach(id => state.delete(id));
       return Object.assign(state, _.cloneDeep(state));
     }
 
-    case optionAnswers.OptionAnswersActionTypes.QUESTION_ADD_OPTION_ANSWERS_VALUE_ACTION: {
+    case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_VALUE_ACTION: {
       const { elementId, optionAnswerId, value } = action.payload;
       const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
       const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.addOptionAnswerValue(
@@ -58,7 +58,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(state, _.cloneDeep(state));
     }
 
-    case optionAnswers.OptionAnswersActionTypes.QUESTION_UPDATE_OPTION_ANSWERS_PAGE_FLOW: {
+    case optionAnswers.OptionAnswersActionTypes.UPDATE_OPTION_ANSWERS_PAGE_FLOW: {
       const { elementId, optionAnswerId, pageFlow } = action.payload;
       const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
       const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.updateOptionAnswerPageFlow(optionAnswerId, pageFlow, prevOptionAnswers);

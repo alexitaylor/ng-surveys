@@ -97,6 +97,7 @@ export const getSurveyPageSize = (state: AppState, { surveyId }) => {
 
 // Elements Selectors
 export const getElementsByPageId = (state: AppState, { pageId }) => state.elements.get(pageId);
+export const getElementByPageIdAndElementId = (state: AppState, { pageId, elementId }) => state.elements.get(pageId).get(elementId);
 export const getElementsSize = (state: AppState, { pageId }) => state.elements.get(pageId).size;
 
 // Option Answers Selectors
