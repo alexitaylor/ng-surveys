@@ -4,7 +4,7 @@ import {Shell} from './shell/shell.service';
 import { NotFoundComponent } from './layouts/not-found/not-found.component';
 import { NgxBuilderViewerComponent, NgxSurveyViewerComponent, NgxModelViewerComponent } from 'ngx-surveys';
 
-const routes: Routes = [
+export const routes: Routes = [
   Shell.childRoutes(
     [
       {

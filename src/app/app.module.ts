@@ -5,7 +5,7 @@ import { NgxSurveysModule } from 'ngx-surveys';
 import { AppComponent } from './app.component';
 import {NotFoundComponent} from './layouts/not-found/not-found.component';
 import {ShellModule} from './shell/shell.module';
-import {AppRoutingModule} from './app-routing.module';
+import {AppRoutingModule, routes} from './app-routing.module';
 
 @NgModule({
   imports: [
