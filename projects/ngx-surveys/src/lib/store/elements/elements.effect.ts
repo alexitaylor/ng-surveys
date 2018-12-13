@@ -55,6 +55,7 @@ export class ElementsEffect {
       if (payload.pageFlowModifier) {
         return [new pages.UpdatePagePageFlowAction({ pageId: payload.pageId, surveyId: payload.surveyId, pageFlow: payload.pageFlow })];
       }
+      return of({ type: 'NO_ACTION' });
     }),
     catchError(() => of({ type: 'UPDATE_ANSWER_ERROR' }))
   );
