@@ -2,9 +2,36 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
-## Development server
+## Development
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* Clone repo
+* Install dependencies:
+
+```bash
+npm install
+```
+
+### Building the Library
+
+* Before we can use ngx-surveys library we need to build it:
+
+```bash
+ng build example-ngx-lib
+```
+
+* With Angular CLI v6.2 we can use the --watch flag so that every time a file changes Angular CLI performs a partial build that emits the amended files:
+
+```bash
+ng build example-ngx-lib --watch
+```
+
+* Run the application project (demo app to test our library):
+
+```bash
+ng serve
+```
+
+* Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
