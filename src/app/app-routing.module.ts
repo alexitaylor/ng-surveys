@@ -5,6 +5,7 @@ import { NotFoundComponent } from './layouts/not-found/not-found.component';
 import { NgxSurveyViewerComponent } from 'ngx-surveys';
 import {BuilderViewerContainerComponent} from './layouts/builder-viewer-container/builder-viewer-container.component';
 import {ModelViewerContainerComponent} from './layouts/model-viewer-container/model-viewer-container.component';
+import {SurveyViewerContainerComponent} from './layouts/survey-viewer-container/survey-viewer-container.component';
 
 export const routes: Routes = [
   Shell.childRoutes(
@@ -15,7 +16,11 @@ export const routes: Routes = [
       },
       {
         path: 'viewer',
-        component: NgxSurveyViewerComponent,
+        component: SurveyViewerContainerComponent,
+      },
+      {
+        path: 'viewer/:pageId',
+        component: SurveyViewerContainerComponent,
       },
       {
         path: 'model',
@@ -34,4 +39,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

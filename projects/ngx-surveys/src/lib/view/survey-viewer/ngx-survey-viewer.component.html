@@ -1,4 +1,8 @@
-<div class="card">
+<div *ngIf="isLoading" class="h-100">
+  <ngxs-loader [isInherit]="true"></ngxs-loader>
+</div>
+
+<div *ngIf="!isLoading" class="card">
   <!-- Card Header -->
   <div class="card-header d-flex w-100">
     <div class="mr-auto d-flex flex-row w-50">

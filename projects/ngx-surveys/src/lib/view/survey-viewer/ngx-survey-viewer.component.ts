@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 
@@ -8,7 +8,7 @@ import {IPage, IPageMap} from '../../models/page.model';
 import {NgxSurveyState} from '../../store/ngx-survey.state';
 
 @Component({
-  selector: 'ngxs-ngx-survey-viewer',
+  selector: 'ngxs-survey-viewer',
   templateUrl: './ngx-survey-viewer.component.html',
   styleUrls: ['./ngx-survey-viewer.component.scss']
 })
@@ -25,6 +25,8 @@ export class NgxSurveyViewerComponent implements OnInit {
   pageNext: IPage;
   pagePrev: IPage;
 
+  isLoading: boolean;
+
   constructor(
     private store: Store<NgxSurveyState>,
     private router: Router
@@ -40,11 +42,32 @@ export class NgxSurveyViewerComponent implements OnInit {
         this.pageSize = res.size;
       }
     });
-
-    this.createPagesRoutes();
     this.getCurrentPage();
     this.getNextPage();
     this.getPreviousPage();
+
+    router.events.subscribe( event => {
+      if (event instanceof NavigationStart) {
+        this.isLoading = true;
+      }
+
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          this.getCurrentPage();
+          this.getNextPage();
+          this.getPreviousPage();
+          this.isLoading = false;
+        }, 300);
+      }
+
+      if (event instanceof NavigationError) {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 300);
+
+        throw event.error;
+      }
+    });
   }
 
   ngOnInit() {}
@@ -57,30 +80,15 @@ export class NgxSurveyViewerComponent implements OnInit {
     }
   }
 
-  createPagesRoutes() {
-    const pageRoute = [];
-    this.pages.forEach(page => {
-      pageRoute.push({
-        path: `viewer/${page.id}`,
-        component: NgxSurveyViewerComponent,
-      });
-    });
-
-    this.router.config.forEach(route => {
-      if (route.path === '') {
-        route.children.unshift(...pageRoute);
-      }
-    });
-  }
-
   getCurrentPage() {
-    this.pages.forEach(page => {
-      const pageUrlId = this.getCurrentPageUrlId();
-
-      if (pageUrlId === page.id) {
-        this.page = page;
-      }
-    });
+    if (!!this.pages) {
+      this.pages.forEach(page => {
+        const pageUrlId = this.getCurrentPageUrlId();
+        if (pageUrlId === page.id) {
+          this.page = page;
+        }
+      });
+    }
 
     if (!this.page) {
       const firstPage = Array.from(this.pages)[0];

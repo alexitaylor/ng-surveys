@@ -9,6 +9,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {BuilderViewerContainerComponent} from './layouts/builder-viewer-container/builder-viewer-container.component';
 import { ModelViewerContainerComponent } from './layouts/model-viewer-container/model-viewer-container.component';
 import {HttpClientModule} from '@angular/common/http';
+import { SurveyViewerContainerComponent } from './layouts/survey-viewer-container/survey-viewer-container.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import {HttpClientModule} from '@angular/common/http';
     NotFoundComponent,
     BuilderViewerContainerComponent,
     ModelViewerContainerComponent,
+    SurveyViewerContainerComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
