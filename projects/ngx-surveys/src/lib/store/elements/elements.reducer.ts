@@ -155,6 +155,11 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       return Object.assign(ngxSurveyState.elements);
     }
 
+    case elements.ElementsActionTypes.IMPORT_ELEMENTS_STATE: {
+      const { ngxSurveyState } = action.payload;
+      return Object.assign(ngxSurveyState.elements);
+    }
+
     default: {
       return state;
     }

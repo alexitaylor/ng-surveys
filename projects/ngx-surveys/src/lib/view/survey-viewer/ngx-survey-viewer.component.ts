@@ -8,7 +8,7 @@ import {IPage, IPageMap} from '../../models/page.model';
 import {NgxSurveyState} from '../../store/ngx-survey.state';
 
 @Component({
-  selector: 'ngxs-ngx-survey-viewer',
+  selector: 'ngxs-survey-viewer',
   templateUrl: './ngx-survey-viewer.component.html',
   styleUrls: ['./ngx-survey-viewer.component.scss']
 })

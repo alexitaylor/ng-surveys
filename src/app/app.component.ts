@@ -20,27 +20,27 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.ngxSurveys$.getNgxSurveyState().subscribe(res => {
-      console.log('ngxSurveyStateRes: ', res);
+      // console.log('ngxSurveyStateRes: ', res);
       this.ngxSurveyState = res;
     });
 
     this.ngxSurveys$.getSurveyChanges().subscribe(resSurvey => {
-      console.log('resSurvey: ', resSurvey);
+      // console.log('resSurvey: ', resSurvey);
       this.survey = resSurvey;
     });
 
     this.ngxSurveys$.getPagesChanges().subscribe(pagesRes => {
-      console.log('pagesRes: ', pagesRes);
+      // console.log('pagesRes: ', pagesRes);
       this.pages = pagesRes;
     });
 
     this.ngxSurveys$.getElementsChanges().subscribe(elementsRes => {
-      console.log('elementsRes: ', elementsRes);
+      // console.log('elementsRes: ', elementsRes);
       this.elements = elementsRes;
     });
 
     this.ngxSurveys$.getOptionAnswersChanges().subscribe(optionAnswersRes => {
-      console.log('optionAnswersRes: ', optionAnswersRes);
+      // console.log('optionAnswersRes: ', optionAnswersRes);
       this.optionAnswers = optionAnswersRes;
     });
   }

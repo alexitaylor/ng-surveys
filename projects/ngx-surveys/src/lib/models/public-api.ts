@@ -6,3 +6,4 @@ export { IOptionAnswers, IOptionAnswersMap, IOptionAnswersMaps } from './option-
 export { IPageFlow } from './page-flow.model';
 export { IParagraph } from './paragraph.model';
 export { IQuestion } from './question.model';
+export { IBuilderViewerOptions, IBuilderViewerOptionsBuilder } from './builder-viewer-options.model';

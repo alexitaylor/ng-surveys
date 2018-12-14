@@ -95,6 +95,11 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(ngxSurveyState.optionAnswers);
     }
 
+    case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE: {
+      const { ngxSurveyState } = action.payload;
+      return Object.assign(ngxSurveyState.optionAnswers);
+    }
+
     default: {
       return state;
     }

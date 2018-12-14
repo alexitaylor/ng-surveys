@@ -1,11 +1,20 @@
-import {IPage, IPageMap, Page} from '../models/page.model';
-import {Elements, IElements, IElementsMap} from '../models/elements.model';
-import {IQuestion} from '../models/question.model';
-import {IOptionAnswers, IOptionAnswersMap, OptionAnswers} from '../models/option-answers.model';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {UUID} from 'angular2-uuid';
-import {NgxSurvey} from '../models/ngx-survey.model';
 import {NgxSurveyState} from './ngx-survey.state';
+import {NgxSurvey} from '../models/ngx-survey.model';
+import {Page} from '../models/page.model';
+import {Elements} from '../models/elements.model';
+import {
+  IOptionAnswers,
+  IOptionAnswersMap,
+  IOptionAnswersMaps,
+  IPage,
+  IPageMap,
+  IElements,
+  IElementsMap,
+  IElementsMaps,
+  IQuestion,
+} from '../models/index';
 
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
 
@@ -75,6 +84,56 @@ export function isEmpty(obj: any): boolean {
     }
   }
   return true;
+}
+
+export function deserializePages(json: any): IPageMap | any {
+  const pagesMap = new Map<string, IPage>();
+
+  if (Array.isArray(json)) {
+    json.forEach(el => {
+      pagesMap.set(el[0], el[1]);
+    });
+
+    return pagesMap;
+  }
+
+  return json;
+}
+
+export function deserializeElements(json: any): IElementsMaps | any {
+  const elementsMap = new Map<string, IElementsMap>();
+
+  if (Array.isArray(json)) {
+    json.forEach(outer => {
+      const elementMap = new Map<string, IElements>();
+      outer[1].forEach(inner => {
+        elementMap.set(inner[0], inner[1]);
+      });
+      elementsMap.set(outer[0], elementMap);
+    });
+
+    return elementsMap;
+  }
+
+  return json;
+}
+
+export function deserializeOptionAnswers(json: any): IOptionAnswersMaps | any {
+  const optionAnswersMap = new Map<string, IOptionAnswersMap>();
+
+  if (Array.isArray(json)) {
+    json.forEach(outer => {
+      const optionAnswerMap = new Map<string, IOptionAnswers>();
+      outer[1].forEach(inner => {
+        optionAnswerMap.set(inner[0], inner[1]);
+      });
+      optionAnswersMap.set(outer[0], optionAnswerMap);
+    });
+
+    return optionAnswersMap;
+  }
+
+  return json;
 }
 
 export function isNil(obj: any): boolean {

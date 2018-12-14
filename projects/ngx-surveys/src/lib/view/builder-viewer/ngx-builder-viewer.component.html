@@ -5,7 +5,19 @@
 <div *ngIf="!survey.isLoading">
   <div class="mb-3 d-flex flex-row justify-content-start">
     <button class="btn btn-primary" tooltip="Reset Survey" (click)="reset()"><i class="fas fa-trash-alt"></i> Reset Survey</button>
-    <button class="btn btn-primary ml-3" tooltip="Import Survey" (click)="importSurvey()"><i class="fas fa-file-import"></i> Import Survey</button>
+    <button
+      *ngIf="!!options?.importSurvey"
+      class="btn btn-primary ml-3"
+      [tooltip]="!!options.importSurvey?.title ? options.importSurvey?.title : 'Import Survey'"
+      (click)="importSurvey(options.importSurvey.callback)"
+    >
+      <i [class]="!!options.importSurvey?.icon ? options.importSurvey?.icon : 'fas fa-file-import'"></i> Import Survey
+    </button>
+    <span *ngIf="!!options?.buttons && options?.buttons.length > 0">
+      <button *ngFor="let button of options?.buttons" class="btn btn-primary ml-3" [tooltip]="button?.title" (click)="button?.callback(ngxSurveyState)">
+        <i *ngIf="button.icon" [class]="button?.icon"></i> {{button?.text}}
+      </button>
+    </span>
   </div>
   <div class="card">
     <div class="card-header">

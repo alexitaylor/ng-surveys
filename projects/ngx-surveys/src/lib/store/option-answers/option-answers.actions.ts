@@ -12,6 +12,7 @@ export enum OptionAnswersActionTypes {
   DRAG_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Drag question options',
   TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Toggle isActive question options',
   RESET_OPTION_ANSWERS_STATE = '[Angular Option Answers] Reset option answers state',
+  IMPORT_OPTION_ANSWERS_STATE = '[Angular Option Answers] Import option answers state',
 }
 
 export class AddOptionAnswersAction implements Action {
@@ -59,6 +60,11 @@ export class ResetOptionAnswersStateAction implements Action {
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
 }
 
+export class ImportOptionAnswersStateAction implements Action {
+  readonly type = OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE;
+  constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
+}
+
 export type Actions =
   AddOptionAnswersAction |
   RemoveOptionAnswersAction |
@@ -68,4 +74,5 @@ export type Actions =
   UpdateOptionAnswerPageFlow |
   DragOptionAnswerAction |
   ToggleIsActiveOptionAnswerAction |
-  ResetOptionAnswersStateAction;
+  ResetOptionAnswersStateAction |
+  ImportOptionAnswersStateAction;

@@ -18,6 +18,7 @@ export enum ElementsActionTypes {
   TOGGLE_IS_ACTIVE_ELEMENT_ACTION = '[Angular Element] Toggle isActive element',
   QUESTION_UPDATE_ANSWER_ACTION = '[Angular Question] Update question answer value',
   RESET_ELEMENTS_STATE = '[Angular Element] Reset elements state',
+  IMPORT_ELEMENTS_STATE = '[Angular Element] Import elements state',
 }
 
 export class AddElementAction implements Action {
@@ -101,6 +102,11 @@ export class ResetElementsStateAction implements Action {
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
 }
 
+export class ImportElementsStateAction implements Action {
+  readonly type = ElementsActionTypes.IMPORT_ELEMENTS_STATE;
+  constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
+}
+
 export type Actions =
   AddElementAction |
   RemoveElementAction |
@@ -116,4 +122,5 @@ export type Actions =
   UpdateQuestionPageFlowModifierAction |
   ToggleIsActiveElementAction |
   UpdateQuestionAnswerAction |
-  ResetElementsStateAction;
+  ResetElementsStateAction |
+  ImportElementsStateAction;

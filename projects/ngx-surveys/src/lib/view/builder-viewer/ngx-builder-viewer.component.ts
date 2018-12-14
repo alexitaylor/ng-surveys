@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
@@ -9,8 +9,7 @@ import * as survey from '../../store/survey/survey.actions';
 import * as fromRoot from '../../store/ngx-survey.reducer';
 import * as pages from '../../store/pages/pages.actions';
 import {resetNgxSurveyState} from '../../store/utils';
-import {IPageMap} from '../../models/page.model';
-import {INgxSurvey} from '../../models/ngx-survey.model';
+import {IPageMap, INgxSurvey, IBuilderViewerOptions} from '../../models/index';
 
 @Component({
   selector: 'ngxs-builder-viewer',
@@ -18,6 +17,8 @@ import {INgxSurvey} from '../../models/ngx-survey.model';
   styleUrls: ['./ngx-builder-viewer.component.scss']
 })
 export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
+  @Input() options: IBuilderViewerOptions;
+
   surveySub: Subscription;
   survey: INgxSurvey;
 
@@ -26,6 +27,10 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
 
   pagesSub: Subscription;
   pages: IPageMap;
+
+  ngxSurveyStateSub: Subscription;
+  ngxSurveyState: NgxSurveyState;
+
   isLoading = false;
 
   constructor(
@@ -37,6 +42,10 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
 
     this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(pagesRes => {
       this.pages = pagesRes;
+    });
+
+    this.ngxSurveyStateSub = store.pipe(select(fromRoot.getNgxSurveyState)).subscribe(res => {
+      this.ngxSurveyState = res;
     });
   }
 
@@ -91,8 +100,11 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new survey.ResetSurveyStateAction({ ngxSurveyState }));
   }
 
-  importSurvey() {
-    console.log('import');
+  importSurvey(cb) {
+    cb().subscribe(ngxSurveyState => {
+      ngxSurveyState.survey.isLoading = true;
+      this.store.dispatch(new survey.ImportSurveySateAction({ ngxSurveyState }));
+    });
   }
 
   trackElement(index: number, item: any) {

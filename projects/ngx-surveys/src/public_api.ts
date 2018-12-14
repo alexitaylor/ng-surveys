@@ -23,6 +23,13 @@ export {
   NgxModelViewerModule,
 } from './lib/view/model-viewer/index';
 
+// Utils
+export {
+  deserializePages,
+  deserializeElements,
+  deserializeOptionAnswers,
+} from './lib/store/utils';
+
 // Interfaces
 export {
   NgxSurveyState,
@@ -38,4 +45,6 @@ export {
   IPageFlow,
   IParagraph,
   IQuestion,
+  IBuilderViewerOptions,
+  IBuilderViewerOptionsBuilder,
 } from './lib/models/index';

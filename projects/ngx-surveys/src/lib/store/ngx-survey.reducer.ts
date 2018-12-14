@@ -6,9 +6,7 @@ import * as fromSurvey from './survey/survey.reducer';
 import * as fromPages from './pages/pages.reducer';
 import * as fromElements from './elements/elements.reducer';
 import * as fromOptionAnswers from './option-answers/option-answers.reducer';
-import {IPage} from '../models/page.model';
-import {IElements, IElementsMap} from '../models/elements.model';
-import {IOptionAnswers, IOptionAnswersMap} from '../models/option-answers.model';
+import {deserializePages, deserializeElements, deserializeOptionAnswers} from './utils';
 
 
 export const reducers = {
@@ -27,61 +25,17 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
       },
       {
         pages: {
-          deserialize: (json: any) => {
-            const pagesMap = new Map<string, IPage>();
-
-            if (Array.isArray(json)) {
-              json.forEach(el => {
-                pagesMap.set(el[0], el[1]);
-              });
-
-              return pagesMap;
-            }
-
-            return json;
-          }
+          deserialize: (json: any) => deserializePages(json),
         },
       },
       {
         elements: {
-          deserialize: (json: any) => {
-            const elementsMap = new Map<string, IElementsMap>();
-
-            if (Array.isArray(json)) {
-              json.forEach(outer => {
-                const elementMap = new Map<string, IElements>();
-                outer[1].forEach(inner => {
-                  elementMap.set(inner[0], inner[1]);
-                });
-                elementsMap.set(outer[0], elementMap);
-              });
-
-              return elementsMap;
-            }
-
-            return json;
-          }
+          deserialize: (json: any) => deserializeElements(json),
         },
       },
       {
         optionAnswers: {
-          deserialize: (json: any) => {
-            const optionAnswersMap = new Map<string, IOptionAnswersMap>();
-
-            if (Array.isArray(json)) {
-              json.forEach(outer => {
-                const optionAnswerMap = new Map<string, IOptionAnswers>();
-                outer[1].forEach(inner => {
-                  optionAnswerMap.set(inner[0], inner[1]);
-                });
-                optionAnswersMap.set(outer[0], optionAnswerMap);
-              });
-
-              return optionAnswersMap;
-            }
-
-            return json;
-          }
+          deserialize: (json: any) => deserializeOptionAnswers(json),
         }
       }
     ], rehydrate: true})(reducer);
