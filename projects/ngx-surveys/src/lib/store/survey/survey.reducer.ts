@@ -36,6 +36,11 @@ export function reducer(state = appInitialState.survey, action: SurveyActions): 
       });
     }
 
+    case SurveyActionTypes.IMPORT_SURVEY_STATE_ACTION: {
+      const { ngxSurveyState } = action.payload;
+      return Object.assign(ngxSurveyState.survey);
+    }
+
     default: {
       return state;
     }

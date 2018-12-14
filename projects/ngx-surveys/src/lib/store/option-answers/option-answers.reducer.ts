@@ -95,8 +95,6 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(ngxSurveyState.optionAnswers);
     }
 
-<<<<<<< Updated upstream
-=======
     case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE: {
       const { ngxSurveyState } = action.payload;
       return Object.assign(ngxSurveyState.optionAnswers);
@@ -110,10 +108,6 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return _.cloneDeep(state);
     }
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     default: {
       return state;
     }

@@ -1,15 +1,7 @@
-import {IPage, IPageMap, Page} from '../models/page.model';
-import {Elements, IElements, IElementsMap} from '../models/elements.model';
-import {IQuestion} from '../models/question.model';
-import {IOptionAnswers, IOptionAnswersMap, OptionAnswers} from '../models/option-answers.model';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {UUID} from 'angular2-uuid';
 import {NgxSurvey} from '../models/ngx-survey.model';
-<<<<<<< Updated upstream
 import {NgxSurveyState} from './ngx-survey.state';
-=======
-import {Page} from '../models/page.model';
-import {Elements} from '../models/elements.model';
 import {
   IOptionAnswers,
   IOptionAnswersMap,
@@ -20,12 +12,10 @@ import {
   IElementsMap,
   IElementsMaps,
   IQuestion,
-} from '../models/index';
-import {BuilderOptionsModel} from '../models/builder-options.model';
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  BuilderOptionsModel,
+  Page,
+  Elements,
+} from '../models';
 
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
 
@@ -98,11 +88,6 @@ export function isEmpty(obj: any): boolean {
   return true;
 }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
 export const deserializeUtils = {
   deserializePages(json: any): IPageMap | any {
     const pagesMap = new Map<string, IPage>();
@@ -169,7 +154,6 @@ export const deserializeUtils = {
   },
 }
 
->>>>>>> Stashed changes
 export function isNil(obj: any): boolean {
   return obj === undefined || obj === null;
 }

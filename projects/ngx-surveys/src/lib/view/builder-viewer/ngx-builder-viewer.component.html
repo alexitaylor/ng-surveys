@@ -5,9 +5,6 @@
 <div *ngIf="!survey.isLoading">
   <div class="mb-3 d-flex flex-row justify-content-start">
     <button class="btn btn-primary" tooltip="Reset Survey" (click)="reset()"><i class="fas fa-trash-alt"></i> Reset Survey</button>
-<<<<<<< Updated upstream
-    <button class="btn btn-primary ml-3" tooltip="Import Survey" (click)="importSurvey()"><i class="fas fa-file-import"></i> Import Survey</button>
-=======
     <button
       *ngIf="!!options?.importSurvey"
       class="btn btn-primary ml-3"
@@ -21,7 +18,6 @@
         <i *ngIf="button.icon" [class]="button?.icon"></i> {{button?.text}}
       </button>
     </span>
->>>>>>> Stashed changes
   </div>
   <div class="card">
     <div class="card-header">

@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import {Shell} from './shell/shell.service';
 import { NotFoundComponent } from './layouts/not-found/not-found.component';
-import { NgxBuilderViewerComponent, NgxSurveyViewerComponent, NgxModelViewerComponent } from 'ngx-surveys';
+import { NgxSurveyViewerComponent } from 'ngx-surveys';
+import {BuilderViewerContainerComponent} from './layouts/builder-viewer-container/builder-viewer-container.component';
+import {ModelViewerContainerComponent} from './layouts/model-viewer-container/model-viewer-container.component';
 
 export const routes: Routes = [
   Shell.childRoutes(
     [
       {
         path: '',
-        component: NgxBuilderViewerComponent
+        component: BuilderViewerContainerComponent,
       },
       {
         path: 'viewer',
@@ -17,7 +19,7 @@ export const routes: Routes = [
       },
       {
         path: 'model',
-        component: NgxModelViewerComponent,
+        component: ModelViewerContainerComponent,
       },
       {
         path: '**',

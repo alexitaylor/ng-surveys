@@ -155,8 +155,6 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       return Object.assign(ngxSurveyState.elements);
     }
 
-<<<<<<< Updated upstream
-=======
     case elements.ElementsActionTypes.IMPORT_ELEMENTS_STATE: {
       const { ngxSurveyState } = action.payload;
       return Object.assign(ngxSurveyState.elements);
@@ -171,10 +169,6 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       return _.cloneDeep(state);
     }
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     default: {
       return state;
     }

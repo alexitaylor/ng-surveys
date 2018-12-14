@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   IBuilderOptions,
   NgxSurveyState,
-  IElements,
-  Elements,
   BuilderOptionsModel,
   IElementAndOptionAnswers,
   deserializeUtils,

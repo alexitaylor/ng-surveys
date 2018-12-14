@@ -70,6 +70,11 @@ export function reducer(state = appInitialState.pages, action: page.Actions): IP
       return Object.assign(ngxSurveyState.pages);
     }
 
+    case page.PagesActionTypes.IMPORT_PAGE_STATE: {
+      const { ngxSurveyState } = action.payload;
+      return Object.assign(ngxSurveyState.pages);
+    }
+
     default: {
       return state;
     }

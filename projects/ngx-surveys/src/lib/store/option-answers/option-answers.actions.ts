@@ -13,14 +13,8 @@ export enum OptionAnswersActionTypes {
   DRAG_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Drag question options',
   TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION = '[Angular Option Answers] Toggle isActive question options',
   RESET_OPTION_ANSWERS_STATE = '[Angular Option Answers] Reset option answers state',
-<<<<<<< Updated upstream
-=======
   IMPORT_OPTION_ANSWERS_STATE = '[Angular Option Answers] Import option answers state',
   IMPORT_OPTION_ANSWERS = '[Angular Option Answers] Import option answers',
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }
 
 export class AddOptionAnswersAction implements Action {
@@ -68,8 +62,6 @@ export class ResetOptionAnswersStateAction implements Action {
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
 }
 
-<<<<<<< Updated upstream
-=======
 export class ImportOptionAnswersStateAction implements Action {
   readonly type = OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE;
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
@@ -80,10 +72,6 @@ export class ImportOptionAnswersAction implements Action {
   constructor(public payload: { newOptionAnswers: IOptionAnswersMap, elementId: string }) { }
 }
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 export type Actions =
   AddOptionAnswersAction |
   RemoveOptionAnswersAction |
@@ -93,13 +81,6 @@ export type Actions =
   UpdateOptionAnswerPageFlow |
   DragOptionAnswerAction |
   ToggleIsActiveOptionAnswerAction |
-<<<<<<< Updated upstream
-  ResetOptionAnswersStateAction;
-=======
   ResetOptionAnswersStateAction |
   ImportOptionAnswersStateAction |
   ImportOptionAnswersAction;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes

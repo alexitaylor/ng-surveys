@@ -23,14 +23,12 @@ export {
   NgxModelViewerModule,
 } from './lib/view/model-viewer/index';
 
-<<<<<<< Updated upstream
-=======
+
 // Utils
 export {
   deserializeUtils,
 } from './lib/store/utils';
 
->>>>>>> Stashed changes
 // Interfaces
 export {
   NgxSurveyState,
@@ -46,11 +44,6 @@ export {
   IPageFlow,
   IParagraph,
   IQuestion,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
   IBuilderOptions,
   IBuilderOptionsBuilder,
   Page,
@@ -62,8 +55,4 @@ export {
   BuilderOptionsModel,
   IElementAndOptionAnswers,
   IPageAndElementAndOptionAnswers,
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 } from './lib/models/index';
