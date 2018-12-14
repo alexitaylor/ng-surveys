@@ -48,6 +48,8 @@ export class NgxSurveyViewerComponent implements OnInit {
 
     router.events.subscribe( event => {
       if (event instanceof NavigationStart) {
+        this.pageNext = null;
+        this.pagePrev = null;
         this.isLoading = true;
       }
 
@@ -57,13 +59,13 @@ export class NgxSurveyViewerComponent implements OnInit {
           this.getNextPage();
           this.getPreviousPage();
           this.isLoading = false;
-        }, 300);
+        }, 10);
       }
 
       if (event instanceof NavigationError) {
         setTimeout(() => {
           this.isLoading = false;
-        }, 300);
+        }, 10);
 
         throw event.error;
       }
