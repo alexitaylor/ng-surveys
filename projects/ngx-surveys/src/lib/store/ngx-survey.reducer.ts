@@ -6,7 +6,19 @@ import * as fromSurvey from './survey/survey.reducer';
 import * as fromPages from './pages/pages.reducer';
 import * as fromElements from './elements/elements.reducer';
 import * as fromOptionAnswers from './option-answers/option-answers.reducer';
-import {deserializePages, deserializeElements, deserializeOptionAnswers} from './utils';
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+import {IPage} from '../models/page.model';
+import {IElements, IElementsMap} from '../models/elements.model';
+import {IOptionAnswers, IOptionAnswersMap} from '../models/option-answers.model';
+=======
+import * as fromBuilderOptions from './builder-options/builder-options.reducer';
+import {deserializeUtils} from './utils';
+>>>>>>> Stashed changes
+=======
+import * as fromBuilderOptions from './builder-options/builder-options.reducer';
+import {deserializeUtils} from './utils';
+>>>>>>> Stashed changes
 
 
 export const reducers = {
@@ -14,6 +26,7 @@ export const reducers = {
   pages: fromPages.reducer,
   elements: fromElements.reducer,
   optionAnswers: fromOptionAnswers.reducer,
+  builderOptions: fromBuilderOptions.reducer,
 };
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -25,17 +38,85 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
       },
       {
         pages: {
-          deserialize: (json: any) => deserializePages(json),
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+          deserialize: (json: any) => {
+            const pagesMap = new Map<string, IPage>();
+
+            if (Array.isArray(json)) {
+              json.forEach(el => {
+                pagesMap.set(el[0], el[1]);
+              });
+
+              return pagesMap;
+            }
+
+            return json;
+          }
+=======
+          deserialize: (json: any) => deserializeUtils.deserializePages(json),
+>>>>>>> Stashed changes
+=======
+          deserialize: (json: any) => deserializeUtils.deserializePages(json),
+>>>>>>> Stashed changes
         },
       },
       {
         elements: {
-          deserialize: (json: any) => deserializeElements(json),
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+          deserialize: (json: any) => {
+            const elementsMap = new Map<string, IElementsMap>();
+
+            if (Array.isArray(json)) {
+              json.forEach(outer => {
+                const elementMap = new Map<string, IElements>();
+                outer[1].forEach(inner => {
+                  elementMap.set(inner[0], inner[1]);
+                });
+                elementsMap.set(outer[0], elementMap);
+              });
+
+              return elementsMap;
+            }
+
+            return json;
+          }
+=======
+          deserialize: (json: any) => deserializeUtils.deserializeElements(json),
+>>>>>>> Stashed changes
+=======
+          deserialize: (json: any) => deserializeUtils.deserializeElements(json),
+>>>>>>> Stashed changes
         },
       },
       {
         optionAnswers: {
-          deserialize: (json: any) => deserializeOptionAnswers(json),
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+          deserialize: (json: any) => {
+            const optionAnswersMap = new Map<string, IOptionAnswersMap>();
+
+            if (Array.isArray(json)) {
+              json.forEach(outer => {
+                const optionAnswerMap = new Map<string, IOptionAnswers>();
+                outer[1].forEach(inner => {
+                  optionAnswerMap.set(inner[0], inner[1]);
+                });
+                optionAnswersMap.set(outer[0], optionAnswerMap);
+              });
+
+              return optionAnswersMap;
+            }
+
+            return json;
+          }
+=======
+          deserialize: (json: any) => deserializeUtils.deserializeOptionAnswersMaps(json),
+>>>>>>> Stashed changes
+=======
+          deserialize: (json: any) => deserializeUtils.deserializeOptionAnswersMaps(json),
+>>>>>>> Stashed changes
         }
       }
     ], rehydrate: true})(reducer);
@@ -71,4 +152,7 @@ export const getElementsSize = (state: NgxSurveyState, { pageId }) => state.elem
 export const getOptionAnswers = (state: NgxSurveyState) => state.optionAnswers;
 export const getOptionAnswersByElementId = (state: NgxSurveyState, { elementId }) =>
   state.optionAnswers.get(elementId);
+
+// Builder Options Selectors
+export const getBuilderOptions = (state: NgxSurveyState) => state.builderOptions;
 

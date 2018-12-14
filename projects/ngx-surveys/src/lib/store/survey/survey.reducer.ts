@@ -30,11 +30,6 @@ export function reducer(state = appInitialState.survey, action: SurveyActions): 
       return Object.assign(ngxSurveyState.survey);
     }
 
-    case SurveyActionTypes.IMPORT_SURVEY_STATE_ACTION: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.survey);
-    }
-
     case SurveyActionTypes.HANDLE_SURVEY_LOADING: {
       return Object.assign(_.cloneDeep(state), {
         ...action.payload

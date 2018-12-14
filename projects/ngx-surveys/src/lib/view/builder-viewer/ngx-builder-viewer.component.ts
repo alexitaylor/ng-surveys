@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
@@ -9,7 +9,18 @@ import * as survey from '../../store/survey/survey.actions';
 import * as fromRoot from '../../store/ngx-survey.reducer';
 import * as pages from '../../store/pages/pages.actions';
 import {resetNgxSurveyState} from '../../store/utils';
-import {IPageMap, INgxSurvey, IBuilderViewerOptions} from '../../models/index';
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+import {IPageMap} from '../../models/page.model';
+import {INgxSurvey} from '../../models/ngx-survey.model';
+=======
+import {IPageMap, INgxSurvey, IBuilderOptions} from '../../models/index';
+import {UpdateBuilderOptionsAction} from '../../store/builder-options/builder-options.actions';
+>>>>>>> Stashed changes
+=======
+import {IPageMap, INgxSurvey, IBuilderOptions} from '../../models/index';
+import {UpdateBuilderOptionsAction} from '../../store/builder-options/builder-options.actions';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'ngxs-builder-viewer',
@@ -17,8 +28,22 @@ import {IPageMap, INgxSurvey, IBuilderViewerOptions} from '../../models/index';
   styleUrls: ['./ngx-builder-viewer.component.scss']
 })
 export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
-  @Input() options: IBuilderViewerOptions;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+  private _options: IBuilderOptions;
+  @Input() set options(value: IBuilderOptions) {
+    this._options = value;
+    console.log('value: ', value);
+    this.handleBuilderOptionsChange(this._options);
+  }
+  get options(): IBuilderOptions {
+    return this._options;
+  }
 
+>>>>>>> Stashed changes
   surveySub: Subscription;
   survey: INgxSurvey;
 
@@ -27,10 +52,6 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
 
   pagesSub: Subscription;
   pages: IPageMap;
-
-  ngxSurveyStateSub: Subscription;
-  ngxSurveyState: NgxSurveyState;
-
   isLoading = false;
 
   constructor(
@@ -42,10 +63,6 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
 
     this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(pagesRes => {
       this.pages = pagesRes;
-    });
-
-    this.ngxSurveyStateSub = store.pipe(select(fromRoot.getNgxSurveyState)).subscribe(res => {
-      this.ngxSurveyState = res;
     });
   }
 
@@ -63,6 +80,10 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
     this.surveyNameSub$.unsubscribe();
     this.surveyNameSub$.unsubscribe();
     this.pagesSub.unsubscribe();
+  }
+
+  handleBuilderOptionsChange(builderOptions: IBuilderOptions) {
+    this.store.dispatch(new UpdateBuilderOptionsAction({ builderOptions }));
   }
 
   handleSurveyNameChange() {
@@ -100,11 +121,8 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new survey.ResetSurveyStateAction({ ngxSurveyState }));
   }
 
-  importSurvey(cb) {
-    cb().subscribe(ngxSurveyState => {
-      ngxSurveyState.survey.isLoading = true;
-      this.store.dispatch(new survey.ImportSurveySateAction({ ngxSurveyState }));
-    });
+  importSurvey() {
+    console.log('import');
   }
 
   trackElement(index: number, item: any) {

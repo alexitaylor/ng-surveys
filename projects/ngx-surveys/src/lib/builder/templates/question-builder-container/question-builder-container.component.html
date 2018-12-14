@@ -40,6 +40,28 @@
         (click)="editQuestion(element?.id)">
         <i class="fas fa-edit"></i>
       </button>
+      <button
+        id="import-element"
+        *ngIf="!!importElementButton"
+        type="button"
+        class="btn btn-outline-primary"
+        [tooltip]="importElementButton?.title ? importElementButton?.title : 'Import Element'"
+        (click)="importElement(importElementButton.callback, element)"
+      >
+        <i [class]="importElementButton?.icon ? importElementButton?.icon : 'fas fa-file-import'"></i>
+      </button>
+      <span *ngIf="!!elementButtons && elementButtons?.length > 0">
+        <button
+          *ngFor="let button of elementButtons"
+          [id]="'custom-element-button' + button?.title"
+          type="button"
+          class="btn btn-outline-primary bl-none"
+          [tooltip]="button?.title"
+          (click)="handleCustomElementButton(element, button?.callback)"
+        >
+          <i [class]="button?.icon"></i>
+        </button>
+      </span>
     </div>
   </div>
   <!-- #/Header -->

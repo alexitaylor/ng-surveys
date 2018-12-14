@@ -26,19 +26,5 @@ export class SurveyEffect {
     catchError(() => of({ type: 'RESET_SURVEY_STATE_ERROR' }))
   );
 
-  @Effect()
-  importSurveyState: Observable<Action> = this.action$.pipe(
-    map(action => action),
-    ofType(survey.SurveyActionTypes.IMPORT_SURVEY_STATE_ACTION),
-    delay(1000),
-    switchMap(({ payload }: CustomAction) => [
-      new pages.ImportPageStateAction({ ngxSurveyState: payload.ngxSurveyState }),
-      new elements.ImportElementsStateAction({ ngxSurveyState: payload.ngxSurveyState }),
-      new optionAnswers.ImportOptionAnswersStateAction({ ngxSurveyState: payload.ngxSurveyState }),
-      new survey.HandleSurveyLoading({ isLoading: false }),
-    ]),
-    catchError(() => of({ type: 'IMPORT_SURVEY_STATE_ERROR' }))
-  );
-
   constructor(private action$: Actions) {}
 }

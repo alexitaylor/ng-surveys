@@ -2,7 +2,7 @@ import * as optionAnswers from './option-answers.actions';
 import * as optionAnswersUtil from './option-answers-util';
 import * as _ from 'lodash';
 import {appInitialState} from '../ngx-survey.state';
-import {IOptionAnswersMap, IOptionAnswersMaps} from '../../models/option-answers.model';
+import {IOptionAnswers, IOptionAnswersMap, IOptionAnswersMaps} from '../../models/option-answers.model';
 
 export function reducer(state = appInitialState.optionAnswers, action: optionAnswers.Actions): IOptionAnswersMaps {
 
@@ -95,11 +95,25 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
       return Object.assign(ngxSurveyState.optionAnswers);
     }
 
+<<<<<<< Updated upstream
+=======
     case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE: {
       const { ngxSurveyState } = action.payload;
       return Object.assign(ngxSurveyState.optionAnswers);
     }
 
+    case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS: {
+      const { newOptionAnswers, elementId } = action.payload;
+
+      state.set(elementId, newOptionAnswers);
+
+      return _.cloneDeep(state);
+    }
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     default: {
       return state;
     }

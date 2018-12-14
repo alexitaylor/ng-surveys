@@ -11,8 +11,7 @@ export enum PagesActionTypes {
   UPDATE_PAGE_NAME_ACTION = '[Angular Page] Update survey page name',
   UPDATE_PAGE_DESCRIPTION_ACTION = '[Angular Page] Update survey page description',
   UPDATE_PAGE_PAGE_FLOW_ACTION = '[Angular Page] Update survey page page flow',
-  RESET_PAGE_STATE = '[Angular Page] Reset page state',
-  IMPORT_PAGE_STATE = '[Angular Page] Import page state',
+  RESET_PAGE_STATE = '[Angular Page] Reset page state'
 }
 
 export class AddPageAction implements Action {
@@ -60,11 +59,6 @@ export class ResetPageStateAction implements Action {
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
 }
 
-export class ImportPageStateAction implements Action {
-  readonly type = PagesActionTypes.IMPORT_PAGE_STATE;
-  constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
-}
-
 export type Actions =
   AddPageAction |
   InsertPageAction |
@@ -74,5 +68,4 @@ export type Actions =
   UpdatePageNameAction |
   UpdatePageDescriptionAction |
   UpdatePagePageFlowAction |
-  ResetPageStateAction |
-  ImportPageStateAction;
+  ResetPageStateAction;

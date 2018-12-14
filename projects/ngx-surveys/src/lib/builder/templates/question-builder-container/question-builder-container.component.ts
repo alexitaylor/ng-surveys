@@ -1,10 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 
 import {NgxSurveyState} from '../../../store/ngx-survey.state';
 import {IElements} from '../../../models/elements.model';
 import * as elements from '../../../store/elements/elements.actions';
-import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
+import * as optionAnswersAction from '../../../store/option-answers/option-answers.actions';
+import * as fromRoot from '../../../store/ngx-survey.reducer';
+import {Subscription} from 'rxjs';
+import {IBuilderOptions, IElementAndOptionAnswers} from '../../../models/index';
+import {IBuilderElementButtonsOptionsBuilder, IBuilderImportElementOptionsBuilder} from '../../../models/builder-options.model';
+import {ElementAndOptionAnswersModel} from '../../../models/element-and-option-answers.model';
 
 @Component({
   selector: 'ngxs-question-builder-container',
@@ -22,7 +27,17 @@ export class QuestionBuilderContainerComponent implements OnInit {
   questionType: string;
   prevQuestionType: string;
 
+  builderOptionsSub: Subscription;
+  builderOptions: IBuilderOptions;
+  elementButtons: IBuilderElementButtonsOptionsBuilder[];
+  importElementButton: IBuilderImportElementOptionsBuilder;
+
   constructor(private store: Store<NgxSurveyState>) {
+    this.builderOptionsSub = store.pipe(select(fromRoot.getBuilderOptions)).subscribe(res => {
+      this.builderOptions = res;
+      this.elementButtons = this.builderOptions.elementButtons;
+      this.importElementButton = this.builderOptions.importElement;
+    });
   }
 
   ngOnInit() {
@@ -35,17 +50,25 @@ export class QuestionBuilderContainerComponent implements OnInit {
     }, 100);
   }
 
+  importElement(cb, currentElement) {
+    cb().subscribe(({ element, optionAnswers }: IElementAndOptionAnswers) => {
+      this.store.dispatch(new elements.ImportElementAction({ element, optionAnswers, pageId: this.pageId, currentElement }));
+    });
+  }
+
+  handleCustomElementButton(element: IElements, cb): void {
+    this.store.pipe(select(fromRoot.getOptionAnswersByElementId, { elementId: element.id })).subscribe(res => {
+      const elementAndOptionAnswers: IElementAndOptionAnswers = new ElementAndOptionAnswersModel(element, res);
+      cb({elementAndOptionAnswers});
+    });
+  }
+
   onQuestionTypeSelect(type: string, elementId: string) {
     this.questionType = type;
 
     if (this.prevQuestionType === 'checkboxes' || this.prevQuestionType === 'radio' || this.prevQuestionType === 'select') {
-      this.store.dispatch(new optionAnswers.RemoveOptionAnswersMapAction({ elementId: this.element.id }));
+      this.store.dispatch(new optionAnswersAction.RemoveOptionAnswersMapAction({ elementId: this.element.id }));
     }
-
-    this.store.dispatch(new elements.RemoveQuestionValuesAction({
-      pageId: this.pageId,
-      elementId: this.element.id,
-    }));
 
     this.store.dispatch(new elements.AddQuestionTypeAction({
       pageId: this.pageId,

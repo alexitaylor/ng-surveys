@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import {IPageFlow} from '../../models/page-flow.model';
 import {NgxSurveyState} from '../ngx-survey.state';
+import {IElements, IOptionAnswersMap} from '../../models';
 
 export enum ElementsActionTypes {
   ADD_ELEMENT_ACTION = '[Angular Element] Add survey question element',
@@ -18,7 +19,14 @@ export enum ElementsActionTypes {
   TOGGLE_IS_ACTIVE_ELEMENT_ACTION = '[Angular Element] Toggle isActive element',
   QUESTION_UPDATE_ANSWER_ACTION = '[Angular Question] Update question answer value',
   RESET_ELEMENTS_STATE = '[Angular Element] Reset elements state',
+<<<<<<< Updated upstream
+=======
   IMPORT_ELEMENTS_STATE = '[Angular Element] Import elements state',
+  IMPORT_ELEMENT = '[Angular Element] Import element',
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 }
 
 export class AddElementAction implements Action {
@@ -102,11 +110,22 @@ export class ResetElementsStateAction implements Action {
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
 }
 
+<<<<<<< Updated upstream
+=======
 export class ImportElementsStateAction implements Action {
   readonly type = ElementsActionTypes.IMPORT_ELEMENTS_STATE;
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
 }
 
+export class ImportElementAction implements Action {
+  readonly type = ElementsActionTypes.IMPORT_ELEMENT;
+  constructor(public payload: { element: IElements, optionAnswers: IOptionAnswersMap, pageId: string, currentElement: IElements }) { }
+}
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 export type Actions =
   AddElementAction |
   RemoveElementAction |
@@ -122,5 +141,13 @@ export type Actions =
   UpdateQuestionPageFlowModifierAction |
   ToggleIsActiveElementAction |
   UpdateQuestionAnswerAction |
+<<<<<<< Updated upstream
+  ResetElementsStateAction;
+=======
   ResetElementsStateAction |
-  ImportElementsStateAction;
+  ImportElementsStateAction |
+  ImportElementAction;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes

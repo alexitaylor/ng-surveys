@@ -132,6 +132,16 @@ export function updateQuestionAnswer(elementId: string, answer: string | number,
   return new Map<string, IElements>(elements);
 }
 
+export function importElement(element: IElements, pageId: string, elements: IElementsMap, currentElement: IElements) {
+  elements.delete(currentElement.id);
+  element.pageId = pageId;
+  elements.set(element.id, element);
+  updateElementPositionInMap(elements);
+  handleElementsShowPageFlowToggle(elements);
+
+  return new Map<string, IElements>(elements);
+}
+
 export const updateShowPageFlowToggle = (elements: IElementsMap, elementId: string): void =>
   elements.forEach((value: IElements, key: string) => value.showPageFlowToggle = key === elementId);
 

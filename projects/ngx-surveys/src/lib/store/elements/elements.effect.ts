@@ -8,6 +8,7 @@ import * as elements from './elements.actions';
 import * as pages from '../pages/pages.actions';
 import * as optionAnswers from '../option-answers/option-answers.actions';
 import {CustomAction} from '../../models/custom-action.model';
+import {isNil} from '../utils';
 
 @Injectable()
 export class ElementsEffect {
@@ -58,6 +59,18 @@ export class ElementsEffect {
       return of({ type: 'NO_ACTION' });
     }),
     catchError(() => of({ type: 'UPDATE_ANSWER_ERROR' }))
+  );
+
+  @Effect()
+  ImportElement: Observable<Action> = this.actions$.pipe(
+    ofType(elements.ElementsActionTypes.IMPORT_ELEMENT),
+    switchMap(({ payload }: CustomAction) => {
+      if (!isNil(payload.optionAnswers)) {
+        return [new optionAnswers.ImportOptionAnswersAction({ newOptionAnswers: payload.optionAnswers, elementId: payload.element.id })];
+      }
+      return of({ type: 'NO_ACTION' });
+    }),
+    catchError(() => of({ type: 'IMPORT_ELEMENT_ERROR' }))
   );
 
   constructor(private actions$: Actions) {}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngxs-surveys',
+  selector: 'ngxs-ngx-surveys',
   template: `
     <p>
       ngx-surveys works!

@@ -5,7 +5,7 @@ import {Store, select} from '@ngrx/store';
 import {NgxSurveyState} from '../../store/ngx-survey.state';
 
 @Component({
-  selector: 'ngxs-model-viewer',
+  selector: 'ngxs-ngx-model-viewer',
   templateUrl: './ngx-model-viewer.component.html',
   styleUrls: ['./ngx-model-viewer.component.scss']
 })

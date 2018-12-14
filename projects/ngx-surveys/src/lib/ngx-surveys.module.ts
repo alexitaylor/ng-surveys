@@ -25,6 +25,7 @@ import {isEmpty} from './store/utils';
   imports: [
     NgxBuilderViewerModule,
     NgxSurveyViewerModule,
+    NgxSurveyViewerModule,
     NgxModelViewerModule,
     /**
      * StoreModule.forRoot includes an object containing app and the appReducer
