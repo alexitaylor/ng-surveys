@@ -1,13 +1,12 @@
 import {IPage, IPageMap, Page} from '../../models/page.model';
 import {getLastValueInMap, moveItemInMap, updateElementPositionInMap} from '../utils';
 import {IPageFlow} from '../../models/page-flow.model';
-import * as elements from '../elements/elements.actions';
 
 export function createNextPage(pages: IPageMap, surveyId: string, pageId: string): IPageMap {
   const newPage: IPage = new Page(pageId, surveyId);
 
   if (pages.size >= 1) {
-    const lastPage = getLastValueInMap(pages);
+    const lastPage: IPage = getLastValueInMap(pages);
     newPage.orderNo = lastPage.orderNo + 1;
   }
 

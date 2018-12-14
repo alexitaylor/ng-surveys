@@ -1,8 +1,6 @@
 import {IPageFlow, PageFlow} from './page-flow.model';
-import { UUID } from 'angular2-uuid';
 
 export type IPageMap = Map<string, IPage>;
-export type IPageMapMap = Map<string, IPageMap>;
 
 export interface IPage {
   id: string;

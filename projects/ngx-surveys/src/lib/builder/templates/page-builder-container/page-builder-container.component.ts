@@ -36,7 +36,7 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   ngOnInit() {
-    this.pageSizeSub = this.store.pipe(select(fromRoot.getSurveyPageSize, { surveyId: this.surveyId })).subscribe(res => {
+    this.pageSizeSub = this.store.pipe(select(fromRoot.getPagesSize)).subscribe(res => {
       this.pageSize = res;
     });
 
@@ -59,7 +59,7 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
 
   removePage(pageId: string) {
     const elementIds = Array.from(this.elements).reduce((array, el) => [...array, el[0]], []);
-    this.store.dispatch(new pages.RemovePageAction({ pageId, surveyId: this.surveyId, elementIds }));
+    this.store.dispatch(new pages.RemovePageAction({ pageId, elementIds }));
   }
 
   insertPage(previousPageId: string) {
@@ -68,11 +68,11 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   movePageDown(pageId: string) {
-    this.store.dispatch(new pages.MovePageDownAction({ pageId, surveyId: this.surveyId }));
+    this.store.dispatch(new pages.MovePageDownAction({ pageId }));
   }
 
   movePageUp(pageId: string) {
-    this.store.dispatch(new pages.MovePageUpAction({ pageId, surveyId: this.surveyId }));
+    this.store.dispatch(new pages.MovePageUpAction({ pageId }));
   }
 
   addElement(pageId: string) {
@@ -95,7 +95,7 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(name => {
-      this.store.dispatch(new pages.UpdatePageNameAction({ pageId, name, surveyId: this.surveyId }));
+      this.store.dispatch(new pages.UpdatePageNameAction({ pageId, name }));
     });
   }
 
@@ -107,7 +107,7 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(description => {
-      this.store.dispatch(new pages.UpdatePageDescriptionAction({ pageId, description, surveyId: this.surveyId }));
+      this.store.dispatch(new pages.UpdatePageDescriptionAction({ pageId, description }));
     });
   }
 

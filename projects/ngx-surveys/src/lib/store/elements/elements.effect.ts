@@ -53,7 +53,7 @@ export class ElementsEffect {
     ofType(elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION),
     switchMap(({ payload }: CustomAction) => {
       if (payload.pageFlowModifier) {
-        return [new pages.UpdatePagePageFlowAction({ pageId: payload.pageId, surveyId: payload.surveyId, pageFlow: payload.pageFlow })];
+        return [new pages.UpdatePagePageFlowAction({ pageId: payload.pageId, pageFlow: payload.pageFlow })];
       }
       return of({ type: 'NO_ACTION' });
     }),

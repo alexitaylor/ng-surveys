@@ -34,7 +34,7 @@ export class NgxSurveyViewerComponent implements OnInit {
     this.surveyIdSub = store.pipe(select(fromRoot.getSurveyId)).subscribe(res => {
       this.surveyId = res;
     });
-    this.pagesSub = store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => {
+    this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(res => {
       this.pages = res;
       if (res) {
         this.pageSize = res.size;

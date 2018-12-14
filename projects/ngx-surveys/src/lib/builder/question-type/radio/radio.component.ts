@@ -21,7 +21,7 @@ export class RadioComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.optionAnswersSub = this.store.pipe(select(fromRoot.getOptionAnswers, { elementId: this.data.element.id })).subscribe(res => {
+    this.optionAnswersSub = this.store.pipe(select(fromRoot.getOptionAnswersByElementId, { elementId: this.data.element.id })).subscribe(res => {
       this.optionAnswers = res;
     });
   }
@@ -37,7 +37,6 @@ export class RadioComponent implements OnInit, OnDestroy {
       answer,
       pageFlowModifier: this.data.element.question.pageFlowModifier,
       pageFlow,
-      surveyId: this.data.surveyId,
     }));
   }
 

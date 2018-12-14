@@ -93,7 +93,6 @@ export class UpdateQuestionAnswerAction implements Action {
       answer: string | number,
       pageFlowModifier: boolean,
       pageFlow: IPageFlow,
-      surveyId: string
   }) { }
 }
 

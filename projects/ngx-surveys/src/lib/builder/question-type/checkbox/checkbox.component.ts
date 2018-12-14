@@ -25,7 +25,7 @@ export class CheckboxComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.optionAnswersSub = this.store.pipe(select(fromRoot.getOptionAnswers, { elementId: this.data.element.id })).subscribe(res => {
+    this.optionAnswersSub = this.store.pipe(select(fromRoot.getOptionAnswersByElementId, { elementId: this.data.element.id })).subscribe(res => {
       this.optionAnswers = res;
     });
     const answer = this.data.element.question.answer;
@@ -70,7 +70,6 @@ export class CheckboxComponent implements OnInit, OnDestroy {
       answer,
       pageFlowModifier: this.data.element.question.pageFlowModifier,
       pageFlow,
-      surveyId: this.data.surveyId,
     }));
   }
 

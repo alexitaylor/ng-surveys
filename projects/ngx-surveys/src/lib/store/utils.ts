@@ -4,7 +4,7 @@ import {IQuestion} from '../models/question.model';
 import {IOptionAnswers, IOptionAnswersMap, OptionAnswers} from '../models/option-answers.model';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {UUID} from 'angular2-uuid';
-import {AngularSurvey} from '../models/angular-survey.model';
+import {NgxSurvey} from '../models/ngx-survey.model';
 import {NgxSurveyState} from './ngx-survey.state';
 
 export const getLastValueInMap = map => Array.from(map)[map.size - 1][1];
@@ -44,13 +44,12 @@ export const updateElementPositionInMap = (map) => Array.from(map).reduce(
 
 export const resetNgxSurveyState = (): NgxSurveyState => {
   // Init Survey
-  const angularSurvey = new AngularSurvey();
+  const angularSurvey = new NgxSurvey();
 
 // Init Pages
   const pageId = UUID.UUID();
   const page = new Page(pageId, angularSurvey.id);
   const pageMap = new Map<string, IPage>().set(page.id, page);
-  const pagesMap = new Map<string, IPageMap>().set(angularSurvey.id, pageMap);
 
 // Init Elements
   const element = new Elements(page.id);
@@ -63,11 +62,24 @@ export const resetNgxSurveyState = (): NgxSurveyState => {
 
   return {
     survey: angularSurvey,
-    pages: pagesMap,
+    pages: pageMap,
     elements: elementsMap,
     optionAnswers: optionAnswersMap,
   };
 };
+
+export function isEmpty(obj: any): boolean {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function isNil(obj: any): boolean {
+  return obj === undefined || obj === null;
+}
 
 export const getLastItemInMap = map => Array.from(map)[map.size - 1];
 export const getLastKeyInMap = map => Array.from(map)[map.size - 1][0];

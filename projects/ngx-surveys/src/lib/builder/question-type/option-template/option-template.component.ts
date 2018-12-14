@@ -34,7 +34,7 @@ export class OptionTemplateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     setTimeout(() => {
-      this.pagesSub = this.store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => this.pages = res);
+      this.pagesSub = this.store.pipe(select(fromRoot.getPages)).subscribe(res => this.pages = res);
 
       if (this.isNewOption) {
         const $optionTemplateInput = document.getElementById(`optionTemplateInput-${this.optionAnswer.id}`);

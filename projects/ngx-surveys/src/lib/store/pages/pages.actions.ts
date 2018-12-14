@@ -16,7 +16,7 @@ export enum PagesActionTypes {
 
 export class AddPageAction implements Action {
   readonly type = PagesActionTypes.ADD_PAGE_ACTION;
-  constructor(public payload?: { surveyId: string, pageId: string }) { }
+  constructor(public payload?: { pageId: string, surveyId: string }) { }
 }
 
 export class InsertPageAction implements Action {
@@ -26,32 +26,32 @@ export class InsertPageAction implements Action {
 
 export class MovePageUpAction implements Action {
   readonly type = PagesActionTypes.MOVE_PAGE_UP_ACTION;
-  constructor(public payload?: { pageId: string, surveyId: string }) { }
+  constructor(public payload?: { pageId: string }) { }
 }
 
 export class MovePageDownAction implements Action {
   readonly type = PagesActionTypes.MOVE_PAGE_DOWN_ACTION;
-  constructor(public payload?: { pageId: string, surveyId: string }) { }
+  constructor(public payload?: { pageId: string }) { }
 }
 
 export class RemovePageAction implements Action {
   readonly type = PagesActionTypes.REMOVE_PAGE_ACTION;
-  constructor(public payload: { pageId: string, surveyId: string, elementIds: string[] | any }) { }
+  constructor(public payload: { pageId: string, elementIds: string[] | any }) { }
 }
 
 export class UpdatePageNameAction implements Action {
   readonly type = PagesActionTypes.UPDATE_PAGE_NAME_ACTION;
-  constructor(public payload: { pageId: string,  name: string, surveyId: string }) { }
+  constructor(public payload: { pageId: string,  name: string }) { }
 }
 
 export class UpdatePageDescriptionAction implements Action {
   readonly type = PagesActionTypes.UPDATE_PAGE_DESCRIPTION_ACTION;
-  constructor(public payload: { pageId: string,  description: string, surveyId: string }) { }
+  constructor(public payload: { pageId: string,  description: string }) { }
 }
 
 export class UpdatePagePageFlowAction implements Action {
   readonly type = PagesActionTypes.UPDATE_PAGE_PAGE_FLOW_ACTION;
-  constructor(public payload: { pageId: string,  pageFlow: IPageFlow, surveyId: string }) { }
+  constructor(public payload: { pageId: string,  pageFlow: IPageFlow }) { }
 }
 
 export class ResetPageStateAction implements Action {

@@ -19,6 +19,7 @@ import {NgxSurveyViewerComponent} from './view/survey-viewer';
 import {IPageMap} from './models/page.model';
 import {NgxSurveyState} from './store/ngx-survey.state';
 import * as fromRoot from './store/ngx-survey.reducer';
+import {isEmpty} from './store/utils';
 
 @NgModule({
   imports: [
@@ -59,7 +60,7 @@ export class NgxSurveysModule {
     this.surveyIdSub = store.pipe(select(fromRoot.getSurveyId)).subscribe(res => {
       this.surveyId = res;
     });
-    this.pagesSub = store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => {
+    this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(res => {
       this.pages = res;
     });
 
@@ -73,7 +74,7 @@ export class NgxSurveysModule {
    */
   createPagesRoutes() {
     const pageRoute = [];
-    if (!!this.pages) {
+    if (Array.isArray(Array.from(this.pages)) && !isEmpty(this.pages)) {
       this.pages.forEach(page => {
         pageRoute.push({
           path: `viewer/${page.id}`,

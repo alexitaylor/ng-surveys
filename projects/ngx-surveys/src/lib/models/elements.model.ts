@@ -3,7 +3,7 @@ import { UUID } from 'angular2-uuid';
 import {IParagraph} from './paragraph.model';
 
 export type IElementsMap = Map<string, IElements>;
-export type IElementsMapMap = Map<string, IElementsMap>;
+export type IElementsMaps = Map<string, IElementsMap>;
 
 export interface IElements {
   pageId: string;

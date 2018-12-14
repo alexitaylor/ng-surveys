@@ -93,7 +93,6 @@ export class RangeComponent implements OnInit, OnDestroy {
         answer,
         pageFlowModifier: this.data.element.question.pageFlowModifier,
         pageFlow: this.data.element.pageFlow,
-        surveyId: this.data.surveyId,
       }));
     });
   }

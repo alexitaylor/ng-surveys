@@ -37,7 +37,7 @@ export class PageSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.pagesSub = this.store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.surveyId })).subscribe(res => this.pages = res);
+    this.pagesSub = this.store.pipe(select(fromRoot.getPages)).subscribe(res => this.pages = res);
   }
 
   ngOnDestroy() {
@@ -59,7 +59,6 @@ export class PageSelectComponent implements OnInit, OnDestroy {
       this.store.dispatch(new pages.UpdatePagePageFlowAction({
         pageId: this.pageId,
         pageFlow,
-        surveyId: this.surveyId
       }));
     } else {
       const pageFlow = new PageFlow();

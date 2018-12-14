@@ -1,8 +1,9 @@
 /*
  * Public API Surface of ngx-surveys
+ * Intended to enumerate and expose specific functionality for external use
  */
 
-export * from './lib/ngx-surveys.service';
+export * from './lib/providers/ngx-surveys.service';
 export * from './lib/ngx-surveys.component';
 export * from './lib/ngx-surveys.module';
 
@@ -21,3 +22,20 @@ export {
   NgxModelViewerComponent,
   NgxModelViewerModule,
 } from './lib/view/model-viewer/index';
+
+// Interfaces
+export {
+  NgxSurveyState,
+  INgxSurvey,
+  IPage,
+  IPageMap,
+  IElements,
+  IElementsMap,
+  IElementsMaps,
+  IOptionAnswers,
+  IOptionAnswersMap,
+  IOptionAnswersMaps,
+  IPageFlow,
+  IParagraph,
+  IQuestion,
+} from './lib/models/index';

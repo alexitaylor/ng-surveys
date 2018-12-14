@@ -42,7 +42,7 @@ export class RadioCheckboxSelectComponent implements OnInit, OnDestroy {
       .subscribe(res => this.element = res);
 
     this.optionAnswers$ = this.store.pipe(
-      select(fromRoot.getOptionAnswers,
+      select(fromRoot.getOptionAnswersByElementId,
         { elementId: this.data.element.id }
         ));
 

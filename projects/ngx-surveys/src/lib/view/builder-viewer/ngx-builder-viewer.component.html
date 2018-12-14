@@ -3,8 +3,9 @@
 </div>
 
 <div *ngIf="!survey.isLoading">
-  <div class="mb-3">
-    <button class="btn btn-primary" (click)="reset()">Reset</button>
+  <div class="mb-3 d-flex flex-row justify-content-start">
+    <button class="btn btn-primary" tooltip="Reset Survey" (click)="reset()"><i class="fas fa-trash-alt"></i> Reset Survey</button>
+    <button class="btn btn-primary ml-3" tooltip="Import Survey" (click)="importSurvey()"><i class="fas fa-file-import"></i> Import Survey</button>
   </div>
   <div class="card">
     <div class="card-header">

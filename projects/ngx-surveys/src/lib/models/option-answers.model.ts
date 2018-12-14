@@ -2,7 +2,7 @@ import {IPageFlow, PageFlow} from './page-flow.model';
 import { UUID } from 'angular2-uuid';
 
 export type IOptionAnswersMap = Map<string, IOptionAnswers>;
-export type IOptionAnswersMapMap = Map<string, IOptionAnswersMap>;
+export type IOptionAnswersMaps = Map<string, IOptionAnswersMap>;
 
 export interface IOptionAnswers {
   elementId: string;

@@ -10,7 +10,7 @@ import * as fromRoot from '../../store/ngx-survey.reducer';
 import * as pages from '../../store/pages/pages.actions';
 import {resetNgxSurveyState} from '../../store/utils';
 import {IPageMap} from '../../models/page.model';
-import {IAngularSurvey} from '../../models/angular-survey.model';
+import {INgxSurvey} from '../../models/ngx-survey.model';
 
 @Component({
   selector: 'ngxs-builder-viewer',
@@ -19,7 +19,7 @@ import {IAngularSurvey} from '../../models/angular-survey.model';
 })
 export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
   surveySub: Subscription;
-  survey: IAngularSurvey;
+  survey: INgxSurvey;
 
   surveyNameSub$: Subscription;
   surveyDescriptionSub$: Subscription;
@@ -33,9 +33,10 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
   ) {
     this.surveySub = store.pipe(select(fromRoot.getSurvey)).subscribe(res => {
       this.survey = res;
-      this.pagesSub = store.pipe(select(fromRoot.getPagesBySurveyId, { surveyId: this.survey.id })).subscribe(pages => {
-        this.pages = pages;
-      });
+    });
+
+    this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(pagesRes => {
+      this.pages = pagesRes;
     });
   }
 
@@ -85,11 +86,13 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    // location.reload();
-    //this.survey.isLoading = true;
     const ngxSurveyState: NgxSurveyState = resetNgxSurveyState();
     ngxSurveyState.survey.isLoading = true;
     this.store.dispatch(new survey.ResetSurveyStateAction({ ngxSurveyState }));
+  }
+
+  importSurvey() {
+    console.log('import');
   }
 
   trackElement(index: number, item: any) {

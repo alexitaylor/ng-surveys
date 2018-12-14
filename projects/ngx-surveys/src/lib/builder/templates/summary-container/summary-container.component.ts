@@ -5,7 +5,7 @@ import {Store, select} from '@ngrx/store';
 
 import {SurveySummaryChangedAction} from '../../../store/survey/survey.actions';
 import {NgxSurveyState} from '../../../store/ngx-survey.state';
-import {IAngularSurvey} from '../../../models/angular-survey.model';
+import {INgxSurvey} from '../../../models/ngx-survey.model';
 import * as fromRoot from '../../../store/ngx-survey.reducer';
 
 @Component({
@@ -15,7 +15,7 @@ import * as fromRoot from '../../../store/ngx-survey.reducer';
 })
 export class SummaryContainerComponent implements OnInit, OnDestroy {
   surveySub: Subscription;
-  survey: IAngularSurvey;
+  survey: INgxSurvey;
 
   constructor(
     private store: Store<NgxSurveyState>,

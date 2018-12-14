@@ -1,6 +1,6 @@
 import { UUID } from 'angular2-uuid';
 
-export interface IAngularSurvey {
+export interface INgxSurvey {
   id?: string;
   name?: string;
   description?: string;
@@ -8,7 +8,7 @@ export interface IAngularSurvey {
   isLoading?: boolean;
 }
 
-export class AngularSurvey implements IAngularSurvey {
+export class NgxSurvey implements INgxSurvey {
   constructor(
     public id?: string,
     public name?: string,

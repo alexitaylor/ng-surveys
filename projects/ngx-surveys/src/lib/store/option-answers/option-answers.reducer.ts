@@ -2,9 +2,9 @@ import * as optionAnswers from './option-answers.actions';
 import * as optionAnswersUtil from './option-answers-util';
 import * as _ from 'lodash';
 import {appInitialState} from '../ngx-survey.state';
-import {IOptionAnswersMap, IOptionAnswersMapMap} from '../../models/option-answers.model';
+import {IOptionAnswersMap, IOptionAnswersMaps} from '../../models/option-answers.model';
 
-export function reducer(state = appInitialState.optionAnswers, action: optionAnswers.Actions): IOptionAnswersMapMap {
+export function reducer(state = appInitialState.optionAnswers, action: optionAnswers.Actions): IOptionAnswersMaps {
 
   switch (action.type) {
 
@@ -21,7 +21,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
 
       state.set(elementId, newOptionAnswers);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_ACTION: {
@@ -31,19 +31,19 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
 
       state.set(elementId, newOptionAnswers);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAP_ACTION: {
       const { elementId } = action.payload;
       state.delete(elementId);
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAPS_ACTION: {
       const { elementIds } = action.payload;
       elementIds.forEach(id => state.delete(id));
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_VALUE_ACTION: {
@@ -55,7 +55,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
 
       state.set(elementId, newOptionAnswers);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.UPDATE_OPTION_ANSWERS_PAGE_FLOW: {
@@ -65,7 +65,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
 
       state.set(elementId, newOptionAnswers);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.DRAG_OPTION_ANSWERS_ACTION: {
@@ -75,7 +75,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
 
       state.set(elementId, newOptionAnswers);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION: {
@@ -87,7 +87,7 @@ export function reducer(state = appInitialState.optionAnswers, action: optionAns
         state.set(elementId, newOptionAnswers);
       }
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case optionAnswers.OptionAnswersActionTypes.RESET_OPTION_ANSWERS_STATE: {

@@ -2,9 +2,9 @@ import * as elements from './elements.actions';
 import * as elementUtils from './elements-util';
 import * as _ from 'lodash';
 import {appInitialState} from '../ngx-survey.state';
-import {IElementsMap, IElementsMapMap} from '../../models/elements.model';
+import {IElementsMap, IElementsMaps} from '../../models/elements.model';
 
-export function reducer(state = appInitialState.elements, action: elements.Actions): IElementsMapMap {
+export function reducer(state = appInitialState.elements, action: elements.Actions): IElementsMaps {
 
   switch (action.type) {
 
@@ -21,7 +21,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.REMOVE_ELEMENT_ACTION: {
@@ -31,13 +31,13 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.REMOVE_ELEMENT_MAP_ACTION: {
       const { pageId } = action.payload;
       state.delete(pageId);
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.MOVE_ELEMENT_UP_ACTION: {
@@ -47,7 +47,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.MOVE_ELEMENT_DOWN_ACTION: {
@@ -57,7 +57,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.DRAG_ELEMENT_ACTION: {
@@ -67,7 +67,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_ADD_TEXT_ACTION: {
@@ -77,7 +77,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_ADD_TYPE_ACTION: {
@@ -87,7 +87,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_UPDATE_MIN_ACTION: {
@@ -97,7 +97,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_UPDATE_MAX_ACTION: {
@@ -107,7 +107,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_REMOVE_VALUES_ACTION: {
@@ -117,7 +117,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION: {
@@ -127,7 +127,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.TOGGLE_IS_ACTIVE_ELEMENT_ACTION: {
@@ -137,7 +137,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION: {
@@ -147,7 +147,7 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
 
       state.set(pageId, newElements);
 
-      return Object.assign(state, _.cloneDeep(state));
+      return _.cloneDeep(state);
     }
 
     case elements.ElementsActionTypes.RESET_ELEMENTS_STATE: {
