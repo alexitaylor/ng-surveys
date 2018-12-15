@@ -6,6 +6,8 @@ import {Observable, Subscription} from 'rxjs';
 import * as fromRoot from '../../store/ngx-survey.reducer';
 import {IPage, IPageMap} from '../../models/page.model';
 import {NgxSurveyState} from '../../store/ngx-survey.state';
+import {isNil} from '../../store/utils';
+import {INgxSurvey} from '../../models';
 
 @Component({
   selector: 'ngxs-survey-viewer',
@@ -16,6 +18,7 @@ export class NgxSurveyViewerComponent implements OnInit {
   surveyName$: Observable<string>;
   surveyDescription$: Observable<string>;
   surveyIdSub: Subscription;
+  survey: INgxSurvey;
   surveyId: string;
   pageSize: number;
 
@@ -25,6 +28,7 @@ export class NgxSurveyViewerComponent implements OnInit {
   pageNext: IPage;
   pagePrev: IPage;
 
+  showSummary: boolean;
   isLoading: boolean;
 
   constructor(
@@ -33,8 +37,9 @@ export class NgxSurveyViewerComponent implements OnInit {
   ) {
     this.surveyName$ = store.pipe(select(fromRoot.getSurveyName));
     this.surveyDescription$ = store.pipe(select(fromRoot.getSurveyDescription));
-    this.surveyIdSub = store.pipe(select(fromRoot.getSurveyId)).subscribe(res => {
-      this.surveyId = res;
+    this.surveyIdSub = store.pipe(select(fromRoot.getSurvey)).subscribe(res => {
+      this.survey = res;
+      this.surveyId = res.id;
     });
     this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(res => {
       this.pages = res;
@@ -42,9 +47,8 @@ export class NgxSurveyViewerComponent implements OnInit {
         this.pageSize = res.size;
       }
     });
-    this.getCurrentPage();
-    this.getNextPage();
-    this.getPreviousPage();
+
+    this.initNavigation();
 
     router.events.subscribe( event => {
       if (event instanceof NavigationStart) {
@@ -55,9 +59,7 @@ export class NgxSurveyViewerComponent implements OnInit {
 
       if (event instanceof NavigationEnd) {
         setTimeout(() => {
-          this.getCurrentPage();
-          this.getNextPage();
-          this.getPreviousPage();
+          this.initNavigation();
           this.isLoading = false;
         }, 10);
       }
@@ -74,6 +76,14 @@ export class NgxSurveyViewerComponent implements OnInit {
 
   ngOnInit() {}
 
+  initNavigation() {
+    const pageUrlId = this.getCurrentPageUrlId();
+    this.showSummary = false;
+    this.getCurrentPage(pageUrlId);
+    this.getNextPage(pageUrlId);
+    this.getPreviousPage(pageUrlId);
+  }
+
   nextPage() {
     if (this.page.pageFlow.label === 'pageFlow.goToPage') {
       this.router.navigate([`/viewer/${this.page.pageFlow.pageId}`]);
@@ -82,27 +92,27 @@ export class NgxSurveyViewerComponent implements OnInit {
     }
   }
 
-  getCurrentPage() {
+  getCurrentPage(pageUrlId: string) {
     if (!!this.pages) {
       this.pages.forEach(page => {
-        const pageUrlId = this.getCurrentPageUrlId();
         if (pageUrlId === page.id) {
           this.page = page;
         }
       });
     }
 
-    if (!this.page) {
+    if (pageUrlId === 'summary') {
+      this.showSummary = true;
+    } else if (!this.page) { // If Page Url does not match any page's id default to first page
       const firstPage = Array.from(this.pages)[0];
       this.router.navigate([`/viewer/${firstPage[1].id}`]);
     }
   }
 
-  getNextPage() {
+  getNextPage(pageUrlId: string) {
     let isFound = false;
 
     this.pages.forEach((page, key) => {
-      const pageUrlId = this.getCurrentPageUrlId();
       if (isFound) {
         this.pageNext = page;
         isFound = false;
@@ -111,18 +121,28 @@ export class NgxSurveyViewerComponent implements OnInit {
         isFound = true;
       }
     });
+
+    // If last page and summary exist queue summary as last page
+    if (isNil(this.pageNext) && pageUrlId !== 'summary') {
+      if (!isNil(this.survey.summary)) {
+       this.pageNext = { id: 'summary', surveyId: '' };
+      }
+    }
   }
 
-  getPreviousPage() {
-    let temp;
+  getPreviousPage(pageUrlId: string) {
+    let temp = null;
 
     this.pages.forEach((page, key) => {
-      const pageUrlId = this.getCurrentPageUrlId();
       if (pageUrlId === key) {
         this.pagePrev = temp;
       }
       temp = page;
     });
+
+    if (isNil(this.pagePrev) && pageUrlId === 'summary') {
+      this.pagePrev = temp;
+    }
   }
 
   getCurrentPageUrlId(): string {

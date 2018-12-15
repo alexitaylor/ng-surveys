@@ -6,16 +6,24 @@
   <!-- Card Header -->
   <div class="card-header d-flex w-100">
     <div class="mr-auto d-flex flex-row w-50">
-      <span class="w-25">Page {{page?.orderNo}} of {{pageSize}}</span>
+      <span *ngIf="!showSummary" class="w-25">Page {{page?.orderNo}} of {{pageSize}}</span>
+      <span *ngIf="showSummary">Survey Summary</span>
     </div>
   </div>
   <!-- #/Card Header -->
 
   <!-- Card Body -->
   <div class="card-body">
-    <ngxs-page-viewer-container
-      [page]="page"
-    ></ngxs-page-viewer-container>
+    <div *ngIf="!showSummary">
+      <ngxs-page-viewer-container
+        [page]="page"
+      ></ngxs-page-viewer-container>
+    </div>
+    <div *ngIf="showSummary">
+      <ngxs-survey-summary-viewer
+        [survey]="survey"
+      ></ngxs-survey-summary-viewer>
+    </div>
   </div>
   <!-- #/Card Body -->
 

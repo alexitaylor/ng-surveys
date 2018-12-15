@@ -19,40 +19,25 @@ export class QuestionBuilderService {
     let title = '', component;
     if (type === 'shortText') {
       component = ShortTextComponent;
-      title = 'Short Text Question Template';
+      title = isView ? element.question.text : 'Short Text Question Template';
     } else if (type === 'longText') {
       component = LongTextComponent;
-      title = 'Long Text Question Template';
+      title = isView ? element.question.text : 'Long Text Question Template';
     } else if (type === 'radio') {
-      if (isView) {
-        component = RadioComponent;
-        title = 'Radio Question Template';
-      } else {
-        component = RadioCheckboxSelectComponent;
-        title = 'Radio Question Template';
-      }
+      component = isView ? RadioComponent : RadioCheckboxSelectComponent;
+      title = isView ? element.question.text : 'Radio Question Template';
     } else if (type === 'checkboxes') {
-      if (isView) {
-        component = CheckboxComponent;
-        title = 'Checkbox Question Template';
-      } else {
-        component = RadioCheckboxSelectComponent;
-        title = 'Checkbox Question Template';
-      }
+      component = isView ? CheckboxComponent : RadioCheckboxSelectComponent;
+      title = isView ? element.question.text : 'Checkbox Question Template';
     } else if (type === 'select') {
-      if (isView) {
-        component = SelectComponent;
-        title = 'Select Question Template';
-      } else {
-        component = RadioCheckboxSelectComponent;
-        title = 'Select Question Template';
-      }
+      component = isView ? SelectComponent : RadioCheckboxSelectComponent;
+      title = isView ? element.question.text : 'Select Question Template';
     } else if (type === 'date') {
       component = DateComponent;
-      title = 'Date Question Template';
+      title = isView ? element.question.text : 'Date Question Template';
     } else if (type === 'range') {
       component = RangeComponent;
-      title = 'Range Question Template';
+      title = isView ? element.question.text : 'Range Question Template';
     }
 
     return new QuestionItemComponent(component, {
