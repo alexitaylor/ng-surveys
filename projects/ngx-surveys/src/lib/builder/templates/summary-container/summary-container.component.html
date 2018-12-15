@@ -9,16 +9,13 @@
 
   <!-- Card Body -->
   <div class="card-body bg-white">
-    <div class="form-group">
-      <textarea
-        id="summaryInput"
-        class="form-control"
-        name="summary"
-        rows="3"
-        placeholder="Summary"
-        [ngModel]="survey.summary"
-      ></textarea>
-    </div>
+    <ckeditor
+      id="summaryInput"
+      [(ngModel)]="model.editorData"
+      [editor]="Editor"
+      (change)="onEditorChange($event)"
+    >
+    </ckeditor>
   </div>
   <!-- #/Card Body -->
 

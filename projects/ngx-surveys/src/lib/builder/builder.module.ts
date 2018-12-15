@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { ShortTextComponent } from './question-type/short-text/short-text.component';
 import { LongTextComponent } from './question-type/long-text/long-text.component';
@@ -25,6 +26,7 @@ import {QuestionInputComponent} from './templates/question-builder-container/que
 import {QuestionViewerContainerComponent} from './templates/question-viewer-container/question-viewer-container.component';
 import {SummaryContainerComponent} from './templates/summary-container/summary-container.component';
 import { SurveyTemplateFormComponent } from './templates/survey-template-form/survey-template-form.component';
+import { SurveySummaryViewerComponent } from './templates/survey-summary-viewer/survey-summary-viewer.component';
 
 @NgModule({
   imports: [
@@ -34,6 +36,7 @@ import { SurveyTemplateFormComponent } from './templates/survey-template-form/su
     DragDropModule,
     SharedCommonModule,
     ReactiveFormsModule,
+    CKEditorModule,
     TooltipModule.forRoot(),
   ],
   providers: [
@@ -58,6 +61,7 @@ import { SurveyTemplateFormComponent } from './templates/survey-template-form/su
     QuestionViewerContainerComponent,
     SummaryContainerComponent,
     SurveyTemplateFormComponent,
+    SurveySummaryViewerComponent,
   ],
   entryComponents: [
     ShortTextComponent,
@@ -88,6 +92,7 @@ import { SurveyTemplateFormComponent } from './templates/survey-template-form/su
     QuestionViewerContainerComponent,
     SummaryContainerComponent,
     SurveyTemplateFormComponent,
+    SurveySummaryViewerComponent,
   ]
 })
 export class BuilderModule { }
