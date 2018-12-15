@@ -50,7 +50,7 @@ export const dragItemInArray = (
 };
 
 export const updateElementPositionInMap = (map) => Array.from(map).reduce(
-  (acc: number, el: string | IPage | IQuestion | IOptionAnswers[]) => el[1].orderNo = acc + 1, 0);
+  (acc: number, el: string | IPage | IQuestion | IOptionAnswers[] | IElements) => el[1].orderNo = acc + 1, 0);
 
 export const resetNgxSurveyState = (): NgxSurveyState => {
   // Init Survey

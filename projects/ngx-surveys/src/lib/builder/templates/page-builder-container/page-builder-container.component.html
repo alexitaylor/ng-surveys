@@ -69,7 +69,7 @@
 
       <!-- Question Builder Container -->
       <div cdkDropList [cdkDropListData]="elements" #pageElements="cdkDropList" (cdkDropListDropped)="drop($event, page?.id)">
-        <div *ngFor="let item of elements | mapValues; trackBy: trackElement" [ngClass]="item.value.orderNo !== elementsSize ? 'mb-5' : ''" cdkDrag>
+        <div *ngFor="let item of elements | mapValues; trackBy: trackElement" class="mb-4" cdkDrag>
           <!-- Drag and Drop Background Place Holder -->
           <div class="drag-drop-placeholder-question" *cdkDragPlaceholder></div>
           <!-- #/Drag and Drop Background Place Holder -->
@@ -103,7 +103,7 @@
     <!-- #/Card Body -->
 
     <!-- Card Footer -->
-    <div class="card-footer d-flex w-100">
+    <div class="card-footer d-flex w-100 mt-1">
       <div class="mr-auto">
         <div class="btn-group" dropdown>
           <button type="button" class="btn btn-outline-primary" (click)="addElement(page?.id)">Add Element</button>

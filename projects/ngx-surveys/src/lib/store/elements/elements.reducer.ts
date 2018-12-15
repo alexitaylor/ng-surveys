@@ -3,6 +3,7 @@ import * as elementUtils from './elements-util';
 import * as _ from 'lodash';
 import {appInitialState} from '../ngx-survey.state';
 import {IElementsMap, IElementsMaps} from '../../models/elements.model';
+import {ElementsActionTypes} from './elements.actions';
 
 export function reducer(state = appInitialState.elements, action: elements.Actions): IElementsMaps {
 
@@ -176,6 +177,16 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       const newElements: IElementsMap = elementUtils.importElement(element, pageId, prevElements, currentElement);
 
       state.set(pageId, newElements);
+      return _.cloneDeep(state);
+    }
+
+    case elements.ElementsActionTypes.CLONE_ELEMENT_ACTION: {
+      const { pageId, elementId } = action.payload;
+      const prevElements: IElementsMap = state.get(pageId);
+      const newElements: IElementsMap = elementUtils.cloneElement(elementId, prevElements);
+
+      state.set(pageId, newElements);
+
       return _.cloneDeep(state);
     }
 

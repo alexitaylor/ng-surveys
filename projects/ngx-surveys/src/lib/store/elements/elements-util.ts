@@ -1,10 +1,13 @@
+import * as _ from 'lodash';
 import {Elements, IElements, IElementsMap} from '../../models/elements.model';
 import {IQuestion} from '../../models/question.model';
 import {
   dragItemInArray, moveItemInMap,
-  updateElementPositionInMap
+  updateElementPositionInMap,
+  arrayToMap,
 } from '../utils';
 import {IParagraph, Paragraph} from '../../models';
+import {UUID} from 'angular2-uuid';
 
 export function createNextElement(pageId: string, elements: IElementsMap, type: string): IElementsMap {
   let newElement: IElements = new Elements(pageId);
@@ -162,6 +165,23 @@ export function importElement(element: IElements, pageId: string, elements: IEle
   return new Map<string, IElements>(elements);
 }
 
+export function cloneElement(elementId: string, elements: IElementsMap): IElementsMap {
+  const currentElement: IElements = elements.get(elementId);
+  const clonedElement: IElements = _.cloneDeep(currentElement);
+  const index = currentElement.orderNo;
+  const clonedElementId = UUID.UUID();
+
+  clonedElement.id = clonedElementId;
+
+  updateElementTypeWithNewElementId(clonedElement, clonedElementId);
+
+  const newElementsMap: IElementsMap = insertElement(elements, clonedElement, index);
+  updateElementPositionInMap(newElementsMap);
+
+  return new Map<string, IElements>(newElementsMap);
+}
+
+
 export const updateShowPageFlowToggle = (elements: IElementsMap, elementId: string): void =>
   elements.forEach((value: IElements, key: string) => value.showPageFlowToggle = key === elementId);
 
@@ -180,5 +200,23 @@ export const addParagraphType = (element: IElements): IElements => {
   paragraph.elementId = element.id;
   element.paragraph = paragraph;
   element.question = null;
+  return element;
+};
+
+export const insertElement = (elements: IElementsMap, element: IElements, index: number): IElementsMap => {
+  const elementsArray = Array.from(elements);
+  elementsArray.splice(index, 0, [element.id, element]);
+  return arrayToMap(elementsArray);
+};
+
+export const updateElementTypeWithNewElementId = (element: object, newElementId: string): object => {
+  for (const key in element) {
+    if (key === 'elementId') {
+      element[key] = newElementId;
+    } else if (typeof element[key] === 'object') {
+      updateElementTypeWithNewElementId(element[key], newElementId);
+    }
+  }
+
   return element;
 };

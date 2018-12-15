@@ -39,7 +39,13 @@
       <!-- Move Element Up -->
 
       <!-- Clone Element -->
-      <button *ngIf="element?.isSaved && element.type === 'question'" type="button" class="btn btn-outline-primary" tooltip="Clone Element">
+      <button
+        *ngIf="element?.isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Clone Element"
+        (click)="cloneElement(element?.id)"
+      >
         <i class="fas fa-clone"></i>
       </button>
       <!-- #/Clone Element -->
@@ -91,7 +97,7 @@
   <!-- Question Builder -->
   <div *ngIf="element.type === 'question'" class="mt-4">
     <!-- Question Form Builder -->
-    <form name="questionForm" #questionForm="ngForm" class="mt-2">
+    <form name="questionForm" #questionForm="ngForm">
 
       <!-- Question Value Input -->
       <ngxs-question-input

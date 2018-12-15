@@ -22,6 +22,7 @@ export enum ElementsActionTypes {
   RESET_ELEMENTS_STATE = '[Angular Element] Reset elements state',
   IMPORT_ELEMENTS_STATE = '[Angular Element] Import elements state',
   IMPORT_ELEMENT = '[Angular Element] Import element',
+  CLONE_ELEMENT_ACTION = '[Angular Element] Clone element',
 }
 
 export class AddElementAction implements Action {
@@ -120,6 +121,11 @@ export class ImportElementAction implements Action {
   constructor(public payload: { element: IElements, optionAnswers: IOptionAnswersMap, pageId: string, currentElement: IElements }) { }
 }
 
+export class CloneElementAction implements Action {
+  readonly type = ElementsActionTypes.CLONE_ELEMENT_ACTION;
+  constructor(public payload: { pageId: string, elementId: string }) { }
+}
+
 export type Actions =
   AddElementAction |
   RemoveElementAction |
@@ -138,4 +144,5 @@ export type Actions =
   ResetElementsStateAction |
   ImportElementsStateAction |
   ImportElementAction |
-  UpdateParagraphHTMLAction;
+  UpdateParagraphHTMLAction |
+  CloneElementAction;

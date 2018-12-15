@@ -92,6 +92,10 @@ export class QuestionBuilderContainerComponent implements OnInit {
     this.isSavedEvent.emit({ key: this.element.id, isSaved: false });
   }
 
+  cloneElement(elementId: string) {
+    this.store.dispatch(new elements.CloneElementAction({ pageId: this.pageId, elementId }));
+  }
+
   removeElement(elementId: string) {
     this.store.dispatch(new elements.RemoveElementAction({ pageId: this.pageId, elementId }));
   }
