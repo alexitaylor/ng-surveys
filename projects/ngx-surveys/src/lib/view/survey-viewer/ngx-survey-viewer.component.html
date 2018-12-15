@@ -20,9 +20,9 @@
       ></ngxs-page-viewer-container>
     </div>
     <div *ngIf="showSummary">
-      <ngxs-survey-summary-viewer
-        [survey]="survey"
-      ></ngxs-survey-summary-viewer>
+      <ngxs-paragraph-summary-viewer
+        [html]="survey.summary"
+      ></ngxs-paragraph-summary-viewer>
     </div>
   </div>
   <!-- #/Card Body -->

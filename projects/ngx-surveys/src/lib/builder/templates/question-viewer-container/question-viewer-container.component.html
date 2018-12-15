@@ -1,5 +1,5 @@
 <!-- Question Builder Element -->
-<div class="mt-4">
+<div *ngIf="element?.type === 'question'" class="mt-4">
   <ngxs-question-builder-component
     [questionType]="element?.question.type"
     [element]="element"
@@ -8,3 +8,11 @@
   ></ngxs-question-builder-component>
 </div>
 <!-- #/Question Builder Element -->
+
+<!-- Paragraph Builder Element-->
+<div *ngIf="element?.type === 'paragraph'" class="mt-4">
+  <ngxs-paragraph-summary-viewer
+    [html]="element.paragraph.html"
+  ></ngxs-paragraph-summary-viewer>
+</div>
+<!-- #/Paragraph Builder Element-->

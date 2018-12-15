@@ -76,7 +76,11 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   addElement(pageId: string) {
-    this.store.dispatch(new elements.AddElementAction({ pageId }));
+    this.store.dispatch(new elements.AddElementAction({ pageId, type: 'question' }));
+  }
+
+  addParagraph(pageId: string) {
+    this.store.dispatch(new elements.AddElementAction({ pageId, type: 'paragraph' }));
   }
 
   onEditPageClick(pageId: string) {

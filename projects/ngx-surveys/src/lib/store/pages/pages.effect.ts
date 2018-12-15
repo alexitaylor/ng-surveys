@@ -13,14 +13,14 @@ export class PagesEffect {
   @Effect()
   addPage: Observable<Action> = this.action$.pipe(
     ofType(pages.PagesActionTypes.ADD_PAGE_ACTION),
-    switchMap(({ payload }: CustomAction) => [new elements.AddElementAction({ pageId: payload.pageId })]),
+    switchMap(({ payload }: CustomAction) => [new elements.AddElementAction({ pageId: payload.pageId, type: 'question' })]),
     catchError(() => of({ type: 'ADD_PAGE_ERROR' }))
   );
 
   @Effect()
   insertPage: Observable<Action> = this.action$.pipe(
     ofType(pages.PagesActionTypes.INSERT_PAGE_ACTION),
-    switchMap(({ payload }: CustomAction) => [new elements.AddElementAction({ pageId: payload.pageId })]),
+    switchMap(({ payload }: CustomAction) => [new elements.AddElementAction({ pageId: payload.pageId, type: 'question' })]),
     catchError(() => of({ type: 'INSERT_PAGE_ERROR' }))
   );
 

@@ -18,6 +18,7 @@ export enum ElementsActionTypes {
   QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION = '[Angular Question] UPDATE question page flow modifier',
   TOGGLE_IS_ACTIVE_ELEMENT_ACTION = '[Angular Element] Toggle isActive element',
   QUESTION_UPDATE_ANSWER_ACTION = '[Angular Question] Update question answer value',
+  PARAGRAPH_UPDATE_HTML_ACTION = '[Angular Paragraph] Update paragraph HTML value',
   RESET_ELEMENTS_STATE = '[Angular Element] Reset elements state',
   IMPORT_ELEMENTS_STATE = '[Angular Element] Import elements state',
   IMPORT_ELEMENT = '[Angular Element] Import element',
@@ -25,7 +26,7 @@ export enum ElementsActionTypes {
 
 export class AddElementAction implements Action {
   readonly type = ElementsActionTypes.ADD_ELEMENT_ACTION;
-  constructor(public payload: { pageId: string }) { }
+  constructor(public payload: { pageId: string, type: string }) { }
 }
 
 export class RemoveElementAction implements Action {
@@ -99,6 +100,11 @@ export class UpdateQuestionAnswerAction implements Action {
   }) { }
 }
 
+export class UpdateParagraphHTMLAction implements Action {
+  readonly type = ElementsActionTypes.PARAGRAPH_UPDATE_HTML_ACTION;
+  constructor(public payload: { pageId: string, elementId: string, html: string, }) { }
+}
+
 export class ResetElementsStateAction implements Action {
   readonly type = ElementsActionTypes.RESET_ELEMENTS_STATE;
   constructor(public payload: { ngxSurveyState: NgxSurveyState }) { }
@@ -131,4 +137,5 @@ export type Actions =
   UpdateQuestionAnswerAction |
   ResetElementsStateAction |
   ImportElementsStateAction |
-  ImportElementAction;
+  ImportElementAction |
+  UpdateParagraphHTMLAction;

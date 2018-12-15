@@ -9,14 +9,14 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
   switch (action.type) {
 
     case elements.ElementsActionTypes.ADD_ELEMENT_ACTION: {
-      const { pageId } = action.payload;
+      const { pageId, type } = action.payload;
       const prevElements: IElementsMap = state.get(pageId);
       let newElements: IElementsMap;
 
       if (!prevElements) {
-        newElements = elementUtils.createNewElementMap(pageId);
+        newElements = elementUtils.createNewElementMap(pageId, type);
       } else {
-        newElements = elementUtils.createNextElement(pageId, prevElements);
+        newElements = elementUtils.createNextElement(pageId, prevElements, type);
       }
 
       state.set(pageId, newElements);
@@ -144,6 +144,16 @@ export function reducer(state = appInitialState.elements, action: elements.Actio
       const { pageId, elementId, answer } = action.payload;
       const prevElements: IElementsMap = state.get(pageId);
       const newElements: IElementsMap = elementUtils.updateQuestionAnswer(elementId, answer, prevElements);
+
+      state.set(pageId, newElements);
+
+      return _.cloneDeep(state);
+    }
+
+    case elements.ElementsActionTypes.PARAGRAPH_UPDATE_HTML_ACTION: {
+      const { pageId, elementId, html } = action.payload;
+      const prevElements: IElementsMap = state.get(pageId);
+      const newElements: IElementsMap = elementUtils.updateParagraphHTML(elementId, html, prevElements);
 
       state.set(pageId, newElements);
 

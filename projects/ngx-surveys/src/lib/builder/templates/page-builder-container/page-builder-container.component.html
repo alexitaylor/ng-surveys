@@ -83,15 +83,18 @@
             <!-- #/Move Option Button -->
 
             <!-- Question Builder Container -->
-            <ngxs-question-builder-container
-              class="w-100"
-              [element]="item?.value"
-              [elementsSize]="elementsSize"
-              [pageId]="page?.id"
-              [surveyId]="surveyId"
-              (isSavedEvent)="handleIsSavedEvent($event)"
-            ></ngxs-question-builder-container>
+            <div class="w-100">
+              <ngxs-question-builder-container
+                [element]="item?.value"
+                [elementsSize]="elementsSize"
+                [pageId]="page?.id"
+                [surveyId]="surveyId"
+                (isSavedEvent)="handleIsSavedEvent($event)"
+              ></ngxs-question-builder-container>
+            </div>
             <!-- #/Question Builder Container -->
+
+            <!-- Paragraph Builder Container -->
           </div>
         </div>
       </div>
@@ -102,23 +105,17 @@
     <!-- Card Footer -->
     <div class="card-footer d-flex w-100">
       <div class="mr-auto">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <button type="button" class="btn btn-outline-primary" (click)="addElement(page?.id)">Add Element</button>
-            <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="sr-only">Toggle Drop-down</span>
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" (click)="addElement(page?.id)">
-                <i class="fas fa-question"></i>
-                <span class="ml-2">Question</span>
-              </a>
-              <a class="dropdown-item">
-                <i class="fas fa-paragraph"></i>
-                <span class="ml-2">Paragraph</span>
-              </a>
-            </div>
-          </div>
+        <div class="btn-group" dropdown>
+          <button type="button" class="btn btn-outline-primary" (click)="addElement(page?.id)">Add Element</button>
+          <button id="button-split" type="button" dropdownToggle class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" aria-controls="dropdown-split">
+            <span class="caret"></span>
+            <span class="sr-only">Split button!</span>
+          </button>
+          <ul id="dropdown-split" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-split">
+            <li role="menuitem"><a class="dropdown-item" (click)="addElement(page?.id)">Question</a></li>
+            <li role="menuitem"><a class="dropdown-item" (click)="addParagraph(page?.id)">Paragraph</a></li>
+          </ul>
         </div>
       </div>
       <div class="d-flex flex-row" *ngIf="pageSize > 1">

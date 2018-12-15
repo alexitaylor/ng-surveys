@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { ShortTextComponent } from './question-type/short-text/short-text.component';
@@ -26,7 +27,9 @@ import {QuestionInputComponent} from './templates/question-builder-container/que
 import {QuestionViewerContainerComponent} from './templates/question-viewer-container/question-viewer-container.component';
 import {SummaryContainerComponent} from './templates/summary-container/summary-container.component';
 import { SurveyTemplateFormComponent } from './templates/survey-template-form/survey-template-form.component';
-import { SurveySummaryViewerComponent } from './templates/survey-summary-viewer/survey-summary-viewer.component';
+import { SurveyParagraphViewerComponent } from './templates/survey-paragraph-viewer/survey-paragraph-viewer.component';
+import { ParagraphComponent } from './question-type/paragraph/paragraph.component';
+import { EditorComponent } from './question-type/editor/editor.component';
 
 @NgModule({
   imports: [
@@ -38,6 +41,7 @@ import { SurveySummaryViewerComponent } from './templates/survey-summary-viewer/
     ReactiveFormsModule,
     CKEditorModule,
     TooltipModule.forRoot(),
+    BsDropdownModule.forRoot(),
   ],
   providers: [
     QuestionBuilderService
@@ -61,7 +65,9 @@ import { SurveySummaryViewerComponent } from './templates/survey-summary-viewer/
     QuestionViewerContainerComponent,
     SummaryContainerComponent,
     SurveyTemplateFormComponent,
-    SurveySummaryViewerComponent,
+    SurveyParagraphViewerComponent,
+    ParagraphComponent,
+    EditorComponent,
   ],
   entryComponents: [
     ShortTextComponent,
@@ -92,7 +98,9 @@ import { SurveySummaryViewerComponent } from './templates/survey-summary-viewer/
     QuestionViewerContainerComponent,
     SummaryContainerComponent,
     SurveyTemplateFormComponent,
-    SurveySummaryViewerComponent,
+    SurveyParagraphViewerComponent,
+    ParagraphComponent,
+    EditorComponent,
   ]
 })
 export class BuilderModule { }

@@ -4,9 +4,15 @@ import {
   dragItemInArray, moveItemInMap,
   updateElementPositionInMap
 } from '../utils';
+import {IParagraph, Paragraph} from '../../models';
 
-export function createNextElement(pageId: string, elements: IElementsMap): IElementsMap {
-  const newElement: IElements = new Elements(pageId);
+export function createNextElement(pageId: string, elements: IElementsMap, type: string): IElementsMap {
+  let newElement: IElements = new Elements(pageId);
+  newElement.type = type;
+
+  if (newElement.type === 'paragraph') {
+    newElement = addParagraphType(newElement);
+  }
 
   handleElementShowPageFlowToggle(elements, newElement);
   elements.set(newElement.id, newElement);
@@ -15,8 +21,14 @@ export function createNextElement(pageId: string, elements: IElementsMap): IElem
   return new Map<string, IElements>(elements);
 }
 
-export function createNewElementMap(pageId: string): IElementsMap {
-  const newElement: IElements = new Elements(pageId);
+export function createNewElementMap(pageId: string, type: string): IElementsMap {
+  let newElement: IElements = new Elements(pageId);
+  newElement.type = type;
+
+  if (newElement.type === 'paragraph') {
+    newElement = addParagraphType(newElement);
+  }
+
   const newElementMap: IElementsMap = new Map<string, IElements>().set(newElement.id, newElement);
 
   return new Map<string, IElements>(newElementMap);
@@ -132,6 +144,14 @@ export function updateQuestionAnswer(elementId: string, answer: string | number,
   return new Map<string, IElements>(elements);
 }
 
+export function updateParagraphHTML(elementId: string, html: string, elements: IElementsMap): IElementsMap {
+  const currentParagraph: IParagraph = elements.get(elementId).paragraph;
+
+  currentParagraph.html = html;
+
+  return new Map<string, IElements>(elements);
+}
+
 export function importElement(element: IElements, pageId: string, elements: IElementsMap, currentElement: IElements) {
   elements.delete(currentElement.id);
   element.pageId = pageId;
@@ -153,4 +173,12 @@ export const handleElementsShowPageFlowToggle = (elements: IElementsMap): void =
   if (changeElementsShowPageFlowToggle) {
     elements.forEach((value: IElements) => value.showPageFlowToggle = true);
   }
+};
+
+export const addParagraphType = (element: IElements): IElements => {
+  const paragraph: IParagraph = new Paragraph();
+  paragraph.elementId = element.id;
+  element.paragraph = paragraph;
+  element.question = null;
+  return element;
 };

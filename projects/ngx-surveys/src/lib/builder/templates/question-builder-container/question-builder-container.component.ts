@@ -41,8 +41,10 @@ export class QuestionBuilderContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.questionType = this.element.question.type;
-    this.prevQuestionType = this.questionType;
+    if (this.element.type === 'question') {
+      this.questionType = this.element.question.type;
+      this.prevQuestionType = this.questionType;
+    }
     setTimeout(() => {
       if (!!this.questionType) {
         this.isSavedEvent.emit({ key: this.element.id, isSaved: this.element.isSaved });

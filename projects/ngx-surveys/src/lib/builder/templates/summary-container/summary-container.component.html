@@ -9,13 +9,10 @@
 
   <!-- Card Body -->
   <div class="card-body bg-white">
-    <ckeditor
-      id="summaryInput"
-      [(ngModel)]="model.editorData"
-      [editor]="Editor"
-      (change)="onEditorChange($event)"
-    >
-    </ckeditor>
+    <ngxs-editor
+      [editorData]="survey.summary"
+      (editorDataEvent)="handleEditorEvent($event)"
+    ></ngxs-editor>
   </div>
   <!-- #/Card Body -->
 
