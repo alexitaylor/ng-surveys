@@ -24,6 +24,7 @@ import {QuestionBuilderContainerComponent} from './templates/question-builder-co
 import {QuestionInputComponent} from './templates/question-builder-container/question-input/question-input.component';
 import {QuestionViewerContainerComponent} from './templates/question-viewer-container/question-viewer-container.component';
 import {SummaryContainerComponent} from './templates/summary-container/summary-container.component';
+import { SurveyTemplateFormComponent } from './templates/survey-template-form/survey-template-form.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import {SummaryContainerComponent} from './templates/summary-container/summary-c
     QuestionInputComponent,
     QuestionViewerContainerComponent,
     SummaryContainerComponent,
+    SurveyTemplateFormComponent,
   ],
   entryComponents: [
     ShortTextComponent,
@@ -85,6 +87,7 @@ import {SummaryContainerComponent} from './templates/summary-container/summary-c
     QuestionInputComponent,
     QuestionViewerContainerComponent,
     SummaryContainerComponent,
+    SurveyTemplateFormComponent,
   ]
 })
 export class BuilderModule { }

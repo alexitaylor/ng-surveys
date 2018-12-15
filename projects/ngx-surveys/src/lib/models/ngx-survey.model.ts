@@ -17,7 +17,7 @@ export class NgxSurvey implements INgxSurvey {
     public isLoading?: boolean,
     ) {
     this.id = id ? id : UUID.UUID();
-    this.name = name ? name : 'hello world';
+    this.name = name ? name : '';
     this.description = description ? description : '';
     this.summary = summary ? summary : '';
     this.isLoading = isLoading ? isLoading : false;

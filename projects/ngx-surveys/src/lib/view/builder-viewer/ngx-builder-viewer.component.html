@@ -24,31 +24,9 @@
       Survey Template Info
     </div>
     <div class="card-body">
-      <form>
-        <div class="form-group">
-          <label for="surveyName">Survey Name</label>
-          <input
-            id="surveyName"
-            name="surveyName"
-            type="text"
-            class="form-control"
-            placeholder="Name"
-            [ngModel]="survey.name"
-            required
-          >
-        </div>
-        <div class="form-group">
-          <label for="surveyDescription">Survey Description</label>
-          <textarea
-            id="surveyDescription"
-            class="form-control"
-            name="surveyDescription"
-            rows="3"
-            placeholder="Description"
-            [ngModel]="survey.description"
-          ></textarea>
-        </div>
-      </form>
+      <ngxs-survey-template-form
+        [survey]="survey"
+      ></ngxs-survey-template-form>
     </div>
   </div>
 
