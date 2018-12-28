@@ -7,6 +7,9 @@ import { NgxModelViewerModule } from './view/model-viewer/ngx-model-viewer.modul
 import { NgxSurveyStore } from './store/ngx-survey.store';
 import { SurveyReducer } from './store/survey/survey.reducer';
 import { PagesReducer } from './store/pages/pages.reducer';
+import { ElementsReducer } from './store/elements/elements.reducer';
+import { OptionAnswersReducer } from './store/option-answers/option-answers.reducer';
+import { BuilderOptionsReducer } from './store/builder-options/builder-options.reducer';
 
 @NgModule({
   imports: [
@@ -16,7 +19,7 @@ import { PagesReducer } from './store/pages/pages.reducer';
     NgxModelViewerModule,
   ],
   declarations: [ ],
-  providers: [ NgxSurveyStore, SurveyReducer, PagesReducer ],
+  providers: [ NgxSurveyStore, SurveyReducer, PagesReducer, ElementsReducer, OptionAnswersReducer, BuilderOptionsReducer ],
   exports: [
     NgxBuilderViewerModule,
     NgxSurveyViewerModule,

@@ -1,115 +1,134 @@
 import * as optionAnswers from './option-answers.actions';
 import * as optionAnswersUtil from './option-answers-util';
-import * as _ from 'lodash';
-import {appInitialState} from '../ngx-survey.state';
-import {IOptionAnswers, IOptionAnswersMap, IOptionAnswersMaps} from '../../models/option-answers.model';
+import { IOptionAnswersMap, IOptionAnswersMaps} from '../../models';
+import {Injectable} from '@angular/core';
+import {NgxSurveyStore} from '../ngx-survey.store';
+import {CustomAction} from '../../models';
 
-export function reducer(state = appInitialState.optionAnswers, action: optionAnswers.Actions): IOptionAnswersMaps {
+@Injectable()
+export class OptionAnswersReducer {
 
-  switch (action.type) {
+  constructor(private _ngxSurveyStore: NgxSurveyStore) {
+  }
 
-    case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_ACTION: {
-      const { elementId } = action.payload;
-      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
-      let newOptionAnswers: IOptionAnswersMap;
+  optionAnswersReducer(action: CustomAction) {
+    const state: IOptionAnswersMaps = this._ngxSurveyStore.dataStore.optionAnswers;
 
-      if (!prevOptionAnswers) {
-        newOptionAnswers = optionAnswersUtil.createNewOptionAnswersMap(elementId);
-      } else {
-        newOptionAnswers = optionAnswersUtil.addOptionAnswer(elementId, prevOptionAnswers);
-      }
+    switch (action.type) {
+      case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_ACTION: {
+        const { elementId } = action.payload;
+        const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+        let newOptionAnswers: IOptionAnswersMap;
 
-      state.set(elementId, newOptionAnswers);
+        if (!prevOptionAnswers) {
+          newOptionAnswers = optionAnswersUtil.createNewOptionAnswersMap(elementId);
+        } else {
+          newOptionAnswers = optionAnswersUtil.addOptionAnswer(elementId, prevOptionAnswers);
+        }
 
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_ACTION: {
-      const { elementId, optionAnswerId } = action.payload;
-      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
-      const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.removeOptionAnswer(optionAnswerId, prevOptionAnswers);
-
-      state.set(elementId, newOptionAnswers);
-
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAP_ACTION: {
-      const { elementId } = action.payload;
-      state.delete(elementId);
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAPS_ACTION: {
-      const { elementIds } = action.payload;
-      elementIds.forEach(id => state.delete(id));
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_VALUE_ACTION: {
-      const { elementId, optionAnswerId, value } = action.payload;
-      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
-      const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.addOptionAnswerValue(
-        optionAnswerId, value, prevOptionAnswers
-      );
-
-      state.set(elementId, newOptionAnswers);
-
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.UPDATE_OPTION_ANSWERS_PAGE_FLOW: {
-      const { elementId, optionAnswerId, pageFlow } = action.payload;
-      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
-      const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.updateOptionAnswerPageFlow(optionAnswerId, pageFlow, prevOptionAnswers);
-
-      state.set(elementId, newOptionAnswers);
-
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.DRAG_OPTION_ANSWERS_ACTION: {
-      const { elementId, startIndex, endIndex } = action.payload;
-      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
-      const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.dragOptionAnswer(startIndex, endIndex, prevOptionAnswers);
-
-      state.set(elementId, newOptionAnswers);
-
-      return _.cloneDeep(state);
-    }
-
-    case optionAnswers.OptionAnswersActionTypes.TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION: {
-      const { elementId, isSaved } = action.payload;
-      const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
-
-      if (prevOptionAnswers) {
-        const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.toggleIsActiveOptionAnswerValue(isSaved, prevOptionAnswers);
         state.set(elementId, newOptionAnswers);
+
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
       }
 
-      return _.cloneDeep(state);
-    }
+      case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_ACTION: {
+        const { elementId, optionAnswerId } = action.payload;
+        const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+        const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.removeOptionAnswer(optionAnswerId, prevOptionAnswers);
 
-    case optionAnswers.OptionAnswersActionTypes.RESET_OPTION_ANSWERS_STATE: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.optionAnswers);
-    }
+        state.set(elementId, newOptionAnswers);
 
-    case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.optionAnswers);
-    }
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
 
-    case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS: {
-      const { newOptionAnswers, elementId } = action.payload;
+      case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAP_ACTION: {
+        const { elementId } = action.payload;
+        state.delete(elementId);
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
 
-      state.set(elementId, newOptionAnswers);
+      case optionAnswers.OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAPS_ACTION: {
+        const { elementIds } = action.payload;
+        elementIds.forEach(id => state.delete(id));
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
 
-      return _.cloneDeep(state);
-    }
+      case optionAnswers.OptionAnswersActionTypes.ADD_OPTION_ANSWERS_VALUE_ACTION: {
+        const { elementId, optionAnswerId, value } = action.payload;
+        const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+        const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.addOptionAnswerValue(
+          optionAnswerId, value, prevOptionAnswers
+        );
 
-    default: {
-      return state;
+        state.set(elementId, newOptionAnswers);
+
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
+
+      case optionAnswers.OptionAnswersActionTypes.UPDATE_OPTION_ANSWERS_PAGE_FLOW: {
+        const { elementId, optionAnswerId, pageFlow } = action.payload;
+        const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+        const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.updateOptionAnswerPageFlow(
+          optionAnswerId, pageFlow, prevOptionAnswers
+        );
+
+        state.set(elementId, newOptionAnswers);
+
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
+
+      case optionAnswers.OptionAnswersActionTypes.DRAG_OPTION_ANSWERS_ACTION: {
+        const { elementId, startIndex, endIndex } = action.payload;
+        const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+        const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.dragOptionAnswer(startIndex, endIndex, prevOptionAnswers);
+
+        state.set(elementId, newOptionAnswers);
+
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
+
+      case optionAnswers.OptionAnswersActionTypes.TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION: {
+        const { elementId, isSaved } = action.payload;
+        const prevOptionAnswers: IOptionAnswersMap = state.get(elementId);
+
+        if (prevOptionAnswers) {
+          const newOptionAnswers: IOptionAnswersMap = optionAnswersUtil.toggleIsActiveOptionAnswerValue(isSaved, prevOptionAnswers);
+          state.set(elementId, newOptionAnswers);
+        }
+
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
+
+      case optionAnswers.OptionAnswersActionTypes.RESET_OPTION_ANSWERS_STATE: {
+        const { ngxSurveyState } = action.payload;
+        return Object.assign(ngxSurveyState.optionAnswers);
+      }
+
+      case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS_STATE: {
+        const { ngxSurveyState } = action.payload;
+        return Object.assign(ngxSurveyState.optionAnswers);
+      }
+
+      case optionAnswers.OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS: {
+        const { newOptionAnswers, elementId } = action.payload;
+
+        state.set(elementId, newOptionAnswers);
+
+        this._ngxSurveyStore.updateOptionAnswers(state);
+        break;
+      }
+
+      default: {
+        return state;
+      }
     }
   }
 }

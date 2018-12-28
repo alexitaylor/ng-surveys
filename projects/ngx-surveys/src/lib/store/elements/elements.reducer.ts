@@ -1,197 +1,222 @@
 import * as elements from './elements.actions';
 import * as elementUtils from './elements-util';
-import * as _ from 'lodash';
-import {appInitialState} from '../ngx-survey.state';
 import {IElementsMap, IElementsMaps} from '../../models/elements.model';
-import {ElementsActionTypes} from './elements.actions';
+import {Injectable} from '@angular/core';
+import {NgxSurveyStore} from '../ngx-survey.store';
+import {CustomAction} from '../../models';
 
-export function reducer(state = appInitialState.elements, action: elements.Actions): IElementsMaps {
+@Injectable()
+export class ElementsReducer {
 
-  switch (action.type) {
+  constructor(private _ngxSurveyStore: NgxSurveyStore) {}
 
-    case elements.ElementsActionTypes.ADD_ELEMENT_ACTION: {
-      const { pageId, type } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      let newElements: IElementsMap;
+  elementsReducer(action: CustomAction) {
+    const state: IElementsMaps = this._ngxSurveyStore.dataStore.elements;
 
-      if (!prevElements) {
-        newElements = elementUtils.createNewElementMap(pageId, type);
-      } else {
-        newElements = elementUtils.createNextElement(pageId, prevElements, type);
+    switch (action.type) {
+      case elements.ElementsActionTypes.ADD_ELEMENT_ACTION: {
+        const { pageId, type } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        let newElements: IElementsMap;
+
+        if (!prevElements) {
+          newElements = elementUtils.createNewElementMap(pageId, type);
+        } else {
+          newElements = elementUtils.createNextElement(pageId, prevElements, type);
+        }
+
+        state.set(pageId, newElements);
+
+        this._ngxSurveyStore.updateElements(state);
+        break;
       }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.REMOVE_ELEMENT_ACTION: {
+        const { pageId, elementId } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.removeElement(elementId, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.REMOVE_ELEMENT_ACTION: {
-      const { pageId, elementId } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.removeElement(elementId, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.REMOVE_ELEMENT_MAP_ACTION: {
+        const { pageId } = action.payload;
+        state.delete(pageId);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      return _.cloneDeep(state);
-    }
+      case elements.ElementsActionTypes.MOVE_ELEMENT_UP_ACTION: {
+        const { pageId, elementId } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.moveElementUp(elementId, prevElements);
 
-    case elements.ElementsActionTypes.REMOVE_ELEMENT_MAP_ACTION: {
-      const { pageId } = action.payload;
-      state.delete(pageId);
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.MOVE_ELEMENT_UP_ACTION: {
-      const { pageId, elementId } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.moveElementUp(elementId, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.MOVE_ELEMENT_DOWN_ACTION: {
+        const { pageId, elementId } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.moveElementDown(elementId, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.MOVE_ELEMENT_DOWN_ACTION: {
-      const { pageId, elementId } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.moveElementDown(elementId, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.DRAG_ELEMENT_ACTION: {
+        const { pageId, startIndex, endIndex } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.dragElement(startIndex, endIndex, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.DRAG_ELEMENT_ACTION: {
-      const { pageId, startIndex, endIndex } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.dragElement(startIndex, endIndex, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_ADD_TEXT_ACTION: {
+        const { pageId, elementId, text } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.addQuestionText(elementId, text, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_ADD_TEXT_ACTION: {
-      const { pageId, elementId, text } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.addQuestionText(elementId, text, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_ADD_TYPE_ACTION: {
+        const { pageId, elementId, type } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.addQuestionType(elementId, type, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_ADD_TYPE_ACTION: {
-      const { pageId, elementId, type } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.addQuestionType(elementId, type, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_UPDATE_MIN_ACTION: {
+        const { pageId, elementId, min } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.updateQuestionMin(elementId, min, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_UPDATE_MIN_ACTION: {
-      const { pageId, elementId, min } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.updateQuestionMin(elementId, min, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_UPDATE_MAX_ACTION: {
+        const { pageId, elementId, max } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.updateQuestionMax(elementId, max, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_UPDATE_MAX_ACTION: {
-      const { pageId, elementId, max } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.updateQuestionMax(elementId, max, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_REMOVE_VALUES_ACTION: {
+        const { pageId, elementId } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.removeQuestionValues(elementId, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_REMOVE_VALUES_ACTION: {
-      const { pageId, elementId } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.removeQuestionValues(elementId, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION: {
+        const { pageId, elementId, pageFlowModifier } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.updateQuestionPageFlowModifier(elementId, pageFlowModifier, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION: {
-      const { pageId, elementId, pageFlowModifier } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.updateQuestionPageFlowModifier(elementId, pageFlowModifier, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.TOGGLE_IS_ACTIVE_ELEMENT_ACTION: {
+        const { pageId, elementId, isSaved } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.toggleElementIsSaved(elementId, isSaved, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.TOGGLE_IS_ACTIVE_ELEMENT_ACTION: {
-      const { pageId, elementId, isSaved } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.toggleElementIsSaved(elementId, isSaved, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION: {
+        const { pageId, elementId, answer } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.updateQuestionAnswer(elementId, answer, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION: {
-      const { pageId, elementId, answer } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.updateQuestionAnswer(elementId, answer, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.PARAGRAPH_UPDATE_HTML_ACTION: {
+        const { pageId, elementId, html } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.updateParagraphHTML(elementId, html, prevElements);
 
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.PARAGRAPH_UPDATE_HTML_ACTION: {
-      const { pageId, elementId, html } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.updateParagraphHTML(elementId, html, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
+      case elements.ElementsActionTypes.RESET_ELEMENTS_STATE: {
+        const { ngxSurveyState } = action.payload;
+        this._ngxSurveyStore.updateElements(ngxSurveyState.elements);
+        break;
+      }
 
-      return _.cloneDeep(state);
-    }
+      case elements.ElementsActionTypes.IMPORT_ELEMENTS_STATE: {
+        const { ngxSurveyState } = action.payload;
+        this._ngxSurveyStore.updateElements(ngxSurveyState.elements);
+        break;
+      }
 
-    case elements.ElementsActionTypes.RESET_ELEMENTS_STATE: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.elements);
-    }
+      case elements.ElementsActionTypes.IMPORT_ELEMENT: {
+        const { element, pageId, currentElement } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.importElement(element, pageId, prevElements, currentElement);
 
-    case elements.ElementsActionTypes.IMPORT_ELEMENTS_STATE: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.elements);
-    }
+        state.set(pageId, newElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-    case elements.ElementsActionTypes.IMPORT_ELEMENT: {
-      const { element, pageId, currentElement } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.importElement(element, pageId, prevElements, currentElement);
+      case elements.ElementsActionTypes.CLONE_ELEMENT_ACTION: {
+        const { pageId, elementId } = action.payload;
+        const prevElements: IElementsMap = state.get(pageId);
+        const newElements: IElementsMap = elementUtils.cloneElement(elementId, prevElements);
 
-      state.set(pageId, newElements);
-      return _.cloneDeep(state);
-    }
+        state.set(pageId, newElements);
 
-    case elements.ElementsActionTypes.CLONE_ELEMENT_ACTION: {
-      const { pageId, elementId } = action.payload;
-      const prevElements: IElementsMap = state.get(pageId);
-      const newElements: IElementsMap = elementUtils.cloneElement(elementId, prevElements);
+        this._ngxSurveyStore.updateElements(state);
+        break;
+      }
 
-      state.set(pageId, newElements);
-
-      return _.cloneDeep(state);
-    }
-
-    default: {
-      return state;
+      default: {
+        return state;
+      }
     }
   }
 }

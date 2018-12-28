@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, Input} from '@angular/core';
-import {fromEvent, Subscription} from 'rxjs';
+import { Subscription} from 'rxjs';
 import {UUID} from 'angular2-uuid';
 
 import {NgxSurveyState} from '../../store/ngx-survey.state';
@@ -10,6 +10,10 @@ import {SurveyReducer} from '../../store/survey/survey.reducer';
 import {SurveyActionTypes} from '../../store/survey/survey.actions';
 import {PagesActionTypes} from '../../store/pages/pages.actions';
 import {PagesReducer} from '../../store/pages/pages.reducer';
+import {OptionAnswersReducer} from '../../store/option-answers/option-answers.reducer';
+import {OptionAnswersActionTypes} from '../../store/option-answers/option-answers.actions';
+import {BuilderOptionsReducer} from '../../store/builder-options/builder-options.reducer';
+import {BuilderOptionsActionTypes} from '../../store/builder-options/builder-options.actions';
 
 @Component({
   selector: 'ngxs-builder-viewer',
@@ -40,6 +44,7 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
     private _ngxSurveyStore: NgxSurveyStore,
     private _surveyReducer: SurveyReducer,
     private _pagesReducer: PagesReducer,
+    private _builderOptionsReducer: BuilderOptionsReducer,
   ) {
     this.surveySub = this._ngxSurveyStore.survey.subscribe(res => {
       console.log('res: ', res);
@@ -66,7 +71,10 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
   }
 
   handleBuilderOptionsChange(builderOptions: IBuilderOptions) {
-    // TODO this.store.dispatch(new UpdateBuilderOptionsAction({ builderOptions }));
+    this._builderOptionsReducer.builderOptionsReducer({
+      type: BuilderOptionsActionTypes.UPDATE_BUILDER_OPTIONS_ACTION,
+      payload: { builderOptions }
+    });
   }
 
   addPage() {

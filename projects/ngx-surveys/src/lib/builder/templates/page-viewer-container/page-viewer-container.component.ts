@@ -1,10 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {IElementsMap} from '../../../models/elements.model';
-import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../../store/ngx-survey.reducer';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
 import {IPage} from '../../../models/page.model';
+import {NgxSurveyStore} from '../../../store/ngx-survey.store';
 
 @Component({
   selector: 'ngxs-page-viewer-container',
@@ -18,14 +16,14 @@ export class PageViewerContainerComponent implements OnInit {
   elementsSize: number;
 
   constructor(
-    private store: Store<NgxSurveyState>
+    private _ngxSurveyStore: NgxSurveyStore
   ) { }
 
   ngOnInit() {
-    this.elementsSub = this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.page.id })).subscribe(res => {
-      this.elements = res;
+    this.elementsSub = this._ngxSurveyStore.elements.subscribe(res => {
+      this.elements = res.get(this.page.id);
       if (res) {
-        this.elementsSize = res.size;
+        this.elementsSize = this.elements.size;
       }
     });
   }

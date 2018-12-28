@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {IElements, NgxSurveyState} from '../../../models';
-import {Store} from '@ngrx/store';
-import {UpdateParagraphHTMLAction} from '../../../store/elements/elements.actions';
+import {IElements} from '../../../models';
+import {ElementsActionTypes} from '../../../store/elements/elements.actions';
+import {ElementsReducer} from '../../../store/elements/elements.reducer';
 
 @Component({
   selector: 'ngxs-paragraph',
@@ -12,14 +12,17 @@ export class ParagraphComponent implements OnInit {
   @Input() element: IElements;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _elementsReducer: ElementsReducer,
   ) { }
 
   ngOnInit() {
   }
 
   handleEditorEvent(html: string) {
-    this.store.dispatch(new UpdateParagraphHTMLAction({ pageId: this.element.pageId, elementId: this.element.id, html }));
+    this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.PARAGRAPH_UPDATE_HTML_ACTION,
+      payload: { pageId: this.element.pageId, elementId: this.element.id, html }
+    });
   }
 
 }

@@ -2,9 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {fromEvent} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Store} from '@ngrx/store';
-import {NgxSurveyState} from '../../../../store/ngx-survey.state';
-import * as elements from '../../../../store/elements/elements.actions';
+import {ElementsReducer} from '../../../../store/elements/elements.reducer';
+import {ElementsActionTypes} from '../../../../store/elements/elements.actions';
 
 @Component({
   selector: 'ngxs-question-input',
@@ -17,7 +16,9 @@ export class QuestionInputComponent implements OnInit {
   @Input() pageId: string;
   @Input() isElementSaved: boolean;
 
-  constructor(private store: Store<NgxSurveyState>) { }
+  constructor(
+    private _elementsReducer: ElementsReducer,
+  ) { }
 
   ngOnInit() {
     setTimeout(() => {
@@ -33,11 +34,14 @@ export class QuestionInputComponent implements OnInit {
       distinctUntilChanged(),
       debounceTime(1000),
       map(text => text)
-    ).subscribe(text => this.store.dispatch(new elements.AddQuestionTextAction({
-      pageId: this.pageId,
-      elementId: this.elementId,
-      text,
-    })));
+    ).subscribe(text => this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.QUESTION_ADD_TEXT_ACTION,
+      payload: {
+        pageId: this.pageId,
+        elementId: this.elementId,
+        text,
+      }
+    }));
   }
 
 }

@@ -1,14 +1,14 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
+
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
 import {IElements} from '../../../models/elements.model';
 import {IOptionAnswers} from '../../../models/option-answers.model';
 import {IPageMap} from '../../../models/page.model';
-import * as fromRoot from '../../../store/ngx-survey.reducer';
-import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
+import {NgxSurveyStore} from '../../../store/ngx-survey.store';
+import {OptionAnswersReducer} from '../../../store/option-answers/option-answers.reducer';
+import {OptionAnswersActionTypes} from '../../../store/option-answers/option-answers.actions';
 
 @Component({
   selector: 'ngxs-option-template',
@@ -28,13 +28,14 @@ export class OptionTemplateComponent implements OnInit, OnDestroy {
   isOptionActive = true;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _optionAnswersReducer: OptionAnswersReducer,
   ) {
   }
 
   ngOnInit() {
     setTimeout(() => {
-      this.pagesSub = this.store.pipe(select(fromRoot.getPages)).subscribe(res => this.pages = res);
+      this.pagesSub = this._ngxSurveyStore.pages.subscribe(res => this.pages = res);
 
       if (this.isNewOption) {
         const $optionTemplateInput = document.getElementById(`optionTemplateInput-${this.optionAnswer.id}`);
@@ -58,11 +59,13 @@ export class OptionTemplateComponent implements OnInit, OnDestroy {
   }
 
   removeOptionAnswer() {
-    this.store.dispatch(new optionAnswers.RemoveOptionAnswersAction(
-      {
+    this._optionAnswersReducer.optionAnswersReducer({
+      type: OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_ACTION,
+      payload: {
         elementId: this.element.id,
         optionAnswerId: this.optionAnswer.id
-      }));
+      }
+    });
   }
 
   onOptionsValueChange() {
@@ -75,11 +78,14 @@ export class OptionTemplateComponent implements OnInit, OnDestroy {
     );
 
     optionTemplateInput$.subscribe(value => {
-      this.store.dispatch(new optionAnswers.AddOptionAnswerValueAction({
-        elementId: this.element.id,
-        optionAnswerId: this.optionAnswer.id,
-        value
-      }));
+      this._optionAnswersReducer.optionAnswersReducer({
+        type: OptionAnswersActionTypes.ADD_OPTION_ANSWERS_VALUE_ACTION,
+        payload: {
+          elementId: this.element.id,
+          optionAnswerId: this.optionAnswer.id,
+          value
+        }
+      });
     });
   }
 

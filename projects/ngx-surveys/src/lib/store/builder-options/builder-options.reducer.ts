@@ -1,26 +1,40 @@
-import {BuilderOptionsActionTypes, BuilderOptionsActions} from './builder-options.actions';
-import {IBuilderOptions} from '../../models';
+import {BuilderOptionsActionTypes} from './builder-options.actions';
+import {CustomAction, IBuilderOptions} from '../../models';
 import * as _ from 'lodash';
-import {appInitialState} from '../ngx-survey.state';
+import {Injectable} from '@angular/core';
+import {NgxSurveyStore} from '../ngx-survey.store';
 
-export function reducer(state = appInitialState.builderOptions, action: BuilderOptionsActions): IBuilderOptions {
+@Injectable()
+export class BuilderOptionsReducer {
 
-  switch (action.type) {
+  constructor(private _ngxSurveyStore: NgxSurveyStore) {
+  }
 
-    case BuilderOptionsActionTypes.UPDATE_BUILDER_OPTIONS_ACTION: {
-      return Object.assign(_.cloneDeep(state), {
-        ...action.payload.builderOptions
-      });
-    }
+  builderOptionsReducer(action: CustomAction) {
+    const state: IBuilderOptions = this._ngxSurveyStore.dataStore.builderOptions;
 
-    case BuilderOptionsActionTypes.RESET_BUILDER_OPTIONS_ACTION: {
-      return Object.assign(_.cloneDeep(state), {
-        ...action.payload.builderOptions
-      });
-    }
+    switch (action.type) {
+      case BuilderOptionsActionTypes.UPDATE_BUILDER_OPTIONS_ACTION: {
+        const newState = Object.assign(_.cloneDeep(state), {
+          ...action.payload.builderOptions
+        });
 
-    default: {
-      return state;
+        this._ngxSurveyStore.updateBuilderOptions(newState);
+        break;
+      }
+
+      case BuilderOptionsActionTypes.RESET_BUILDER_OPTIONS_ACTION: {
+        const newState = Object.assign(_.cloneDeep(state), {
+          ...action.payload.builderOptions
+        });
+
+        this._ngxSurveyStore.updateBuilderOptions(newState);
+        break;
+      }
+
+      default: {
+        return state;
+      }
     }
   }
 }

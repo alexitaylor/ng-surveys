@@ -1,10 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
-import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../../store/ngx-survey.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {Subscription} from 'rxjs';
-import * as elements from '../../../store/elements/elements.actions';
+import {ElementsReducer} from '../../../store/elements/elements.reducer';
+import {ElementsActionTypes} from '../../../store/elements/elements.actions';
+import {NgxSurveyStore} from '../../../store/ngx-survey.store';
 
 @Component({
   selector: 'ngxs-select',
@@ -18,14 +17,13 @@ export class SelectComponent implements OnInit, OnDestroy {
   item: any;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _elementsReducer: ElementsReducer,
   ) { }
 
   ngOnInit() {
-    this.optionAnswersSub = this.store.pipe(select(fromRoot.getOptionAnswersByElementId,
-      { elementId: this.data.element.id }))
-      .subscribe(res => {
-        this.optionAnswers = res;
+    this.optionAnswersSub = this._ngxSurveyStore.optionAnswers.subscribe(res => {
+      this.optionAnswers = res.get(this.data.element.id);
     });
   }
 
@@ -34,13 +32,16 @@ export class SelectComponent implements OnInit, OnDestroy {
   }
 
   handleSelect(answer, pageFlow) {
-    this.store.dispatch(new elements.UpdateQuestionAnswerAction({
-      pageId: this.data.element.pageId,
-      elementId: this.data.element.id,
-      answer,
-      pageFlowModifier: this.data.element.question.pageFlowModifier,
-      pageFlow,
-    }));
+    this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION,
+      payload: {
+        pageId: this.data.element.pageId,
+        elementId: this.data.element.id,
+        answer,
+        pageFlowModifier: this.data.element.question.pageFlowModifier,
+        pageFlow,
+      }
+    });
   }
 
   trackElement(index: number, item: any) {

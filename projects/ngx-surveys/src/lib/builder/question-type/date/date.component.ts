@@ -2,9 +2,8 @@ import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import * as elements from '../../../store/elements/elements.actions';
-import {Store} from '@ngrx/store';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
+import {ElementsReducer} from '../../../store/elements/elements.reducer';
+import {ElementsActionTypes} from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'ngxs-date',
@@ -17,7 +16,7 @@ export class DateComponent implements OnInit, OnDestroy {
   dateTextInputSub: Subscription;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _elementsReducer: ElementsReducer,
   ) { }
 
   ngOnInit() {
@@ -44,13 +43,16 @@ export class DateComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(answer => {
-      this.store.dispatch(new elements.UpdateQuestionAnswerAction({
-        pageId: this.data.element.pageId,
-        elementId: this.data.element.id,
-        answer,
-        pageFlowModifier: this.data.element.question.pageFlowModifier,
-        pageFlow: this.data.element.pageFlow,
-      }));
+      this._elementsReducer.elementsReducer({
+        type: ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION,
+        payload: {
+          pageId: this.data.element.pageId,
+          elementId: this.data.element.id,
+          answer,
+          pageFlowModifier: this.data.element.question.pageFlowModifier,
+          pageFlow: this.data.element.pageFlow,
+        }
+      });
     });
   }
 }

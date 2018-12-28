@@ -1,10 +1,9 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
-import {Store} from '@ngrx/store';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
-import {IElements} from '../../../models/elements.model';
-import * as elements from '../../../store/elements/elements.actions';
+import {IElements} from '../../../models';
+import {ElementsReducer} from '../../../store/elements/elements.reducer';
+import {ElementsActionTypes} from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'ngxs-range',
@@ -25,7 +24,7 @@ export class RangeComponent implements OnInit, OnDestroy {
   rangeInputSub: Subscription;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _elementsReducer: ElementsReducer,
   ) { }
 
   ngOnInit() {
@@ -58,11 +57,13 @@ export class RangeComponent implements OnInit, OnDestroy {
       map((event: any) => event.target.value),
       distinctUntilChanged(),
       debounceTime(1000),
-    ).subscribe(min => this.store.dispatch(new elements.UpdateQuestionMinAction({
+    ).subscribe(min => this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.QUESTION_UPDATE_MIN_ACTION,
+      payload: {
         pageId: this.pageId,
         elementId: this.element.id,
         min
-      })));
+      }}));
   }
 
   onMaxChange() {
@@ -72,11 +73,13 @@ export class RangeComponent implements OnInit, OnDestroy {
       map((event: any) => event.target.value),
       distinctUntilChanged(),
       debounceTime(1000)
-    ).subscribe(max => this.store.dispatch(new elements.UpdateQuestionMaxAction({
+    ).subscribe(max => this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.QUESTION_UPDATE_MAX_ACTION,
+      payload: {
         pageId: this.pageId,
         elementId: this.element.id,
         max
-      })));
+      }}));
   }
 
   onRangeChange() {
@@ -87,13 +90,15 @@ export class RangeComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(answer => {
-      this.store.dispatch(new elements.UpdateQuestionAnswerAction({
-        pageId: this.element.pageId,
-        elementId: this.element.id,
-        answer,
-        pageFlowModifier: this.data.element.question.pageFlowModifier,
-        pageFlow: this.data.element.pageFlow,
-      }));
+      this._elementsReducer.elementsReducer({
+        type: ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION,
+        payload: {
+          pageId: this.element.pageId,
+          elementId: this.element.id,
+          answer,
+          pageFlowModifier: this.data.element.question.pageFlowModifier,
+          pageFlow: this.data.element.pageFlow,
+        }});
     });
   }
 

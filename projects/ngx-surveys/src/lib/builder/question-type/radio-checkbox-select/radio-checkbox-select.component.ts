@@ -1,14 +1,14 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
-import {select, Store} from '@ngrx/store';
-import * as fromRoot from '../../../store/ngx-survey.reducer';
 import {IOptionAnswersMap} from '../../../models/option-answers.model';
 import {IElements} from '../../../models/elements.model';
-import {fromEvent, Observable, Subscription} from 'rxjs';
-import * as optionAnswers from '../../../store/option-answers/option-answers.actions';
-import * as elements from '../../../store/elements/elements.actions';
+import {fromEvent, Subscription} from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {map} from 'rxjs/operators';
+import {NgxSurveyStore} from '../../../store/ngx-survey.store';
+import {ElementsReducer} from '../../../store/elements/elements.reducer';
+import {ElementsActionTypes} from '../../../store/elements/elements.actions';
+import {OptionAnswersReducer} from '../../../store/option-answers/option-answers.reducer';
+import {OptionAnswersActionTypes} from '../../../store/option-answers/option-answers.actions';
 
 @Component({
   selector: 'ngxs-radio-checkbox-select',
@@ -19,7 +19,7 @@ export class RadioCheckboxSelectComponent implements OnInit, OnDestroy {
   @Input() data: any;
 
   element: IElements;
-  optionAnswers$: Observable<IOptionAnswersMap>;
+  optionAnswersSub: Subscription;
   optionAnswers: IOptionAnswersMap;
   optionAnswersSize: number;
   elementSub: Subscription;
@@ -30,26 +30,22 @@ export class RadioCheckboxSelectComponent implements OnInit, OnDestroy {
   isNewOption = false;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _elementsReducer: ElementsReducer,
+    private _optionAnswersReducer: OptionAnswersReducer,
   ) {}
 
   ngOnInit() {
     this.pageId = this.data.element.pageId;
     this.surveyId = this.data.surveyId;
 
-    this.elementSub = this.store.pipe(
-      select(fromRoot.getElementByPageIdAndElementId, { pageId: this.pageId, elementId: this.data.element.id }))
-      .subscribe(res => this.element = res);
+    this.elementSub = this._ngxSurveyStore.elements.subscribe(res => {
+      this.element = res.get(this.pageId).get(this.data.element.id);
+    });
 
-    this.optionAnswers$ = this.store.pipe(
-      select(fromRoot.getOptionAnswersByElementId,
-        { elementId: this.data.element.id }
-        ));
-
-    this.optionAnswers$.subscribe(res => {
-      if (res) {
-        this.optionAnswersSize = res.size;
-      }
+    this.optionAnswersSub = this._ngxSurveyStore.optionAnswers.subscribe(res => {
+      this.optionAnswers = res.get(this.data.element.id);
+      this.optionAnswersSize = this.optionAnswers.size;
     });
 
     setTimeout(() => {
@@ -59,32 +55,42 @@ export class RadioCheckboxSelectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.elementSub.unsubscribe();
+    this.optionAnswersSub.unsubscribe();
   }
 
   togglePageNavChecked(e) {
     this.isPageNavChecked = e.target.checked;
-    this.store.dispatch(new elements.UpdateQuestionPageFlowModifierAction({
+    this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.QUESTION_UPDATE_PAGE_FLOW_MODIFIER_ACTION,
+      payload: {
         pageId: this.pageId,
         elementId: this.element.id,
         pageFlowModifier: this.isPageNavChecked
-      }));
+      }
+    });
   }
 
   addOptionInput() {
     if (!this.element.isSaved) {
-      this.store.dispatch(new optionAnswers.AddOptionAnswersAction({
-        elementId: this.element.id
-      }));
+      this._optionAnswersReducer.optionAnswersReducer({
+        type: OptionAnswersActionTypes.ADD_OPTION_ANSWERS_ACTION,
+        payload: {
+          elementId: this.element.id
+        }
+      });
       this.isNewOption = true;
     }
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    this.store.dispatch(new optionAnswers.DragOptionAnswerAction({
-      elementId: this.element.id,
-      startIndex: event.previousIndex,
-      endIndex: event.currentIndex,
-    }));
+    this._optionAnswersReducer.optionAnswersReducer({
+      type: OptionAnswersActionTypes.DRAG_OPTION_ANSWERS_ACTION,
+      payload: {
+        elementId: this.element.id,
+        startIndex: event.previousIndex,
+        endIndex: event.currentIndex,
+      }
+    });
   }
 
   onSaveQuestionClick() {

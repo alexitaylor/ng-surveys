@@ -20,7 +20,7 @@ export class PagesReducer {
         const prevPages: IPageMap = state;
         const pages: IPageMap = pageUtils.createNextPage(prevPages, surveyId, pageId);
         const newState = _.cloneDeep(pages);
-        console.log('newState: ', newState);
+
         this._ngxSurveyStore.updatePages(newState);
         break;
       }

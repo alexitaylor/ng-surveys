@@ -8,9 +8,10 @@ import {IPage, IPageMap} from '../../../models/page.model';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {IElementsMap} from '../../../models/elements.model';
 import {PagesActionTypes} from '../../../store/pages/pages.actions';
-import {SurveyReducer} from '../../../store/survey/survey.reducer';
 import {NgxSurveyStore} from '../../../store/ngx-survey.store';
 import {PagesReducer} from '../../../store/pages/pages.reducer';
+import {ElementsReducer} from '../../../store/elements/elements.reducer';
+import {ElementsActionTypes} from '../../../store/elements/elements.actions';
 
 @Component({
   selector: 'ngxs-page-builder-container',
@@ -32,7 +33,7 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   constructor(
     private _ngxSurveyStore: NgxSurveyStore,
     private _pagesReducer: PagesReducer,
-    // private store: Store<NgxSurveyState>
+    private _elementsReducer: ElementsReducer,
   ) {
   }
 
@@ -40,20 +41,20 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
     this.pageSizeSub = this._ngxSurveyStore.pages.subscribe(res => {
       this.pageSize = res.size;
     });
-    // this.elementsSub = this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.page.id })).subscribe(res => {
-    //   this.elements = res;
-    //   if (res) {
-    //     this.elementsSize = res.size;
-    //     this.setSavedMap();
-    //   }
-    // });
+    this.elementsSub = this._ngxSurveyStore.elements.subscribe(res => {
+      this.elements = res.get(this.page.id);
+      if (res) {
+        this.elementsSize = res.size;
+        this.setSavedMap();
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
   }
 
   ngOnDestroy() {
-    // TODO this.elementsSub.unsubscribe();
+    this.elementsSub.unsubscribe();
     this.pageSizeSub.unsubscribe();
   }
 
@@ -74,7 +75,6 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   movePageDown(pageId: string) {
-    // this.store.dispatch(new pages.MovePageDownAction({ pageId }));
     this._pagesReducer.pagesReducer({
       type: PagesActionTypes.MOVE_PAGE_DOWN_ACTION,
       payload: { pageId },
@@ -82,7 +82,6 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   movePageUp(pageId: string) {
-    // this.store.dispatch(new pages.MovePageUpAction({ pageId }));
     this._pagesReducer.pagesReducer({
       type: PagesActionTypes.MOVE_PAGE_UP_ACTION,
       payload: { pageId },
@@ -90,11 +89,17 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   addElement(pageId: string) {
-    // this.store.dispatch(new elements.AddElementAction({ pageId, type: 'question' }));
+    this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.ADD_ELEMENT_ACTION,
+      payload: { pageId, type: 'question' },
+    });
   }
 
   addParagraph(pageId: string) {
-    // this.store.dispatch(new elements.AddElementAction({ pageId, type: 'paragraph' }));
+    this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.ADD_ELEMENT_ACTION,
+      payload: { pageId, type: 'paragraph' },
+    });
   }
 
   onEditPageClick(pageId: string) {
@@ -136,11 +141,14 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   drop(event: CdkDragDrop<string[]>, pageId: string) {
-    // this.store.dispatch(new elements.DragElementAction({
-    //   pageId,
-    //   startIndex: event.previousIndex,
-    //   endIndex: event.currentIndex,
-    // }));
+    this._elementsReducer.elementsReducer({
+      type: ElementsActionTypes.DRAG_ELEMENT_ACTION,
+      payload: {
+        pageId,
+        startIndex: event.previousIndex,
+        endIndex: event.currentIndex,
+      },
+    });
   }
 
   handleIsSavedEvent({ key, isSaved }) {

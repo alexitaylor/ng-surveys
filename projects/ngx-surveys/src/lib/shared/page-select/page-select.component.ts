@@ -1,9 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {IPageMap} from '../../models/page.model';
-import * as optionAnswers from '../../store/option-answers/option-answers.actions';
-import {IPageFlow, PageFlow} from '../../models/page-flow.model';
+import {IPageMap} from '../../models';
+import {IPageFlow, PageFlow} from '../../models';
+import {NgxSurveyStore} from '../../store/ngx-survey.store';
+import {PagesReducer} from '../../store/pages/pages.reducer';
+import {PagesActionTypes} from '../../store/pages/pages.actions';
+import {OptionAnswersReducer} from '../../store/option-answers/option-answers.reducer';
+import {OptionAnswersActionTypes} from '../../store/option-answers/option-answers.actions';
 
 @Component({
   selector: 'ngxs-page-select',
@@ -27,16 +31,18 @@ export class PageSelectComponent implements OnInit, OnDestroy {
   pages: IPageMap;
 
   constructor(
-    // private store: Store<NgxSurveyState>,
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _pagesReducer: PagesReducer,
+    private _optionAnswersReducer: OptionAnswersReducer,
   ) {
   }
 
   ngOnInit() {
-    // this.pagesSub = this.store.pipe(select(fromRoot.getPages)).subscribe(res => this.pages = res);
+    this.pagesSub = this._ngxSurveyStore.pages.subscribe(res => this.pages = res);
   }
 
   ngOnDestroy() {
-    // this.pagesSub.unsubscribe();
+    this.pagesSub.unsubscribe();
   }
 
   handlePageNavNext(value) {
@@ -51,10 +57,13 @@ export class PageSelectComponent implements OnInit, OnDestroy {
         pageFlow.pageId = value;
       }
 
-      // TODO this.store.dispatch(new pages.UpdatePagePageFlowAction({
-      //   pageId: this.pageId,
-      //   pageFlow,
-      // }));
+      this._pagesReducer.pagesReducer({
+        type: PagesActionTypes.UPDATE_PAGE_PAGE_FLOW_ACTION,
+        payload: {
+          pageId: this.pageId,
+          pageFlow,
+        },
+      });
     } else {
       const pageFlow = new PageFlow();
       if (value === 'pageFlow.goToNextPage') {
@@ -66,11 +75,14 @@ export class PageSelectComponent implements OnInit, OnDestroy {
         pageFlow.pageId = value;
       }
 
-      // TODO this.store.dispatch(new optionAnswers.UpdateOptionAnswerPageFlow({
-      //   elementId: this.elementId,
-      //   optionAnswerId: this.optionAnswerId,
-      //   pageFlow
-      // }));
+      this._optionAnswersReducer.optionAnswersReducer({
+        type: OptionAnswersActionTypes.UPDATE_OPTION_ANSWERS_PAGE_FLOW,
+        payload: {
+          elementId: this.elementId,
+          optionAnswerId: this.optionAnswerId,
+          pageFlow
+        }
+      });
     }
   }
 
