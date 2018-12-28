@@ -30,14 +30,14 @@
     </div>
   </div>
 
-  <!-- TODO Page Builder Container -->
-  <!--<div *ngFor="let item of pages | mapValues; trackBy: trackElement">-->
-    <!--<ngxs-page-builder-container-->
-      <!--[surveyId]="survey.id"-->
-      <!--[page]="item?.value"-->
-      <!--[pages]="pages"-->
-    <!--&gt;</ngxs-page-builder-container>-->
-  <!--</div>-->
+  <!-- Page Builder Container -->
+  <div *ngFor="let item of pages | mapValues; trackBy: trackElement">
+    <ngxs-page-builder-container
+      [surveyId]="survey.id"
+      [page]="item?.value"
+      [pages]="pages"
+    ></ngxs-page-builder-container>
+  </div>
   <!-- #/Page Builder Container -->
 
   <!-- Survey Summary -->

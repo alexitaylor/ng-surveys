@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
 import {SurveyActionTypes} from './survey.actions';
-import {CustomAction} from '../../models';
+import {CustomAction, INgxSurvey} from '../../models';
 import * as _ from 'lodash';
 import {NgxSurveyStore} from '../ngx-survey.store';
 
 @Injectable()
 export class SurveyReducer {
 
-  constructor(private _ngxSurveyStore: NgxSurveyStore) {
-
-  }
+  constructor(private _ngxSurveyStore: NgxSurveyStore) {}
 
   surveyReducer(action: CustomAction) {
+    const state: INgxSurvey = this._ngxSurveyStore.dataStore.survey;
 
     switch (action.type) {
 
       case SurveyActionTypes.SURVEY_NAME_CHANGED_ACTION: {
-        console.log('this._ngxSurveyStore.dataStore.survey: ', this._ngxSurveyStore.dataStore.survey);
-        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+        const newState = Object.assign(_.cloneDeep(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);
@@ -25,8 +23,7 @@ export class SurveyReducer {
       }
 
       case SurveyActionTypes.SURVEY_DESCRIPTION_CHANGED_ACTION: {
-        console.log('this._ngxSurveyStore.dataStore.survey: ', this._ngxSurveyStore.dataStore.survey);
-        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+        const newState = Object.assign(_.cloneDeep(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);
@@ -34,7 +31,7 @@ export class SurveyReducer {
       }
 
       case SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION: {
-        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+        const newState = Object.assign(_.cloneDeep(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);
@@ -48,7 +45,7 @@ export class SurveyReducer {
       }
 
       case SurveyActionTypes.HANDLE_SURVEY_LOADING: {
-        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+        const newState = Object.assign(_.cloneDeep(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);

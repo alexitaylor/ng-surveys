@@ -1,17 +1,16 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {select, Store} from '@ngrx/store';
 import {UUID} from 'angular2-uuid';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 import {IPage, IPageMap} from '../../../models/page.model';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
-import * as fromRoot from '../../../store/ngx-survey.reducer';
-import * as pages from '../../../store/pages/pages.actions';
-import * as elements from '../../../store/elements/elements.actions';
 import {debounceTime, distinctUntilChanged} from 'rxjs/internal/operators';
 import {IElementsMap} from '../../../models/elements.model';
+import {PagesActionTypes} from '../../../store/pages/pages.actions';
+import {SurveyReducer} from '../../../store/survey/survey.reducer';
+import {NgxSurveyStore} from '../../../store/ngx-survey.store';
+import {PagesReducer} from '../../../store/pages/pages.reducer';
 
 @Component({
   selector: 'ngxs-page-builder-container',
@@ -31,56 +30,71 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   isSavedMap = new Map<string, boolean>();
 
   constructor(
-    private store: Store<NgxSurveyState>
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _pagesReducer: PagesReducer,
+    // private store: Store<NgxSurveyState>
   ) {
   }
 
   ngOnInit() {
-    this.pageSizeSub = this.store.pipe(select(fromRoot.getPagesSize)).subscribe(res => {
-      this.pageSize = res;
+    this.pageSizeSub = this._ngxSurveyStore.pages.subscribe(res => {
+      this.pageSize = res.size;
     });
-
-    this.elementsSub = this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.page.id })).subscribe(res => {
-      this.elements = res;
-      if (res) {
-        this.elementsSize = res.size;
-        this.setSavedMap();
-      }
-    });
+    // this.elementsSub = this.store.pipe(select(fromRoot.getElementsByPageId, { pageId: this.page.id })).subscribe(res => {
+    //   this.elements = res;
+    //   if (res) {
+    //     this.elementsSize = res.size;
+    //     this.setSavedMap();
+    //   }
+    // });
   }
 
   ngOnChanges(changes: SimpleChanges) {
   }
 
   ngOnDestroy() {
-    this.elementsSub.unsubscribe();
+    // TODO this.elementsSub.unsubscribe();
     this.pageSizeSub.unsubscribe();
   }
 
   removePage(pageId: string) {
-    const elementIds = Array.from(this.elements).reduce((array, el) => [...array, el[0]], []);
-    this.store.dispatch(new pages.RemovePageAction({ pageId, elementIds }));
+    const elementIds = this.elements ? Array.from(this.elements).reduce((array, el) => [...array, el[0]], []) : null;
+    this._pagesReducer.pagesReducer({
+      type: PagesActionTypes.REMOVE_PAGE_ACTION,
+      payload: { pageId, elementIds },
+    });
   }
 
   insertPage(previousPageId: string) {
     const pageId = UUID.UUID();
-    this.store.dispatch(new pages.InsertPageAction({ previousPageId, surveyId: this.surveyId, pageId }));
+    this._pagesReducer.pagesReducer({
+      type: PagesActionTypes.INSERT_PAGE_ACTION,
+      payload: { previousPageId, surveyId: this.surveyId, pageId },
+    });
   }
 
   movePageDown(pageId: string) {
-    this.store.dispatch(new pages.MovePageDownAction({ pageId }));
+    // this.store.dispatch(new pages.MovePageDownAction({ pageId }));
+    this._pagesReducer.pagesReducer({
+      type: PagesActionTypes.MOVE_PAGE_DOWN_ACTION,
+      payload: { pageId },
+    });
   }
 
   movePageUp(pageId: string) {
-    this.store.dispatch(new pages.MovePageUpAction({ pageId }));
+    // this.store.dispatch(new pages.MovePageUpAction({ pageId }));
+    this._pagesReducer.pagesReducer({
+      type: PagesActionTypes.MOVE_PAGE_UP_ACTION,
+      payload: { pageId },
+    });
   }
 
   addElement(pageId: string) {
-    this.store.dispatch(new elements.AddElementAction({ pageId, type: 'question' }));
+    // this.store.dispatch(new elements.AddElementAction({ pageId, type: 'question' }));
   }
 
   addParagraph(pageId: string) {
-    this.store.dispatch(new elements.AddElementAction({ pageId, type: 'paragraph' }));
+    // this.store.dispatch(new elements.AddElementAction({ pageId, type: 'paragraph' }));
   }
 
   onEditPageClick(pageId: string) {
@@ -99,7 +113,10 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(name => {
-      this.store.dispatch(new pages.UpdatePageNameAction({ pageId, name }));
+      this._pagesReducer.pagesReducer({
+        type: PagesActionTypes.UPDATE_PAGE_NAME_ACTION,
+        payload: { pageId, name },
+      });
     });
   }
 
@@ -111,16 +128,19 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(description => {
-      this.store.dispatch(new pages.UpdatePageDescriptionAction({ pageId, description }));
+      this._pagesReducer.pagesReducer({
+        type: PagesActionTypes.UPDATE_PAGE_DESCRIPTION_ACTION,
+        payload: { pageId, description },
+      });
     });
   }
 
   drop(event: CdkDragDrop<string[]>, pageId: string) {
-    this.store.dispatch(new elements.DragElementAction({
-      pageId,
-      startIndex: event.previousIndex,
-      endIndex: event.currentIndex,
-    }));
+    // this.store.dispatch(new elements.DragElementAction({
+    //   pageId,
+    //   startIndex: event.previousIndex,
+    //   endIndex: event.currentIndex,
+    // }));
   }
 
   handleIsSavedEvent({ key, isSaved }) {

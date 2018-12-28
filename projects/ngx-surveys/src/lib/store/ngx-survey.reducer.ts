@@ -1,23 +1,4 @@
 import {NgxSurveyState} from './ngx-survey.state';
-import { localStorageSync } from 'ngrx-store-localstorage';
-
-import * as fromSurvey from './survey/survey.reducer';
-import * as fromPages from './pages/pages.reducer';
-import * as fromElements from './elements/elements.reducer';
-import * as fromOptionAnswers from './option-answers/option-answers.reducer';
-import {IPage} from '../models/page.model';
-import {IElements, IElementsMap} from '../models/elements.model';
-import {IOptionAnswers, IOptionAnswersMap} from '../models/option-answers.model';
-import * as fromBuilderOptions from './builder-options/builder-options.reducer';
-import {deserializeUtils} from './utils';
-
-
-export const reducers = {
-  pages: fromPages.reducer,
-  elements: fromElements.reducer,
-  optionAnswers: fromOptionAnswers.reducer,
-  builderOptions: fromBuilderOptions.reducer,
-};
 
 // State Selectors
 export const getNgxSurveyState = (state: NgxSurveyState) => state;

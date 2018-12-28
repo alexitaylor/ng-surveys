@@ -6,6 +6,7 @@ import { NgxModelViewerModule } from './view/model-viewer/ngx-model-viewer.modul
 
 import { NgxSurveyStore } from './store/ngx-survey.store';
 import { SurveyReducer } from './store/survey/survey.reducer';
+import { PagesReducer } from './store/pages/pages.reducer';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { SurveyReducer } from './store/survey/survey.reducer';
     NgxModelViewerModule,
   ],
   declarations: [ ],
-  providers: [ NgxSurveyStore, SurveyReducer ],
+  providers: [ NgxSurveyStore, SurveyReducer, PagesReducer ],
   exports: [
     NgxBuilderViewerModule,
     NgxSurveyViewerModule,

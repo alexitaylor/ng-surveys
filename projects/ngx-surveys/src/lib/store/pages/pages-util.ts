@@ -1,6 +1,6 @@
-import {IPage, IPageMap, Page} from '../../models/page.model';
+import {IPage, IPageMap, Page} from '../../models';
 import {getLastValueInMap, moveItemInMap, updateElementPositionInMap} from '../utils';
-import {IPageFlow} from '../../models/page-flow.model';
+import {IPageFlow} from '../../models';
 
 export function createNextPage(pages: IPageMap, surveyId: string, pageId: string): IPageMap {
   const newPage: IPage = new Page(pageId, surveyId);
