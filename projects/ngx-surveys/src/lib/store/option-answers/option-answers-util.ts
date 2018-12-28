@@ -37,7 +37,6 @@ export function addOptionAnswerValue(optionAnswersId: string, value: string, opt
 export function updateOptionAnswerPageFlow(
   optionAnswersId: string, pageFlow: IPageFlow, optionAnswers: IOptionAnswersMap
 ): IOptionAnswersMap {
-  console.log('optionAnswersId: ', optionAnswersId);
   const currentOptionAnswer: IOptionAnswers = optionAnswers.get(optionAnswersId);
 
   currentOptionAnswer.pageFlow = pageFlow;

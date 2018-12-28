@@ -40,12 +40,19 @@ export class RadioCheckboxSelectComponent implements OnInit, OnDestroy {
     this.surveyId = this.data.surveyId;
 
     this.elementSub = this._ngxSurveyStore.elements.subscribe(res => {
-      this.element = res.get(this.pageId).get(this.data.element.id);
+      if (res && this.pageId) {
+        const elements = res.get(this.pageId);
+        if (elements) {
+          this.element = elements.get(this.data.element.id);
+        }
+      }
     });
 
     this.optionAnswersSub = this._ngxSurveyStore.optionAnswers.subscribe(res => {
       this.optionAnswers = res.get(this.data.element.id);
-      this.optionAnswersSize = this.optionAnswers.size;
+      if (this.optionAnswers) {
+        this.optionAnswersSize = this.optionAnswers.size;
+      }
     });
 
     setTimeout(() => {

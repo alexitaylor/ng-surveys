@@ -4,11 +4,20 @@ import {IElementsMap, IElementsMaps} from '../../models/elements.model';
 import {Injectable} from '@angular/core';
 import {NgxSurveyStore} from '../ngx-survey.store';
 import {CustomAction} from '../../models';
+import {OptionAnswersReducer} from '../option-answers/option-answers.reducer';
+import {OptionAnswersActionTypes} from '../option-answers/option-answers.actions';
+import {PagesReducer} from '../pages/pages.reducer';
+import {PagesActionTypes} from '../pages/pages.actions';
+import {isNil} from '../utils';
 
 @Injectable()
 export class ElementsReducer {
 
-  constructor(private _ngxSurveyStore: NgxSurveyStore) {}
+  constructor(
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _optionAnswersReducer: OptionAnswersReducer,
+    // private _pagesReducer: PagesReducer,
+  ) {}
 
   elementsReducer(action: CustomAction) {
     const state: IElementsMaps = this._ngxSurveyStore.dataStore.elements;
@@ -39,13 +48,27 @@ export class ElementsReducer {
         state.set(pageId, newElements);
 
         this._ngxSurveyStore.updateElements(state);
+
+        // Effect
+        this._optionAnswersReducer.optionAnswersReducer({
+          type: OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAP_ACTION,
+          payload: { elementId }
+        });
+
         break;
       }
 
       case elements.ElementsActionTypes.REMOVE_ELEMENT_MAP_ACTION: {
-        const { pageId } = action.payload;
+        const { pageId, elementIds } = action.payload;
         state.delete(pageId);
         this._ngxSurveyStore.updateElements(state);
+
+        // Effect
+        this._optionAnswersReducer.optionAnswersReducer({
+          type: OptionAnswersActionTypes.REMOVE_OPTION_ANSWERS_MAPS_ACTION,
+          payload: { elementIds }
+        });
+
         break;
       }
 
@@ -101,6 +124,15 @@ export class ElementsReducer {
         state.set(pageId, newElements);
 
         this._ngxSurveyStore.updateElements(state);
+
+        // Effects
+        if (type === 'radio' || type === 'checkboxes' || type === 'select') {
+          this._optionAnswersReducer.optionAnswersReducer({
+            type: OptionAnswersActionTypes.ADD_OPTION_ANSWERS_ACTION,
+            payload: { elementId }
+          });
+        }
+
         break;
       }
 
@@ -156,17 +188,33 @@ export class ElementsReducer {
         state.set(pageId, newElements);
 
         this._ngxSurveyStore.updateElements(state);
+
+        // Effect
+        this._optionAnswersReducer.optionAnswersReducer({
+          type: OptionAnswersActionTypes.TOGGLE_IS_ACTIVE_OPTION_ANSWERS_ACTION,
+          payload: { elementId, isSaved }
+        });
+
         break;
       }
 
       case elements.ElementsActionTypes.QUESTION_UPDATE_ANSWER_ACTION: {
-        const { pageId, elementId, answer } = action.payload;
+        const { pageId, elementId, answer, pageFlowModifier, pageFlow } = action.payload;
         const prevElements: IElementsMap = state.get(pageId);
         const newElements: IElementsMap = elementUtils.updateQuestionAnswer(elementId, answer, prevElements);
 
         state.set(pageId, newElements);
 
         this._ngxSurveyStore.updateElements(state);
+
+        // Effect
+        if (pageFlowModifier) {
+          // this._pagesReducer.pagesReducer({
+          //   type: PagesActionTypes.UPDATE_PAGE_PAGE_FLOW_ACTION,
+          //   payload: { pageId, pageFlow }
+          // });
+        }
+
         break;
       }
 
@@ -194,12 +242,21 @@ export class ElementsReducer {
       }
 
       case elements.ElementsActionTypes.IMPORT_ELEMENT: {
-        const { element, pageId, currentElement } = action.payload;
+        const { element, pageId, currentElement, newOptionAnswers, elementId, optionAnswers } = action.payload;
         const prevElements: IElementsMap = state.get(pageId);
         const newElements: IElementsMap = elementUtils.importElement(element, pageId, prevElements, currentElement);
 
         state.set(pageId, newElements);
         this._ngxSurveyStore.updateElements(state);
+
+        // Effect
+        if (!isNil(optionAnswers)) {
+          this._optionAnswersReducer.optionAnswersReducer({
+            type: OptionAnswersActionTypes.IMPORT_OPTION_ANSWERS,
+            payload: { newOptionAnswers, elementId }
+          });
+        }
+
         break;
       }
 

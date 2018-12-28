@@ -47,7 +47,6 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
     private _builderOptionsReducer: BuilderOptionsReducer,
   ) {
     this.surveySub = this._ngxSurveyStore.survey.subscribe(res => {
-      console.log('res: ', res);
       this.survey = res;
     });
 
@@ -56,7 +55,6 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
     });
 
     this.pagesSub = this._ngxSurveyStore.pages.subscribe(pagesRes => {
-      console.log('pagesRes: ', pagesRes);
       this.pages = pagesRes;
     });
   }

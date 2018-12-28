@@ -156,13 +156,15 @@ export class PageBuilderContainerComponent implements OnInit, OnDestroy, OnChang
   }
 
   private setSavedMap() {
-    this.elements.forEach((value, key) => {
-      if (value.isSaved) {
-        this.isSavedMap.set(key, true);
-      } else {
-        this.isSavedMap.set(key, false);
-      }
-    });
+    if (this.elements) {
+      this.elements.forEach((value, key) => {
+        if (value.isSaved) {
+          this.isSavedMap.set(key, true);
+        } else {
+          this.isSavedMap.set(key, false);
+        }
+      });
+    }
   }
 
   trackElement(index: number, item: any) {

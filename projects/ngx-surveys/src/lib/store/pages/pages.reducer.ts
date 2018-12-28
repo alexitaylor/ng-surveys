@@ -4,11 +4,16 @@ import * as _ from 'lodash';
 import {Injectable} from '@angular/core';
 import {NgxSurveyStore} from '../ngx-survey.store';
 import {CustomAction, IPageMap} from '../../models';
+import {ElementsReducer} from '../elements/elements.reducer';
+import {ElementsActionTypes} from '../elements/elements.actions';
 
 @Injectable()
 export class PagesReducer {
 
-  constructor(private _ngxSurveyStore: NgxSurveyStore) {}
+  constructor(
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _elementsReducer: ElementsReducer
+  ) {}
 
   pagesReducer(action: CustomAction) {
     const state: IPageMap = this._ngxSurveyStore.dataStore.pages;
@@ -20,8 +25,14 @@ export class PagesReducer {
         const prevPages: IPageMap = state;
         const pages: IPageMap = pageUtils.createNextPage(prevPages, surveyId, pageId);
         const newState = _.cloneDeep(pages);
-
         this._ngxSurveyStore.updatePages(newState);
+
+        // Effects
+        this._elementsReducer.elementsReducer({
+          type: ElementsActionTypes.ADD_ELEMENT_ACTION,
+          payload: { pageId: pageId, type: 'question' }
+        });
+
         break;
       }
 
@@ -29,8 +40,14 @@ export class PagesReducer {
         const { previousPageId, surveyId, pageId } = action.payload;
         const pages: IPageMap = pageUtils.insertPage(state, previousPageId, surveyId, pageId);
         const newState = _.cloneDeep(pages);
-
         this._ngxSurveyStore.updatePages(newState);
+
+        // Effects
+        this._elementsReducer.elementsReducer({
+          type: ElementsActionTypes.ADD_ELEMENT_ACTION,
+          payload: { pageId: pageId, type: 'question' }
+        });
+
         break;
       }
 
@@ -53,11 +70,17 @@ export class PagesReducer {
       }
 
       case page.PagesActionTypes.REMOVE_PAGE_ACTION: {
-        const { pageId } = action.payload;
+        const { pageId, elementIds } = action.payload;
         const pages: IPageMap = pageUtils.removePage(state, pageId);
         const newState = _.cloneDeep(pages);
-
         this._ngxSurveyStore.updatePages(newState);
+
+        // Effects
+        this._elementsReducer.elementsReducer({
+          type: ElementsActionTypes.REMOVE_ELEMENT_MAP_ACTION,
+          payload: { pageId, elementIds }
+        });
+
         break;
       }
 

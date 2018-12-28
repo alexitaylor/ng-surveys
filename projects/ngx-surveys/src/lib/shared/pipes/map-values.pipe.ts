@@ -8,7 +8,8 @@ export class MapValuesPipe implements PipeTransform {
 
   transform(value: any, args?: any[]): Object[] {
     const returnArray = [];
-    if (!!value) {
+    const isTrue: boolean = !!value && (value instanceof Array || value instanceof Map);
+    if (isTrue) {
       value.forEach((entryValue, entryKey) => {
         returnArray.push({
           key: entryKey,
