@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {SurveyActionTypes} from './survey.actions';
 import {CustomAction, INgxSurvey} from '../../models';
-import * as _ from 'lodash';
+import { deepCopy } from '../utils';
 import {NgxSurveyStore} from '../ngx-survey.store';
 import {PagesReducer} from '../pages/pages.reducer';
 import {ElementsReducer} from '../elements/elements.reducer';
@@ -26,7 +26,7 @@ export class SurveyReducer {
     switch (action.type) {
 
       case SurveyActionTypes.SURVEY_NAME_CHANGED_ACTION: {
-        const newState = Object.assign(_.cloneDeep(state), {
+        const newState = Object.assign(deepCopy(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);
@@ -34,7 +34,7 @@ export class SurveyReducer {
       }
 
       case SurveyActionTypes.SURVEY_DESCRIPTION_CHANGED_ACTION: {
-        const newState = Object.assign(_.cloneDeep(state), {
+        const newState = Object.assign(deepCopy(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);
@@ -42,7 +42,7 @@ export class SurveyReducer {
       }
 
       case SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION: {
-        const newState = Object.assign(_.cloneDeep(state), {
+        const newState = Object.assign(deepCopy(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);
@@ -77,7 +77,7 @@ export class SurveyReducer {
       }
 
       case SurveyActionTypes.HANDLE_SURVEY_LOADING: {
-        const newState = Object.assign(_.cloneDeep(state), {
+        const newState = Object.assign(deepCopy(state), {
           ...action.payload
         });
         this._ngxSurveyStore.updateSurvey(newState);

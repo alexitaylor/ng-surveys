@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { deepCopy } from '../utils';
 import {Elements, IElements, IElementsMap} from '../../models';
 import {IQuestion} from '../../models';
 import {
@@ -167,7 +167,7 @@ export function importElement(element: IElements, pageId: string, elements: IEle
 
 export function cloneElement(elementId: string, elements: IElementsMap): IElementsMap {
   const currentElement: IElements = elements.get(elementId);
-  const clonedElement: IElements = _.cloneDeep(currentElement);
+  const clonedElement: IElements = deepCopy(currentElement);
   const index = currentElement.orderNo;
   const clonedElementId = utils.UUID();
 

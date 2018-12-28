@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {appInitialState, NgxSurveyState} from './ngx-survey.state';
-import {IBuilderOptions, IElementsMaps, INgxSurvey, IOptionAnswersMaps, IPage, IPageMap} from '../models';
-import * as _ from 'lodash';
+import {IBuilderOptions, IElementsMaps, INgxSurvey, IOptionAnswersMaps, IPageMap} from '../models';
+import { deepCopy } from './utils';
 
 @Injectable()
 export class NgxSurveyStore {
@@ -51,7 +51,7 @@ export class NgxSurveyStore {
   updateNgxSurveyState(
     payload: INgxSurvey | IPageMap | IElementsMaps | IOptionAnswersMaps | IBuilderOptions
   ) {
-    const newState = Object.assign({}, _.cloneDeep(this.dataStore), payload);
+    const newState = Object.assign({}, deepCopy(this.dataStore), payload);
     this.dataStore = newState;
     this._ngxSurveyState.next(newState);
   }

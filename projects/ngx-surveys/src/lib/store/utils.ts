@@ -202,3 +202,37 @@ export const random4 = (): string => {
     .toString(16)
     .substring(1);
 };
+
+const arrayTag = '[object Array]';
+const objectTag = '[object Object]';
+const mapTag = '[object Map]';
+const dateTag = '[object Date]';
+
+export const deepCopy = (value) => {
+  let output, v;
+  const tag = getTag(value);
+  if (tag === arrayTag || tag === objectTag) {
+    output = Array.isArray(value) ? [] : {};
+    for (const key of Object.keys(value)) {
+      v = value[key];
+      output[key] = (typeof v === 'object') ? deepCopy(v) : v;
+    }
+  } else if (tag === mapTag) {
+    output = new Map();
+    value.forEach((subValue, key) => {
+      output.set(key, deepCopy(subValue));
+    });
+    return output;
+  } else if (tag === dateTag) {
+    return new Date(value.getTime());
+  }
+
+  return output;
+};
+
+function getTag(value) {
+  if (value == null) {
+    return value === undefined ? '[object Undefined]' : '[object Null]';
+  }
+  return toString.call(value);
+}

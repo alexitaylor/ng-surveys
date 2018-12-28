@@ -1,6 +1,6 @@
 import * as page from './pages.actions';
 import * as pageUtils from './pages-util';
-import * as _ from 'lodash';
+import { deepCopy } from '../utils';
 import {Injectable} from '@angular/core';
 import {NgxSurveyStore} from '../ngx-survey.store';
 import {CustomAction, IPageMap} from '../../models';
@@ -24,7 +24,7 @@ export class PagesReducer {
         const { surveyId, pageId } = action.payload;
         const prevPages: IPageMap = state;
         const pages: IPageMap = pageUtils.createNextPage(prevPages, surveyId, pageId);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
         this._ngxSurveyStore.updatePages(newState);
 
         // Effects
@@ -39,7 +39,7 @@ export class PagesReducer {
       case page.PagesActionTypes.INSERT_PAGE_ACTION: {
         const { previousPageId, surveyId, pageId } = action.payload;
         const pages: IPageMap = pageUtils.insertPage(state, previousPageId, surveyId, pageId);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
         this._ngxSurveyStore.updatePages(newState);
 
         // Effects
@@ -54,7 +54,7 @@ export class PagesReducer {
       case page.PagesActionTypes.MOVE_PAGE_UP_ACTION: {
         const { pageId } = action.payload;
         const pages: IPageMap = pageUtils.movePageUp(state, pageId);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
 
         this._ngxSurveyStore.updatePages(newState);
         break;
@@ -63,7 +63,7 @@ export class PagesReducer {
       case page.PagesActionTypes.MOVE_PAGE_DOWN_ACTION: {
         const { pageId } = action.payload;
         const pages: IPageMap = pageUtils.movePageDown(state, pageId);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
 
         this._ngxSurveyStore.updatePages(newState);
         break;
@@ -72,7 +72,7 @@ export class PagesReducer {
       case page.PagesActionTypes.REMOVE_PAGE_ACTION: {
         const { pageId, elementIds } = action.payload;
         const pages: IPageMap = pageUtils.removePage(state, pageId);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
         this._ngxSurveyStore.updatePages(newState);
 
         // Effects
@@ -87,7 +87,7 @@ export class PagesReducer {
       case page.PagesActionTypes.UPDATE_PAGE_NAME_ACTION: {
         const { pageId, name } = action.payload;
         const pages: IPageMap = pageUtils.updatePageName(state, pageId, name);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
 
         this._ngxSurveyStore.updatePages(newState);
         break;
@@ -96,7 +96,7 @@ export class PagesReducer {
       case page.PagesActionTypes.UPDATE_PAGE_DESCRIPTION_ACTION: {
         const { pageId, description } = action.payload;
         const pages: IPageMap = pageUtils.updatePageDescription(state, pageId, description);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
 
         this._ngxSurveyStore.updatePages(newState);
         break;
@@ -105,7 +105,7 @@ export class PagesReducer {
       case page.PagesActionTypes.UPDATE_PAGE_PAGE_FLOW_ACTION: {
         const { pageId, pageFlow } = action.payload;
         const pages: IPageMap = pageUtils.updatePagePageFlow(state, pageId, pageFlow);
-        const newState = _.cloneDeep(pages);
+        const newState = deepCopy(pages);
 
         this._ngxSurveyStore.updatePages(newState);
         break;

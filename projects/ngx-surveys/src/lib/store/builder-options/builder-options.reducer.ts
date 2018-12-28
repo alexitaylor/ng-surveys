@@ -1,6 +1,6 @@
 import {BuilderOptionsActionTypes} from './builder-options.actions';
 import {CustomAction, IBuilderOptions} from '../../models';
-import * as _ from 'lodash';
+import { deepCopy } from '../utils';
 import {Injectable} from '@angular/core';
 import {NgxSurveyStore} from '../ngx-survey.store';
 
@@ -15,7 +15,7 @@ export class BuilderOptionsReducer {
 
     switch (action.type) {
       case BuilderOptionsActionTypes.UPDATE_BUILDER_OPTIONS_ACTION: {
-        const newState = Object.assign(_.cloneDeep(state), {
+        const newState = Object.assign(deepCopy(state), {
           ...action.payload.builderOptions
         });
 
@@ -24,7 +24,7 @@ export class BuilderOptionsReducer {
       }
 
       case BuilderOptionsActionTypes.RESET_BUILDER_OPTIONS_ACTION: {
-        const newState = Object.assign(_.cloneDeep(state), {
+        const newState = Object.assign(deepCopy(state), {
           ...action.payload.builderOptions
         });
 
