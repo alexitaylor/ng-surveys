@@ -1,4 +1,4 @@
-import { UUID } from 'angular2-uuid';
+import * as utils from '../store/utils';
 
 export interface INgxSurvey {
   id?: string;
@@ -16,7 +16,7 @@ export class NgxSurvey implements INgxSurvey {
     public summary?: string,
     public isLoading?: boolean,
     ) {
-    this.id = id ? id : UUID.UUID();
+    this.id = id ? id : utils.UUID();
     this.name = name ? name : '';
     this.description = description ? description : '';
     this.summary = summary ? summary : '';

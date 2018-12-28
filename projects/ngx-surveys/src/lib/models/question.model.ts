@@ -1,5 +1,4 @@
-import {IOptionAnswersMap} from './option-answers.model';
-import { UUID } from 'angular2-uuid';
+import * as utils from '../store/utils';
 
 export interface IQuestion {
   id?: string;
@@ -25,7 +24,7 @@ export class Question implements IQuestion {
     public min?: number,
     public max?: number,
   ) {
-    this.id = id ? id : UUID.UUID();
+    this.id = id ? id : utils.UUID();
     this.text = text ? text : '';
     this.answer = answer ? answer : '';
     this.type = type ? type : '';

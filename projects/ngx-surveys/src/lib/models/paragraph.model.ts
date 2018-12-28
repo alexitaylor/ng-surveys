@@ -1,4 +1,4 @@
-import {UUID} from 'angular2-uuid';
+import * as utils from '../store/utils';
 
 export interface IParagraph {
   id?: string;
@@ -12,7 +12,7 @@ export class Paragraph implements IParagraph {
     public html?: string,
     public elementId?: string,
   ) {
-    this.id = id ? id : UUID.UUID();
+    this.id = id ? id : utils.UUID();
     this.html = html ? html : '';
     this.elementId = elementId ? elementId : '';
   }

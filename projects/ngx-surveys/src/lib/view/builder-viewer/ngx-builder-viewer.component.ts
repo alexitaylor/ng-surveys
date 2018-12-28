@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, Input} from '@angular/core';
 import { Subscription} from 'rxjs';
-import {UUID} from 'angular2-uuid';
+import * as utils from '../../store/utils';
 
 import {NgxSurveyState} from '../../store/ngx-survey.state';
 import {resetNgxSurveyState} from '../../store/utils';
@@ -10,8 +10,6 @@ import {SurveyReducer} from '../../store/survey/survey.reducer';
 import {SurveyActionTypes} from '../../store/survey/survey.actions';
 import {PagesActionTypes} from '../../store/pages/pages.actions';
 import {PagesReducer} from '../../store/pages/pages.reducer';
-import {OptionAnswersReducer} from '../../store/option-answers/option-answers.reducer';
-import {OptionAnswersActionTypes} from '../../store/option-answers/option-answers.actions';
 import {BuilderOptionsReducer} from '../../store/builder-options/builder-options.reducer';
 import {BuilderOptionsActionTypes} from '../../store/builder-options/builder-options.actions';
 
@@ -76,7 +74,7 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
   }
 
   addPage() {
-    const pageId = UUID.UUID();
+    const pageId = utils.UUID();
     this._pagesReducer.pagesReducer({
       type: PagesActionTypes.ADD_PAGE_ACTION,
       payload: { surveyId: this.survey.id, pageId },

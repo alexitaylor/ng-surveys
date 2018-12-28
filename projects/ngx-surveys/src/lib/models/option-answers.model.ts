@@ -1,5 +1,5 @@
 import {IPageFlow, PageFlow} from './page-flow.model';
-import { UUID } from 'angular2-uuid';
+import * as utils from '../store/utils';
 
 export type IOptionAnswersMap = Map<string, IOptionAnswers>;
 export type IOptionAnswersMaps = Map<string, IOptionAnswersMap>;
@@ -22,7 +22,7 @@ export class OptionAnswers implements IOptionAnswers {
     public pageFlow?: IPageFlow,
     public isSaved?: boolean,
   ) {
-    this.id = id ? id : UUID.UUID();
+    this.id = id ? id : utils.UUID();
     this.elementId = elementId ? elementId : '';
     this.orderNo = orderNo ? orderNo : 1;
     this.value = value ? value : '';

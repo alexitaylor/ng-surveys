@@ -1,5 +1,5 @@
 import {IQuestion, Question} from './question.model';
-import { UUID } from 'angular2-uuid';
+import * as utils from '../store/utils';
 import {IParagraph} from './paragraph.model';
 
 export type IElementsMap = Map<string, IElements>;
@@ -27,7 +27,7 @@ export class Elements implements IElements {
     public isSaved?: boolean,
     public showPageFlowToggle?: boolean,
   ) {
-    const uuid: string = UUID.UUID();
+    const uuid: string = utils.UUID();
     const newQuestion = new Question();
     newQuestion.elementId = uuid;
 

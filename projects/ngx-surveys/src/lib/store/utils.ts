@@ -1,5 +1,5 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import {UUID} from 'angular2-uuid';
+import * as utils from '../store/utils';
 import {NgxSurvey} from '../models/ngx-survey.model';
 import {NgxSurveyState} from './ngx-survey.state';
 import {
@@ -57,7 +57,7 @@ export const resetNgxSurveyState = (): NgxSurveyState => {
   const angularSurvey = new NgxSurvey();
 
   // Init Pages
-  const pageId = UUID.UUID();
+  const pageId = utils.UUID();
   const page = new Page(pageId, angularSurvey.id);
   const pageMap = new Map<string, IPage>().set(page.id, page);
 
@@ -161,3 +161,44 @@ export function isNil(obj: any): boolean {
 export const getLastItemInMap = map => Array.from(map)[map.size - 1];
 export const getLastKeyInMap = map => Array.from(map)[map.size - 1][0];
 export const getElementByKeyInMap = (map, key) => map.get(key);
+
+export const UUID = (): string => {
+  if (
+    typeof (window) !== 'undefined'
+    && typeof (window.crypto) !== 'undefined'
+    && typeof (window.crypto.getRandomValues) !== 'undefined'
+  ) {
+    // If we have a cryptographically secure PRNG, use that
+    // http://stackoverflow.com/questions/6906916/collisions-when-generating-uuids-in-javascript
+    const buf: Uint16Array = new Uint16Array(8);
+    window.crypto.getRandomValues(buf);
+    return (
+      pad4(buf[0]) + pad4(buf[1])
+      + '-' + pad4(buf[2])
+      + '-' + pad4(buf[3])
+      + '-' + pad4(buf[4])
+      + '-' + pad4(buf[5])
+      + pad4(buf[6])
+      + pad4(buf[7]));
+  } else {
+    // Otherwise, just use Math.random
+    // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+    // https://stackoverflow.com/questions/11605068/why-does-jshint-argue-against-bitwise-operators-how-should-i-express-this-code
+    return random4() + random4() + '-' + random4() + '-' + random4() + '-' +
+      random4() + '-' + random4() + random4() + random4();
+  }
+};
+
+export const pad4 = (num: number): string => {
+  let ret: string = num.toString(16);
+  while (ret.length < 4) {
+    ret = '0' + ret;
+  }
+  return ret;
+};
+
+export const random4 = (): string => {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+};

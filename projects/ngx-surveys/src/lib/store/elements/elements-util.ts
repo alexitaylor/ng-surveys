@@ -1,13 +1,13 @@
 import * as _ from 'lodash';
-import {Elements, IElements, IElementsMap} from '../../models/elements.model';
-import {IQuestion} from '../../models/question.model';
+import {Elements, IElements, IElementsMap} from '../../models';
+import {IQuestion} from '../../models';
 import {
   dragItemInArray, moveItemInMap,
   updateElementPositionInMap,
   arrayToMap,
 } from '../utils';
 import {IParagraph, Paragraph} from '../../models';
-import {UUID} from 'angular2-uuid';
+import * as utils from '../../store/utils';
 
 export function createNextElement(pageId: string, elements: IElementsMap, type: string): IElementsMap {
   let newElement: IElements = new Elements(pageId);
@@ -169,7 +169,7 @@ export function cloneElement(elementId: string, elements: IElementsMap): IElemen
   const currentElement: IElements = elements.get(elementId);
   const clonedElement: IElements = _.cloneDeep(currentElement);
   const index = currentElement.orderNo;
-  const clonedElementId = UUID.UUID();
+  const clonedElementId = utils.UUID();
 
   clonedElement.id = clonedElementId;
 
