@@ -16,7 +16,7 @@
             >
             <label class="form-check-label" for="pageNavCheckbox">Go to page based on answer</label>
           </div>
-          <div cdkDropList [cdkDropListDisabled]="element?.isSaved" [cdkDropListData]="optionAnswers" #optionAnswers="cdkDropList" (cdkDropListDropped)="drop($event)">
+          <div cdkDropList [cdkDropListData]="optionAnswers" [cdkDropListDisabled]="element?.isSaved" #optionAnswers%="cdkDropList" (cdkDropListDropped)="drop($event)">
             <div *ngFor="let item of optionAnswers | mapValues; trackBy: trackElement" cdkDrag>
               <!-- Drag and Drop Background Place Holder -->
               <div class="drag-drop-placeholder-question-option" *cdkDragPlaceholder></div>
