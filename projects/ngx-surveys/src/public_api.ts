@@ -4,7 +4,6 @@
  */
 
 export * from './lib/providers/ngx-surveys.service';
-export * from './lib/ngx-surveys.component';
 export * from './lib/ngx-surveys.module';
 
 

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Store, select} from '@ngrx/store';
 
 import {NgxSurveyState} from '../../store/ngx-survey.state';
+import {NgxSurveyStore} from '../../store/ngx-survey.store';
 
 @Component({
   selector: 'ngxs-model-viewer',
@@ -13,11 +13,11 @@ export class NgxModelViewerComponent implements OnInit {
   surveyModel$: Observable<NgxSurveyState>;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _ngxSurveyStore: NgxSurveyStore,
   ) { }
 
   ngOnInit() {
-    this.surveyModel$ = this.store.pipe(select(state => state));
+    this.surveyModel$ = this._ngxSurveyStore.ngxSurveyState;
   }
 
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import * as survey from '../../../store/survey/survey.actions';
-import {INgxSurvey, NgxSurveyState} from '../../../models';
-import {Store} from '@ngrx/store';
+import {INgxSurvey} from '../../../models';
+import {SurveyActionTypes} from '../../../store/survey/survey.actions';
+import {SurveyReducer} from '../../../store/survey/survey.reducer';
 
 @Component({
   selector: 'ngxs-survey-template-form',
@@ -17,7 +17,7 @@ export class SurveyTemplateFormComponent implements OnInit, OnDestroy {
   surveyDescriptionSub$: Subscription;
 
   constructor(
-    private store: Store<NgxSurveyState>
+    private _surveyReducer: SurveyReducer,
   ) { }
 
   ngOnInit() {
@@ -42,7 +42,10 @@ export class SurveyTemplateFormComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(name => {
-      this.store.dispatch(new survey.SurveyNameChangedAction({ name }));
+      this._surveyReducer.surveyReducer({
+        type: SurveyActionTypes.SURVEY_NAME_CHANGED_ACTION,
+        payload: { name },
+      });
     });
   }
 
@@ -54,7 +57,10 @@ export class SurveyTemplateFormComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(description => {
-      this.store.dispatch(new survey.SurveyDescriptionChangedAction({description}));
+      this._surveyReducer.surveyReducer({
+        type: SurveyActionTypes.SURVEY_DESCRIPTION_CHANGED_ACTION,
+        payload: { description },
+      });
     });
   }
 }

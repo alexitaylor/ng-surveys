@@ -10,6 +10,10 @@ import {BuilderViewerContainerComponent} from './layouts/builder-viewer-containe
 import { ModelViewerContainerComponent } from './layouts/model-viewer-container/model-viewer-container.component';
 import {HttpClientModule} from '@angular/common/http';
 import { SurveyViewerContainerComponent } from './layouts/survey-viewer-container/survey-viewer-container.component';
+import {StoreModule} from '@ngrx/store';
+import {reducers, metaReducers} from './store/ngx-survey.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {EffectsModule} from '@ngrx/effects';
 
 @NgModule({
   imports: [
@@ -17,6 +21,18 @@ import { SurveyViewerContainerComponent } from './layouts/survey-viewer-containe
     HttpClientModule,
     ShellModule,
     NgxSurveysModule,
+    /**
+     * TODO
+     * StoreModule.forRoot includes an object containing app and the appReducer
+     * appReducer manages the state of the application
+     * StoreModule.forRoot() method registers the global providers needed to access the Store
+     * throughout the application
+     */
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    }),
+    // EffectsModule.forRoot([PagesEffect, ElementsEffect, SurveyEffect]),
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [

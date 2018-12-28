@@ -1,48 +1,69 @@
-import {SurveyActions, SurveyActionTypes} from './survey.actions';
-import {INgxSurvey} from '../../models/ngx-survey.model';
+import { Injectable } from '@angular/core';
+import {SurveyActionTypes} from './survey.actions';
+import {CustomAction} from '../../models';
 import * as _ from 'lodash';
-import {appInitialState} from '../ngx-survey.state';
+import {NgxSurveyStore} from '../ngx-survey.store';
 
-export function reducer(state = appInitialState.survey, action: SurveyActions): INgxSurvey {
+@Injectable()
+export class SurveyReducer {
 
-  switch (action.type) {
+  constructor(private _ngxSurveyStore: NgxSurveyStore) {
 
-    case SurveyActionTypes.SURVEY_NAME_CHANGED_ACTION: {
-      return Object.assign(_.cloneDeep(state), {
-        ...action.payload
-      });
-    }
+  }
 
-    case SurveyActionTypes.SURVEY_DESCRIPTION_CHANGED_ACTION: {
-      return Object.assign(_.cloneDeep(state), {
-        ...action.payload
-      });
-    }
+  surveyReducer(action: CustomAction) {
 
-    case SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION: {
-      return Object.assign(_.cloneDeep(state), {
-        ...action.payload
-      });
-    }
+    switch (action.type) {
 
-    case SurveyActionTypes.RESET_SURVEY_STATE_ACTION: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.survey);
-    }
+      case SurveyActionTypes.SURVEY_NAME_CHANGED_ACTION: {
+        console.log('this._ngxSurveyStore.dataStore.survey: ', this._ngxSurveyStore.dataStore.survey);
+        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+          ...action.payload
+        });
+        this._ngxSurveyStore.updateSurvey(newState);
+        break;
+      }
 
-    case SurveyActionTypes.HANDLE_SURVEY_LOADING: {
-      return Object.assign(_.cloneDeep(state), {
-        ...action.payload
-      });
-    }
+      case SurveyActionTypes.SURVEY_DESCRIPTION_CHANGED_ACTION: {
+        console.log('this._ngxSurveyStore.dataStore.survey: ', this._ngxSurveyStore.dataStore.survey);
+        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+          ...action.payload
+        });
+        this._ngxSurveyStore.updateSurvey(newState);
+        break;
+      }
 
-    case SurveyActionTypes.IMPORT_SURVEY_STATE_ACTION: {
-      const { ngxSurveyState } = action.payload;
-      return Object.assign(ngxSurveyState.survey);
-    }
+      case SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION: {
+        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+          ...action.payload
+        });
+        this._ngxSurveyStore.updateSurvey(newState);
+        break;
+      }
 
-    default: {
-      return state;
+      case SurveyActionTypes.RESET_SURVEY_STATE_ACTION: {
+        const { ngxSurveyState } = action.payload;
+        this._ngxSurveyStore.updateSurvey(ngxSurveyState.survey);
+        break;
+      }
+
+      case SurveyActionTypes.HANDLE_SURVEY_LOADING: {
+        const newState = Object.assign(_.cloneDeep(this._ngxSurveyStore.dataStore.survey), {
+          ...action.payload
+        });
+        this._ngxSurveyStore.updateSurvey(newState);
+        break;
+      }
+
+      case SurveyActionTypes.IMPORT_SURVEY_STATE_ACTION: {
+        const { ngxSurveyState } = action.payload;
+        this._ngxSurveyStore.updateSurvey(ngxSurveyState.survey);
+        break;
+      }
+
+      default: {
+        return this._ngxSurveyStore.survey;
+      }
     }
   }
 }

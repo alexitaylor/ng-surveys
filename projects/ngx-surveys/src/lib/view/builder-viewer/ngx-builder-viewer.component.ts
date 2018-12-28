@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit, Input} from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/internal/operators';
 import {UUID} from 'angular2-uuid';
@@ -11,6 +10,9 @@ import * as pages from '../../store/pages/pages.actions';
 import {resetNgxSurveyState} from '../../store/utils';
 import {IPageMap, INgxSurvey, IBuilderOptions} from '../../models/index';
 import {UpdateBuilderOptionsAction} from '../../store/builder-options/builder-options.actions';
+import {NgxSurveyStore} from '../../store/ngx-survey.store';
+import {SurveyReducer} from '../../store/survey/survey.reducer';
+import {SurveyActionTypes} from '../../store/survey/survey.actions';
 
 @Component({
   selector: 'ngxs-builder-viewer',
@@ -38,19 +40,22 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   constructor(
-    private store: Store<NgxSurveyState>
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _surveyReducer: SurveyReducer,
   ) {
-    this.surveySub = store.pipe(select(fromRoot.getSurvey)).subscribe(res => {
+    this.surveySub = this._ngxSurveyStore.survey.subscribe(res => {
+      console.log('res: ', res);
       this.survey = res;
     });
 
-    this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(pagesRes => {
-      this.pages = pagesRes;
-    });
-
-    this.ngxSurveyStateSub = store.pipe(select(fromRoot.getNgxSurveyState)).subscribe(res => {
+    this.ngxSurveyStateSub = this._ngxSurveyStore.ngxSurveyState.subscribe(res => {
       this.ngxSurveyState = res;
     });
+    //
+    // this.pagesSub = store.pipe(select(fromRoot.getPages)).subscribe(pagesRes => {
+    //   this.pages = pagesRes;
+    // });
+    //
   }
 
   ngOnInit() {
@@ -58,29 +63,29 @@ export class NgxBuilderViewerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.surveySub.unsubscribe();
-    this.pagesSub.unsubscribe();
+    // this.pagesSub.unsubscribe();
     this.ngxSurveyStateSub.unsubscribe();
   }
 
   handleBuilderOptionsChange(builderOptions: IBuilderOptions) {
-    this.store.dispatch(new UpdateBuilderOptionsAction({ builderOptions }));
+    // this.store.dispatch(new UpdateBuilderOptionsAction({ builderOptions }));
   }
 
   addPage() {
     const pageId = UUID.UUID();
-    this.store.dispatch(new pages.AddPageAction({ surveyId: this.survey.id, pageId }));
+    // this.store.dispatch(new pages.AddPageAction({ surveyId: this.survey.id, pageId }));
   }
 
   reset() {
     const ngxSurveyState: NgxSurveyState = resetNgxSurveyState();
     ngxSurveyState.survey.isLoading = true;
-    this.store.dispatch(new survey.ResetSurveyStateAction({ ngxSurveyState }));
+    // this.store.dispatch(new survey.ResetSurveyStateAction({ ngxSurveyState }));
   }
 
   importSurvey(cb) {
     cb().subscribe(ngxSurveyState => {
       ngxSurveyState.survey.isLoading = true;
-      this.store.dispatch(new survey.ImportSurveySateAction({ ngxSurveyState }));
+      // this.store.dispatch(new survey.ImportSurveySateAction({ ngxSurveyState }));
     });
   }
 

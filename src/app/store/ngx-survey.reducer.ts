@@ -1,4 +1,5 @@
 import {NgxSurveyState} from './ngx-survey.state';
+import {ActionReducer, MetaReducer} from '@ngrx/store';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import * as fromSurvey from './survey/survey.reducer';
@@ -13,11 +14,38 @@ import {deserializeUtils} from './utils';
 
 
 export const reducers = {
+  survey: fromSurvey.reducer,
   pages: fromPages.reducer,
   elements: fromElements.reducer,
   optionAnswers: fromOptionAnswers.reducer,
   builderOptions: fromBuilderOptions.reducer,
 };
+
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({keys: [
+      {
+        survey: {
+          deserialize: (json: any) => json,
+        },
+      },
+      {
+        pages: {
+          deserialize: (json: any) => deserializeUtils.deserializePages(json),
+        },
+      },
+      {
+        elements: {
+          deserialize: (json: any) => deserializeUtils.deserializeElements(json),
+        },
+      },
+      {
+        optionAnswers: {
+          deserialize: (json: any) => deserializeUtils.deserializeOptionAnswersMaps(json),
+        }
+      }
+    ], rehydrate: true})(reducer);
+}
+export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 // State Selectors
 export const getNgxSurveyState = (state: NgxSurveyState) => state;

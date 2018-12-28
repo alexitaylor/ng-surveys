@@ -1,12 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Store, select} from '@ngrx/store';
 
-
-import {SurveySummaryChangedAction} from '../../../store/survey/survey.actions';
-import {NgxSurveyState} from '../../../store/ngx-survey.state';
 import {INgxSurvey} from '../../../models/ngx-survey.model';
-import * as fromRoot from '../../../store/ngx-survey.reducer';
+import {NgxSurveyStore} from '../../../store/ngx-survey.store';
+import {SurveyActionTypes} from '../../../store/survey/survey.actions';
+import {SurveyReducer} from '../../../store/survey/survey.reducer';
 
 
 @Component({
@@ -19,9 +17,10 @@ export class SummaryContainerComponent implements OnInit, OnDestroy {
   survey: INgxSurvey;
 
   constructor(
-    private store: Store<NgxSurveyState>,
+    private _ngxSurveyStore: NgxSurveyStore,
+    private _surveyReducer: SurveyReducer,
   ) {
-    this.surveySub = store.pipe(select(fromRoot.getSurvey)).subscribe(res => {
+    this.surveySub = this._ngxSurveyStore.survey.subscribe(res => {
       this.survey = res;
     });
   }
@@ -29,7 +28,10 @@ export class SummaryContainerComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   handleEditorEvent(summary: string) {
-    this.store.dispatch(new SurveySummaryChangedAction({ summary }));
+    this._surveyReducer.surveyReducer({
+      type: SurveyActionTypes.SURVEY_SUMMARY_CHANGED_ACTION,
+      payload: { summary },
+    });
   }
 
   ngOnDestroy() {
