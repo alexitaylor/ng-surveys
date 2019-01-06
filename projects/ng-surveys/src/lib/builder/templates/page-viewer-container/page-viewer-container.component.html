@@ -1,0 +1,7 @@
+<div *ngFor="let item of elements | mapValues; trackBy: trackElement">
+  <ngs-question-viewer-container
+    class="w-100"
+    [element]="item?.value"
+    [surveyId]="page.surveyId"
+  ></ngs-question-viewer-container>
+</div>

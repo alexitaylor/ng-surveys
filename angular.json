@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-surveys-app": {
+    "ng-surveys-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-surveys-app",
+            "outputPath": "dist/ng-surveys-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -24,10 +24,14 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/assets/scss/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/assets/scss/styles.scss"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -52,18 +56,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-surveys-app:build"
+            "browserTarget": "ng-surveys-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-surveys-app:build:production"
+              "browserTarget": "ng-surveys-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-surveys-app:build"
+            "browserTarget": "ng-surveys-app:build"
           }
         },
         "test": {
@@ -98,7 +102,7 @@
         }
       }
     },
-    "ngx-surveys-app-e2e": {
+    "ng-surveys-app-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -106,11 +110,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngx-surveys-app:serve"
+            "devServerTarget": "ng-surveys-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngx-surveys-app:serve:production"
+              "devServerTarget": "ng-surveys-app:serve:production"
             }
           }
         },
@@ -125,33 +129,33 @@
         }
       }
     },
-    "ngx-surveys": {
-      "root": "projects/ngx-surveys",
-      "sourceRoot": "projects/ngx-surveys/src",
+    "ng-surveys": {
+      "root": "projects/ng-surveys",
+      "sourceRoot": "projects/ng-surveys/src",
       "projectType": "library",
-      "prefix": "ngxs",
+      "prefix": "ngs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngx-surveys/tsconfig.lib.json",
-            "project": "projects/ngx-surveys/ng-package.json"
+            "tsConfig": "projects/ng-surveys/tsconfig.lib.json",
+            "project": "projects/ng-surveys/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-surveys/src/test.ts",
-            "tsConfig": "projects/ngx-surveys/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-surveys/karma.conf.js"
+            "main": "projects/ng-surveys/src/test.ts",
+            "tsConfig": "projects/ng-surveys/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-surveys/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ngx-surveys/tsconfig.lib.json",
-              "projects/ngx-surveys/tsconfig.spec.json"
+              "projects/ng-surveys/tsconfig.lib.json",
+              "projects/ng-surveys/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -161,5 +165,5 @@
       }
     }
   },
-  "defaultProject": "ngx-surveys-app"
+  "defaultProject": "ng-surveys-app"
 }

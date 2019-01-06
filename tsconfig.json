@@ -19,11 +19,11 @@
       "dom"
     ],
     "paths": {
-      "ngx-surveys": [
-        "dist/ngx-surveys"
+      "ng-surveys": [
+        "dist/ng-surveys"
       ],
-      "ngx-surveys/*": [
-        "dist/ngx-surveys/*"
+      "ng-surveys/*": [
+        "dist/ng-surveys/*"
       ]
     }
   }

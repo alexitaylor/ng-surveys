@@ -1,0 +1,159 @@
+<div>
+  <!-- Header -->
+  <div class="d-flex justify-content-end ml-3">
+    <!-- Element Button Group -->
+    <div class="btn-group" role="group">
+      <!-- Remove Element -->
+      <button
+        *ngIf="!element?.isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Remove Element"
+        (click)="removeElement(element?.id)">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+      <!-- #/Remove Element -->
+
+      <!-- Move Element Down -->
+      <button
+        *ngIf="!element?.isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Move Down"
+        (click)="moveElementDown(element?.id)"
+        [disabled]="element?.orderNo === elementsSize">
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <!-- #/Move Element Down -->
+
+      <!-- Move Element Up -->
+      <button
+        *ngIf="!element?.isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Move Up"
+        (click)="moveElementUp(element?.id)"
+        [disabled]="element?.orderNo === 1">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+      <!-- Move Element Up -->
+
+      <!-- Clone Element -->
+      <button
+        *ngIf="element?.isSaved"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Clone Element"
+        (click)="cloneElement(element?.id)"
+      >
+        <i class="fas fa-clone"></i>
+      </button>
+      <!-- #/Clone Element -->
+
+      <!-- Edit Question -->
+      <button
+        [id]="'edit-question-button-' + element?.id"
+        *ngIf="element?.isSaved && element.type === 'question'"
+        type="button"
+        class="btn btn-outline-primary"
+        tooltip="Edit Element"
+        (click)="editQuestion(element?.id)">
+        <i class="fas fa-edit"></i>
+      </button>
+      <!-- #/Edit Question -->
+
+      <!-- Import Element -->
+      <button
+        id="import-element"
+        *ngIf="!!importElementButton && element.type === 'question'"
+        type="button"
+        class="btn btn-outline-primary"
+        [tooltip]="importElementButton?.title ? importElementButton?.title : 'Import Element'"
+        (click)="importElement(importElementButton.callback, element)"
+      >
+        <i [class]="importElementButton?.icon ? importElementButton?.icon : 'fas fa-file-import'"></i>
+      </button>
+      <!-- #/Import Element -->
+
+      <!-- Custom Element Buttons -->
+      <span *ngIf="!!elementButtons && elementButtons?.length > 0 && element.type === 'question'">
+        <button
+          *ngFor="let button of elementButtons"
+          [id]="'custom-element-button' + button?.title"
+          type="button"
+          class="btn btn-outline-primary bl-none"
+          [tooltip]="button?.title"
+          (click)="handleCustomElementButton(element, button?.callback)"
+        >
+          <i [class]="button?.icon"></i>
+        </button>
+        <!-- #/Custom Element Buttons -->
+      </span>
+    </div>
+    <!-- #/Element Button Group -->
+  </div>
+  <!-- #/Header -->
+
+  <!-- Question Builder -->
+  <div *ngIf="element.type === 'question'" class="mt-4">
+    <!-- Question Form Builder -->
+    <form name="questionForm" #questionForm="ngForm">
+
+      <!-- Question Value Input -->
+      <ngs-question-input
+        [elementId]="element?.id"
+        [elementValue]="element?.question.text"
+        [pageId]="pageId"
+        [isElementSaved]="element?.isSaved"
+      ></ngs-question-input>
+      <!-- #/Question Value Input -->
+
+      <!-- Question Type Selector -->
+      <div class="form-group">
+        <label for="questionType">Question Type</label>
+        <select
+          id="questionType"
+          name="questionType"
+          class="form-control"
+          [(ngModel)]="element?.question.type"
+          (ngModelChange)="onQuestionTypeSelect($event, element?.id)"
+          [disabled]="element?.isSaved"
+        >
+          <option selected></option>
+          <option value="shortText">Short Text</option>
+          <option value="longText">Long Text</option>
+          <option value="radio">Radio</option>
+          <option value="checkboxes">Checkboxes</option>
+          <option value="select">Select</option>
+          <option value="date">Date</option>
+          <option value="range">Range</option>
+        </select>
+      </div>
+      <!-- #/Question Type Selector -->
+    </form>
+    <!-- #/Question Form Builder -->
+
+    <!-- Question Builder Element -->
+    <ngs-question-builder-component
+      [questionType]="element?.question.type"
+      [element]="element"
+      [surveyId]="surveyId"
+      [isView]="false"
+    ></ngs-question-builder-component>
+    <!-- #/Question Builder Element -->
+
+    <!-- Save Button -->
+    <button [id]="'save-question-button-' + element?.id" *ngIf="!element?.isSaved" type="button" class="btn btn-outline-primary mt-4" (click)="saveQuestion(element?.id)" [disabled]="!questionType">Save Question</button>
+    <!-- #/Save Button -->
+  </div>
+  <!-- #/Question Builder -->
+
+  <!-- Paragraph Builder -->
+  <div *ngIf="element.type === 'paragraph'" class="mt-4">
+    <ngs-paragraph
+      [element]="element"
+    ></ngs-paragraph>
+  </div>
+  <!-- #/Paragraph Builder -->
+</div>
+

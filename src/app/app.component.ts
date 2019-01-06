@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NgxSurveysService, NgxSurveyState, INgxSurvey, IPageMap, IElementsMaps, IOptionAnswersMaps} from 'ngx-surveys';
+import {NgSurveysService, NgSurveyState, INgSurvey, IPageMap, IElementsMaps, IOptionAnswersMaps} from 'ng-surveys';
 
 @Component({
   selector: 'app-root',
@@ -7,39 +7,39 @@ import {NgxSurveysService, NgxSurveyState, INgxSurvey, IPageMap, IElementsMaps, 
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'ngx-surveys-app';
-  ngxSurveyState: NgxSurveyState;
-  survey: INgxSurvey;
+  title = 'ng-surveys-app';
+  ngSurveyState: NgSurveyState;
+  survey: INgSurvey;
   pages: IPageMap;
   elements: IElementsMaps;
   optionAnswers: IOptionAnswersMaps;
 
   constructor(
-    private ngxSurveys$: NgxSurveysService,
+    private ngSurveys$: NgSurveysService,
   ) {}
 
   ngOnInit() {
-    this.ngxSurveys$.getNgxSurveyState().subscribe(res => {
-      // console.log('ngxSurveyStateRes: ', res);
-      this.ngxSurveyState = res;
+    this.ngSurveys$.getNgSurveyState().subscribe(res => {
+      // console.log('ngSurveyStateRes: ', res);
+      this.ngSurveyState = res;
     });
 
-    this.ngxSurveys$.getSurveyChanges().subscribe(resSurvey => {
+    this.ngSurveys$.getSurveyChanges().subscribe(resSurvey => {
       // console.log('resSurvey: ', resSurvey);
       this.survey = resSurvey;
     });
 
-    this.ngxSurveys$.getPagesChanges().subscribe(pagesRes => {
+    this.ngSurveys$.getPagesChanges().subscribe(pagesRes => {
       // console.log('pagesRes: ', pagesRes);
       this.pages = pagesRes;
     });
 
-    this.ngxSurveys$.getElementsChanges().subscribe(elementsRes => {
+    this.ngSurveys$.getElementsChanges().subscribe(elementsRes => {
       // console.log('elementsRes: ', elementsRes);
       this.elements = elementsRes;
     });
 
-    this.ngxSurveys$.getOptionAnswersChanges().subscribe(optionAnswersRes => {
+    this.ngSurveys$.getOptionAnswersChanges().subscribe(optionAnswersRes => {
       // console.log('optionAnswersRes: ', optionAnswersRes);
       this.optionAnswers = optionAnswersRes;
     });

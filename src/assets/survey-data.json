@@ -66,7 +66,7 @@
             "type":"question",
             "question":{
               "id":"466b9d40-3f15-651a-79a1-4e14cb9265e6",
-              "text":"",
+              "text":"Select one: ",
               "answer":"",
               "type":"radio",
               "required":false,

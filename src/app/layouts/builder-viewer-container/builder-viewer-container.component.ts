@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {
   IBuilderOptions,
-  NgxSurveyState,
+  NgSurveyState,
   BuilderOptionsModel,
   IElementAndOptionAnswers,
-  deserializeUtils,
-} from 'ngx-surveys';
+} from 'ng-surveys';
+import {deserializeUtils} from '../../store/utils';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -43,7 +43,7 @@ export class BuilderViewerContainerComponent implements OnInit {
     };
   }
 
-  importSurvey(): Observable<NgxSurveyState> {
+  importSurvey(): Observable<NgSurveyState> {
     // Mocking get request
     return this.getSurvey();
   }
@@ -53,8 +53,8 @@ export class BuilderViewerContainerComponent implements OnInit {
     return this.getElement();
   }
 
-  getSurvey(): Observable<NgxSurveyState> {
-    return this.http.get('assets/survey-data.json').pipe(map((res: NgxSurveyState) => {
+  getSurvey(): Observable<NgSurveyState> {
+    return this.http.get('assets/survey-data.json').pipe(map((res: NgSurveyState) => {
       return {
         survey: res.survey,
         pages: deserializeUtils.deserializePages(res.pages),
@@ -74,9 +74,9 @@ export class BuilderViewerContainerComponent implements OnInit {
     }));
   }
 
-  saveSurvey(ngxSurveyState: NgxSurveyState): void {
+  saveSurvey(ngSurveyState: NgSurveyState): void {
     // Add post request to save survey data to the DB
-    console.log('ngxSurveyState: ', ngxSurveyState);
+    console.log('ngSurveyState: ', ngSurveyState);
   }
 
   saveElement(element: IElementAndOptionAnswers): void {
