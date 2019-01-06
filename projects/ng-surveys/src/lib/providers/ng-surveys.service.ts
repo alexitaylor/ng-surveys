@@ -22,7 +22,7 @@ export class NgSurveysService {
   /**
    * Listen to the latest state changes in the stream.
    * @return This method returns changes
-   * that occur to the survey state.
+   * that occur to all of the survey state.
    */
   getNgSurveyState(): Observable<NgSurveyState> {
     return this._ngSurveyStore.ngSurveyState;
