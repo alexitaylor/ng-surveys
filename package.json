@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "build_lib": "ng build ng-surveys",
     "npm_pack": "cd dist/ng-surveys && npm pack",
-    "package": "npm run build_lib && npm run npm_pack"
+    "package": "npm run build_lib && npm run npm_pack",
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
   },
   "private": true,
   "dependencies": {

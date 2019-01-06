@@ -1,7 +1,7 @@
 <div *ngIf="survey.isLoading">
   <ngs-loader [isInherit]="true"></ngs-loader>
 </div>
-
+<h1>test</h1>
 <div *ngIf="!survey.isLoading">
   <div class="mb-3 d-flex flex-row justify-content-start">
     <button class="btn btn-primary" tooltip="Reset Survey" (click)="reset()"><i class="fas fa-trash-alt"></i> Reset Survey</button>
@@ -27,18 +27,18 @@
       <ngs-survey-template-form
         [survey]="survey"
       ></ngs-survey-template-form>
+
+      <!-- Page Builder Container -->
+      <div *ngFor="let item of pages | mapValues; trackBy: trackElement">
+        <ngs-page-builder-container
+                [surveyId]="survey.id"
+                [page]="item?.value"
+                [pages]="pages"
+        ></ngs-page-builder-container>
+      </div>
+      <!-- #/Page Builder Container -->
     </div>
   </div>
-
-  <!-- Page Builder Container -->
-  <div *ngFor="let item of pages | mapValues; trackBy: trackElement">
-    <ngs-page-builder-container
-      [surveyId]="survey.id"
-      [page]="item?.value"
-      [pages]="pages"
-    ></ngs-page-builder-container>
-  </div>
-  <!-- #/Page Builder Container -->
 
   <!-- Survey Summary -->
   <ngs-summary-container></ngs-summary-container>

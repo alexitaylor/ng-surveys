@@ -50,6 +50,8 @@ Add Bootstrap and Font Awesome to your ***angular.json*** to the ***styles*** an
 }
 ```
 
+## NgBuilderViewerComponent
+
 ## Development
 
 * Clone repo
