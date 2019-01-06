@@ -1,7 +1,7 @@
 <div *ngIf="survey.isLoading">
   <ngs-loader [isInherit]="true"></ngs-loader>
 </div>
-<h1>test</h1>
+
 <div *ngIf="!survey.isLoading">
   <div class="mb-3 d-flex flex-row justify-content-start">
     <button class="btn btn-primary" tooltip="Reset Survey" (click)="reset()"><i class="fas fa-trash-alt"></i> Reset Survey</button>
