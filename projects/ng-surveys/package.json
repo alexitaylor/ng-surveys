@@ -1,6 +1,14 @@
 {
   "name": "ng-surveys",
+  "description": "A survey builder library for angular 7.0+ that can build and create surveys",
   "version": "0.0.1",
+  "keywords": ["Angular", "Angular 7", "Survey", "Survey Builder"],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/alexitaylor/ng-surveys"
+  },
+  "homepage" :"https://github.com/alexitaylor/ng-surveys",
+  "license" : "SEE LICENSE IN LICENSE",
   "peerDependencies": {
     "@angular/animations": "^7.0.0",
     "@angular/cdk": "^7.0.0",

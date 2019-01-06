@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "build_lib": "ng build ng-surveys",
     "npm_pack": "cd dist/ng-surveys && npm pack",
-    "package": "npm run build_lib && npm run npm_pack",
+    "copyfiles": "copyfiles README.md LICENSE dist/ng-surveys",
+    "package": "npm run build_lib && npm run copyfiles && npm run npm_pack",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
   },
   "private": true,
@@ -56,6 +57,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.3.0",
+    "copyfiles": "^2.1.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
