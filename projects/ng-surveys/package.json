@@ -1,7 +1,7 @@
 {
   "name": "ng-surveys",
   "description": "A survey builder library for angular 7.0+ that can build and create surveys",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "keywords": ["Angular", "Angular 7", "Survey", "Survey Builder"],
   "repository": {
     "type" : "git",
