@@ -11,6 +11,7 @@
               type="checkbox"
               name="isPageNavChecked"
               class="form-check-input"
+              [disabled]="element?.isSaved"
               [(ngModel)]="element?.question.pageFlowModifier"
               (change)="togglePageNavChecked($event)"
             >

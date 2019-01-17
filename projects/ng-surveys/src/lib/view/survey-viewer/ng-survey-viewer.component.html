@@ -30,10 +30,11 @@
   <!-- Card Footer -->
   <div class="card-footer d-flex w-100">
     <div class="mr-auto">
-      <button type="button" class="btn btn-primary btn-lg" [disabled]="!pagePrev" [routerLink]="'/viewer/' + pagePrev?.id">Back</button>
+      <button type="button" class="btn btn-primary btn-lg" [disabled]="isPrevPageEmpty" (click)="prevPage()">Back</button>
     </div>
     <div class="ml-auto">
-      <button type="button" class="btn btn-primary btn-lg" [disabled]="!pageNext" (click)="nextPage()">Next</button>
+      <!--[disabled]="!pageNext"-->
+      <button type="button" class="btn btn-primary btn-lg" [disabled]="isNextPageEmpty" (click)="nextPage()">Next</button>
     </div>
   </div>
   <!-- #/Card Footer -->

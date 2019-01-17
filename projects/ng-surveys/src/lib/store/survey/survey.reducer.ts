@@ -86,7 +86,6 @@ export class SurveyReducer {
 
       case SurveyActionTypes.IMPORT_SURVEY_STATE_ACTION: {
         const { ngSurveyState } = action.payload;
-          console.log('ngSurveyState: ', ngSurveyState);
         this._ngSurveyStore.updateSurvey(ngSurveyState.survey);
 
         // Effects

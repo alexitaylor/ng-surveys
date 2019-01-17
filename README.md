@@ -256,13 +256,13 @@ npm install
 * Before we can use ng-surveys library we need to build it:
 
 ```bash
-ng build example-ng-lib
+ng build ng-surveys
 ```
 
 * With Angular CLI v6.2 we can use the --watch flag so that every time a file changes Angular CLI performs a partial build that emits the amended files:
 
 ```bash
-ng build example-ng-lib --watch
+ng build ng-surveys --watch
 ```
 
 * Run the application project (demo app to test our library):

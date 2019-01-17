@@ -3,9 +3,10 @@ import {NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/
 import {Subscription} from 'rxjs';
 
 import {IPage, IPageMap} from '../../models/page.model';
-import {isNil} from '../../store/utils';
-import {IElementsMaps, INgSurvey} from '../../models';
+import {IElementsMap, IElementsMaps, INgSurvey, IOptionAnswersMaps, IPageFlow} from '../../models';
 import {NgSurveyStore} from '../../store/ng-survey.store';
+import {NgSurveyViewerNavigationService} from './ng-survey-viewer-navigation.service';
+import {isNil} from '../../store/utils';
 
 @Component({
   selector: 'ngs-survey-viewer',
@@ -26,6 +27,12 @@ export class NgSurveyViewerComponent implements OnInit, OnDestroy {
   elementsSub: Subscription;
   elements: IElementsMaps;
 
+  optionAnswersSub: Subscription;
+  optionAnswers: IOptionAnswersMaps;
+
+  isPrevPageEmpty: boolean;
+  isNextPageEmpty: boolean;
+
   showSummary: boolean;
   isLoading: boolean;
 
@@ -33,7 +40,8 @@ export class NgSurveyViewerComponent implements OnInit, OnDestroy {
 
   constructor(
     private _ngSurveyStore: NgSurveyStore,
-    private router: Router
+    private router: Router,
+    private surveyViewerNavigation$: NgSurveyViewerNavigationService,
   ) {
     this.surveySub = this._ngSurveyStore.survey.subscribe(res => {
       this.survey = res;
@@ -48,13 +56,16 @@ export class NgSurveyViewerComponent implements OnInit, OnDestroy {
     this.elementsSub = this._ngSurveyStore.elements.subscribe(res => {
       this.elements = res;
     });
+    this.optionAnswersSub = this._ngSurveyStore.optionAnswers.subscribe(res => {
+      this.optionAnswers = res;
+    });
 
     this.initNavigation();
 
     router.events.subscribe( event => {
       if (event instanceof NavigationStart) {
-        this.pageNext = null;
-        this.pagePrev = null;
+        this.isPrevPageEmpty = false;
+        this.isNextPageEmpty = false;
         this.isLoading = true;
       }
 
@@ -84,72 +95,68 @@ export class NgSurveyViewerComponent implements OnInit, OnDestroy {
   }
 
   initNavigation() {
+    const currentPageNode = this.surveyViewerNavigation$.currentPageNode.value;
     const pageUrlId = this.getCurrentPageUrlId();
+
     this.showSummary = false;
-    this.getCurrentPage(pageUrlId);
-    this.getNextPage(pageUrlId);
-    this.getPreviousPage(pageUrlId);
-  }
-
-  nextPage() {
-    if (this.page.pageFlow.label === 'pageFlow.goToPage') {
-      this.router.navigate([`/viewer/${this.page.pageFlow.pageId}`]);
-    } else {
-      this.router.navigate([`/viewer/${this.pageNext.id}`]);
-    }
-  }
-
-  getCurrentPage(pageUrlId: string) {
-    if (!!this.pages) {
-      this.pages.forEach(page => {
-        if (pageUrlId === page.id) {
-          this.page = page;
-        }
-      });
-    }
+    this.page = currentPageNode.page;
+    this.isPrevPageEmpty = isNil(currentPageNode.previous);
+    this.isNextPageEmpty = isNil(currentPageNode.next) && isNil(this.survey.summary);
 
     if (pageUrlId === 'summary') {
       this.showSummary = true;
-    } else if (!this.page) { // If Page Url does not match any page's id default to first page
-      const firstPage = Array.from(this.pages)[0];
-      this.router.navigate([`/viewer/${firstPage[1].id}`]);
+      this.isNextPageEmpty = true;
     }
   }
 
-  getNextPage(pageUrlId: string) {
-    let isFound = false;
-
-    this.pages.forEach((page, key) => {
-      if (isFound) {
-        this.pageNext = page;
-        isFound = false;
-      }
-      if (pageUrlId === key) {
-        isFound = true;
-      }
-    });
-
-    // If last page and summary exist queue summary as last page
-    if (isNil(this.pageNext) && pageUrlId !== 'summary') {
-      if (!isNil(this.survey.summary)) {
-       this.pageNext = { id: 'summary', surveyId: '' };
-      }
+  nextPage() {
+    const elementPageFlowModifier = this.getElementPageFlowModifier();
+    if (!!elementPageFlowModifier) {
+      this.pageNext = this.surveyViewerNavigation$.setGoToPage(elementPageFlowModifier.pageId);
+    } else if (this.page.pageFlow.label === 'pageFlow.goToPage') {
+      this.pageNext = this.surveyViewerNavigation$.setGoToPage(this.page.pageFlow.pageId);
+    } else {
+      this.pageNext = this.surveyViewerNavigation$.setNextPage();
     }
+
+    this.router.navigate([`/viewer/${this.pageNext.id}`]);
   }
 
-  getPreviousPage(pageUrlId: string) {
-    let temp = null;
+  prevPage() {
+    this.pagePrev = this.surveyViewerNavigation$.setPrevPage();
+    this.router.navigate([`/viewer/${this.pagePrev.id}`]);
+  }
 
-    this.pages.forEach((page, key) => {
-      if (pageUrlId === key) {
-        this.pagePrev = temp;
+  getElementPageFlowModifier(): IPageFlow {
+    const pageElements: IElementsMap = this.elements.get(this.page.id);
+    let isElementPageFlowModifier = false;
+    let elementPageFlowModifier;
+
+    pageElements.forEach((element, key) => {
+      if (element.question.pageFlowModifier) {
+        isElementPageFlowModifier = true;
+        elementPageFlowModifier = element;
       }
-      temp = page;
     });
 
-    if (isNil(this.pagePrev) && pageUrlId === 'summary') {
-      this.pagePrev = temp;
+    if (isElementPageFlowModifier && !!elementPageFlowModifier) {
+      const elementOptionAnswers = this.optionAnswers.get(elementPageFlowModifier.id);
+      let isPageFlowModifier = false;
+      let optionAnswersPageFlowModifier;
+
+      elementOptionAnswers.forEach((optionAnswer, key) => {
+        if (elementPageFlowModifier.question.answer === optionAnswer.value && optionAnswer.pageFlow.label === 'pageFlow.goToPage') {
+          isPageFlowModifier = true;
+          optionAnswersPageFlowModifier = optionAnswer.pageFlow;
+        }
+      });
+
+      if (isPageFlowModifier && !!optionAnswersPageFlowModifier) {
+        return optionAnswersPageFlowModifier;
+      }
     }
+
+    return null;
   }
 
   getCurrentPageUrlId(): string {

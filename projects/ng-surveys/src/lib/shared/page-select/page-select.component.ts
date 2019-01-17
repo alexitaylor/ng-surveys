@@ -46,9 +46,10 @@ export class PageSelectComponent implements OnInit, OnDestroy {
   }
 
   handlePageNavNext(value) {
+    console.log('value: ', value);
     if (this.isPage) {
       const pageFlow = new PageFlow();
-      if (value === 'pageFlow.goToNextPage') {
+      if (value === '') {
         pageFlow.nextPage = true;
         pageFlow.label = 'pageFlow.goToNextPage';
       } else {
@@ -66,7 +67,7 @@ export class PageSelectComponent implements OnInit, OnDestroy {
       });
     } else {
       const pageFlow = new PageFlow();
-      if (value === 'pageFlow.goToNextPage') {
+      if (value === '') {
         pageFlow.nextPage = true;
         pageFlow.label = 'pageFlow.goToNextPage';
       } else {
