@@ -5,8 +5,8 @@
 <div *ngIf="!isLoading && !isSurveyEmpty" class="card">
   <!-- Card Header -->
   <div class="card-header d-flex w-100">
-    <div class="mr-auto d-flex flex-row w-50">
-      <span *ngIf="!showSummary" class="w-25">Page {{page?.orderNo}} of {{pageSize}}</span>
+    <div class="mr-auto d-flex flex-row">
+      <span *ngIf="!showSummary">Page {{page?.orderNo}} of {{pageSize}}</span>
       <span *ngIf="showSummary">Survey Summary</span>
     </div>
   </div>

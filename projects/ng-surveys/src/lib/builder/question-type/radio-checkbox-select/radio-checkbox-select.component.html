@@ -3,7 +3,7 @@
     <h4>{{data.title}}</h4>
 
     <div class="row">
-      <div class="col-9 offset-2">
+      <div class="col-md-9 offset-md-2 col-12">
         <form>
           <div class="form-group form-check" *ngIf="element?.showPageFlowToggle && (data.type === 'radio' || data.type === 'select')">
             <input
@@ -22,7 +22,7 @@
               <!-- Drag and Drop Background Place Holder -->
               <div class="drag-drop-placeholder-question-option" *cdkDragPlaceholder></div>
               <!-- #/Drag and Drop Background Place Holder -->
-                <div class="d-flex flex-row align-items-center option-min-height">
+                <div class="d-flex flex-md-row flex-column align-items-md-center align-items-start option-min-height mb-md-0 mb-3">
                   <!-- Move Option Button -->
                   <span *ngIf="!element?.isSaved" class="mr-3 mb-3">
                     <button type="button" class="btn btn-outline-secondary" tooltip="Drag and Drop Option" cdkDragHandle>
@@ -47,14 +47,17 @@
           </div>
           <!-- Add Option Input -->
           <span *ngIf="!element?.isSaved" (click)="addOptionInput()">
-            <input
-              class="form-control w-50"
-              style="margin-left: 5.5rem;"
-              name="radioTemplate"
-              type="text"
-              placeholder="Click to add options"
-              disabled
-            >
+            <div class="row">
+              <div class="col-md-5 col-12">
+                <input
+                  class="form-control ml-md-5 ml-0"
+                  name="radioTemplate"
+                  type="text"
+                  placeholder="Click to add options"
+                  disabled
+                >
+              </div>
+            </div>
           </span>
           <!-- #/Add Option Input -->
         </form>
