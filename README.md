@@ -2,7 +2,18 @@
 
 [Demo](https://ng-surveys.firebaseapp.com/)
 
-## Getting started
+# Table of Contents
+
+- [Getting started](#gettingstarted)
+- [NgBuilderViewerComponent](#ngbuilderviewercomponent)
+- [NgModelViewerComponent](#ngmodelviewercomponent)
+- [NgSurveyViewerComponent](#NgSurveyViewerComponent)
+- [NgSurveysService](#NgSurveysService)
+- [Development](#Development)
+- [Contributing](#contributing)
+
+<a name="gettingstarted"></a>
+## [⬆️](#tableofcontents) Getting started
 
 First install through npm:
 
@@ -49,8 +60,8 @@ Add Bootstrap and Font Awesome to your ***angular.json*** to the ***styles*** an
    }
 }
 ```
-
-## NgBuilderViewerComponent
+<a name="ngbuilderviewercomponent"></a>
+## [⬆️](#tableofcontents) NgBuilderViewerComponent
 
 ***What is it?*** - Where your users build a survey.
 
@@ -161,8 +172,8 @@ export class BuilderViewerContainerComponent implements OnInit {
 
 }
 ``` 
-
-## NgModelViewerComponent 
+<a name="ngmodelviewercomponent"></a>
+## [⬆️](#tableofcontents) NgModelViewerComponent 
 
 ***What is it?*** - Where users can view the survey model.
 
@@ -171,8 +182,8 @@ export class BuilderViewerContainerComponent implements OnInit {
 ```html
   <ngs-model-viewer></ngs-model-viewer>
 ```
-
-## NgSurveyViewerComponent  
+<a name="NgSurveyViewerComponent"></a>
+## [⬆️](#tableofcontents) NgSurveyViewerComponent  
 
 ***What is it?*** - Where users can interact with the built survey.
 
@@ -181,8 +192,8 @@ export class BuilderViewerContainerComponent implements OnInit {
 ```html
   <ngs-survey-viewer></ngs-survey-viewer>
 ```
-
-## NgSurveysService
+<a name="NgSurveysService"></a>
+## [⬆️](#tableofcontents) NgSurveysService
 
 ***What is it?*** - A service that provides methods to retrieve the survey state. Methods listen to the latest state changes in the stream and returns changes that occur to a specific state.
 
@@ -241,8 +252,8 @@ export class AppComponent implements OnInit {
   }
 }
 ```
-
-## Development
+<a name="Development"></a>
+## [⬆️](#tableofcontents) Development
 
 * Clone repo
 * Install dependencies:
@@ -273,22 +284,30 @@ ng serve
 
 * Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+### Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+### Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+### Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+### Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
+<a name="contributing"></a>
+# [⬆️](#tableofcontents) Contributing
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Anyone is welcome to [contribute](.github/CONTRIBUTING.md),
+however, if you decide to get involved, please take a moment to review
+the [guidelines](.github/CONTRIBUTING.md):
+
+- [Bug reports](.github/CONTRIBUTING.md#bugs)
+- [Feature requests](.github/CONTRIBUTING.md#features)
+- [Pull requests](.github/CONTRIBUTING.md#pull-requests)
+
