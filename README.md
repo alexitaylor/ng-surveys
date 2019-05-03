@@ -18,7 +18,7 @@
 First install through npm:
 
 ```bash
-npm install --save ng-survey
+npm install --save ng-surveys
 ```
 
 Next install peer dependencies
