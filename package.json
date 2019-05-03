@@ -29,7 +29,7 @@
     "@angular/router": "7.2.14",
     "@ckeditor/ckeditor5-angular": "1.1.0",
     "@ckeditor/ckeditor5-build-classic": "12.1.0",
-    "@fortawesome/fontawesome-free": "5.6.3",
+    "@fortawesome/fontawesome-free": "5.8.1",
     "@ngrx/effects": "6.1.2",
     "@ngrx/store": "6.1.2",
     "@ngrx/store-devtools": "6.1.2",
