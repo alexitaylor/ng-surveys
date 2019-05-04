@@ -33,7 +33,7 @@
     "@ngrx/effects": "6.1.2",
     "@ngrx/store": "6.1.2",
     "@ngrx/store-devtools": "6.1.2",
-    "@types/lodash": "4.14.119",
+    "@types/lodash": "4.14.123",
     "angular2-uuid": "1.1.1",
     "autoprefixer": "9.4.3",
     "bootstrap": "4.3.1",
