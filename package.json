@@ -40,7 +40,7 @@
     "core-js": "2.6.5",
     "jquery": "3.4.1",
     "lodash": "4.17.11",
-    "ngrx-store-localstorage": "5.1.0",
+    "ngrx-store-localstorage": "5.1.1",
     "ngx-bootstrap": "4.1.1",
     "node-sass": "4.11.0",
     "postcss-cli": "6.1.0",
